@@ -61,7 +61,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.tsn.trustedservicesnavigator/com.tsn.trustedservicesnavigator.HelloApplication
+                                com.tsn.trustedservicesnavigator/com.tsn.trustedservicesnavigator.TrustedServicesNavigatorApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
