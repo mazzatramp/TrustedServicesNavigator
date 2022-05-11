@@ -22,51 +22,39 @@ public class Provider {
     public int getProviderId() {
         return providerId;
     }
-
     public void setProviderId(int providerId) {
         this.providerId = providerId;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public String getCountryCode() {
         return countryCode;
     }
-
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
     }
-
     public String getTrustmark() {
         return trustmark;
     }
-
     public void setTrustmark(String trustmark) {
         this.trustmark = trustmark;
     }
-
     public ArrayList<String> getServiceTypes() {
         return serviceTypes;
     }
-
     public void setServiceTypes(ArrayList<String> serviceTypes) {
         this.serviceTypes = serviceTypes;
     }
-
     public ArrayList<Service> getServices() {
         return services;
     }
-
     public void setServices(ArrayList<Service> services) {
         this.services = services;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
