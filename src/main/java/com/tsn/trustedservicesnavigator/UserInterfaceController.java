@@ -1,7 +1,6 @@
 package com.tsn.trustedservicesnavigator;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
@@ -19,7 +18,6 @@ public class UserInterfaceController {
         trustedList.getCountries().add(new Country("France", "FR"));
 
         servicesTreeView.setRoot(new TreeItem<>("EU"));
-        servicesTreeView.setShowRoot(false);
 
         for (Country country : trustedList.getCountries()) {
             servicesTreeView.getRoot().getChildren().add(new TreeItem<>(country.getName()));
