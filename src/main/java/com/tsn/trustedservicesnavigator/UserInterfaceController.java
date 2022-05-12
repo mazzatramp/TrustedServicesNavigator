@@ -1,9 +1,15 @@
 package com.tsn.trustedservicesnavigator;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.ProtocolException;
+import java.net.URL;
 
 public class UserInterfaceController {
     @FXML
@@ -12,11 +18,11 @@ public class UserInterfaceController {
     @FXML
     public void initialize() {
         TrustedList trustedList = TrustedList.getInstance();
-
-        trustedList.getCountries().add(new Country("Austria", "AT"));
-        trustedList.getCountries().add(new Country("Italy", "IT"));
-        trustedList.getCountries().add(new Country("Germany", "DE"));
-        trustedList.getCountries().add(new Country("France", "FR"));
+        try {
+            trustedList.fillCountriesData();
+        } catch (Exception e) {
+            System.err.println("can't fill countries");
+        }
 
         servicesTreeView.setRoot(new TreeItem<>("EU"));
         servicesTreeView.setShowRoot(false);
@@ -26,4 +32,6 @@ public class UserInterfaceController {
         }
 
     }
+
+
 }

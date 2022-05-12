@@ -1,23 +1,30 @@
 package com.tsn.trustedservicesnavigator;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Provider {
+    private String countryCode;
     private int providerId;
     private String name;
-    private String countryCode;
     private String trustmark;
-    private ArrayList<String> serviceTypes;
-    private ArrayList<Service> services;
+    private List<String> serviceTypes;
+    private List<Service> services;
 
-    public Provider(int providerId, String name, String countryCode, String trustmark, ArrayList<String> serviceTypes) {
+    @JsonCreator
+    public Provider(@JsonProperty("countryCode") String countryCode, @JsonProperty("tspId") int providerId, @JsonProperty("name") String name, @JsonProperty("trustmark") String trustmark, @JsonProperty("qServiceTTypes") List<String> serviceTypes, @JsonProperty ("services") List<Service> services) {
+        this.countryCode=countryCode;
         this.providerId = providerId;
         this.name = name;
-        this.countryCode = countryCode;
         this.trustmark = trustmark;
         this.serviceTypes = serviceTypes;
+        this.services= services;
     }
+
 
     public int getProviderId() {
         return providerId;
@@ -35,14 +42,6 @@ public class Provider {
         this.name = name;
     }
 
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-    }
-
     public String getTrustmark() {
         return trustmark;
     }
@@ -51,7 +50,7 @@ public class Provider {
         this.trustmark = trustmark;
     }
 
-    public ArrayList<String> getServiceTypes() {
+    public List<String> getServiceTypes() {
         return serviceTypes;
     }
 
@@ -59,12 +58,8 @@ public class Provider {
         this.serviceTypes = serviceTypes;
     }
 
-    public ArrayList<Service> getServices() {
+    public List<Service> getServices() {
         return services;
-    }
-
-    public void setServices(ArrayList<Service> services) {
-        this.services = services;
     }
 
     @Override
@@ -72,12 +67,12 @@ public class Provider {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Provider provider = (Provider) o;
-        return providerId == provider.providerId && Objects.equals(countryCode, provider.countryCode);
+        return providerId == provider.providerId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(providerId, countryCode);
+        return Objects.hash(providerId);
     }
 
     @Override
