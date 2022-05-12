@@ -18,19 +18,20 @@ public class UserInterfaceController {
     @FXML
     public void initialize() {
         TrustedList trustedList = TrustedList.getInstance();
-        try {
-            trustedList.fillCountriesData();
-        } catch (Exception e) {
-            System.err.println("can't fill countries");
-        }
 
-        servicesTreeView.setRoot(new TreeItem<>("EU"));
-        servicesTreeView.setShowRoot(false);
+        servicesTreeView.setRoot(new TreeItem<>("European Union"));
 
         for (Country country : trustedList.getCountries()) {
-            servicesTreeView.getRoot().getChildren().add(new TreeItem<>(country.getName()));
+            TreeItem<String> countryItem = new TreeItem<>(country.getName());
+            for (Provider provider : country.getProviders()) {
+                TreeItem<String> providerItem = new TreeItem<>(provider.getName());
+                for (Service service : provider.getServices()) {
+                    providerItem.getChildren().add(new TreeItem<>(service.getName()));
+                }
+                countryItem.getChildren().add(providerItem);
+            }
+            servicesTreeView.getRoot().getChildren().add(countryItem);
         }
-
     }
 
 

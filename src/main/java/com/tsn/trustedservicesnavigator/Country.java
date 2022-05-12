@@ -19,6 +19,7 @@ public class Country {
     public Country(@JsonProperty("countryName") String name, @JsonProperty("countryCode") String code) {
         this.name = name;
         this.code = code;
+        providers = new ArrayList<>(0);
     }
     public String getName() {
         return name;
@@ -51,7 +52,7 @@ public class Country {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Country country = (Country) o;
-        return Objects.equals(name, country.name) && Objects.equals(code, country.code);
+        return Objects.equals(code, country.code);
     }
 
     @Override
@@ -62,7 +63,9 @@ public class Country {
     @Override
     public String toString() {
         return "Country{" +
-                "name='" + name + '\'' +
+                "name='" + name + "', " +
+                "code='" + code + "', " +
+                "Providers='" + providers + '\'' +
                 '}';
     }
 }

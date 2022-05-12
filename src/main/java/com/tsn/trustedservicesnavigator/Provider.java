@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Provider {
@@ -16,7 +17,14 @@ public class Provider {
     private List<Service> services;
 
     @JsonCreator
-    public Provider(@JsonProperty("countryCode") String countryCode, @JsonProperty("tspId") int providerId, @JsonProperty("name") String name, @JsonProperty("trustmark") String trustmark, @JsonProperty("qServiceTTypes") List<String> serviceTypes, @JsonProperty ("services") List<Service> services) {
+    public Provider(
+            @JsonProperty("countryCode") String countryCode,
+            @JsonProperty("tspId") int providerId,
+            @JsonProperty("name") String name,
+            @JsonProperty("trustmark") String trustmark,
+            @JsonProperty("qServiceTTypes") List<String> serviceTypes,
+            @JsonProperty("services") List<Service> services
+    ){
         this.countryCode=countryCode;
         this.providerId = providerId;
         this.name = name;
@@ -25,6 +33,13 @@ public class Provider {
         this.services= services;
     }
 
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
 
     public int getProviderId() {
         return providerId;
@@ -54,12 +69,16 @@ public class Provider {
         return serviceTypes;
     }
 
-    public void setServiceTypes(ArrayList<String> serviceTypes) {
+    public void setServiceTypes(List<String> serviceTypes) {
         this.serviceTypes = serviceTypes;
     }
 
     public List<Service> getServices() {
         return services;
+    }
+
+    public void setServices(List<Service> services) {
+        this.services = services;
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Objects;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Service {
@@ -17,7 +18,13 @@ public class Service {
     private List<String> serviceTypes;
 
     @JsonCreator
-    public Service(@JsonProperty("serviceId") int serviceId, @JsonProperty("serviceName") String name, @JsonProperty("type") String type, @JsonProperty("currentStatus") String status, @JsonProperty("qServiceTypes") List<String> serviceTypes) {
+    public Service(
+            @JsonProperty("serviceId") int serviceId,
+            @JsonProperty("serviceName") String name,
+            @JsonProperty("type") String type,
+            @JsonProperty("currentStatus") String status,
+            @JsonProperty("qServiceTypes") List<String> serviceTypes
+    ) {
         this.serviceId = serviceId;
         this.name = name;
         this.type = type;
@@ -61,17 +68,16 @@ public class Service {
         return serviceTypes;
     }
 
+    public void setServiceTypes(List<String> serviceTypes) {
+        this.serviceTypes = serviceTypes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Service service = (Service) o;
         return serviceId == service.serviceId;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(serviceId);
     }
 
     @Override

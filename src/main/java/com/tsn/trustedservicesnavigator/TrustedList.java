@@ -2,24 +2,31 @@ package com.tsn.trustedservicesnavigator;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class TrustedList {
+    private static final String COUNTRIES_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list";
+    private static final String PROVIDERS_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list";
+
     private static TrustedList instance;
     private List<Country> countries;
-    private static String COUNTRIES_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list";
-    private static String PROVIDER_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list";
+
+    public TrustedList() {
+        this.countries = new ArrayList<>(0);
+
+        try {
+            this.fillWithApiData();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static TrustedList getInstance() {
         if (instance == null) {
@@ -28,73 +35,106 @@ public class TrustedList {
         return instance;
     }
 
-
     public List<Country> getCountries() {
         return countries;
     }
 
-    public void fillCountriesData() throws Exception {
+    public void fillWithApiData() throws Exception {
+        List<Country> apiCountries = getApiCountriesData();
+        List<Provider> apiProviders = getApiProvidersData();
 
-        URL callApi = new URL(COUNTRIES_API_ENDPOINT);
-        HttpURLConnection connection = null;
-        try {
-            connection = (HttpURLConnection) callApi.openConnection();
-        } catch (IOException e) {
-            System.err.println("unable to connect to the URL");
-            throw e;
+        fillTrustedListWithCountries(apiCountries);
+        fillCountriesWithProviders(apiCountries, apiProviders);
+    }
+
+    private void fillCountriesWithProviders(List<Country> apiCountries, List<Provider> apiProviders) {
+        for (Provider provider : apiProviders) {
+            String providerCountryCode = provider.getCountryCode();
+
+            getCountryFromCode(providerCountryCode).getProviders().add(provider);
         }
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("User-Request", "Mozilla 5.0");
+    }
 
-        int responseCode = connection.getResponseCode();
+    private Country getCountryFromCode(String countryCode) {
+        for (Country country : countries) {
+            if (country.getCode().equals(countryCode))
+                return country;
+        }
+        return null;
+    }
+
+
+    private void fillTrustedListWithCountries(List<Country> apiCountries) {
+        countries = apiCountries;
+    }
+
+    private List<Country> getApiCountriesData() throws IOException {
+        HttpURLConnection countriesApiConnection = openConnection(COUNTRIES_API_ENDPOINT);
+        int responseCode = countriesApiConnection.getResponseCode();
         if (responseCode == HttpURLConnection.HTTP_OK) {
-            System.out.println("Connessione andata a buon fine");
-            try {
-                ObjectMapper mapper = new ObjectMapper();
-                BufferedReader jackiefile = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputStr;
-                StringBuffer response = new StringBuffer();
-
-                while ((inputStr = jackiefile.readLine()) != null) {
-                    response.append(inputStr);
-                }
-                System.out.println(response.toString());
-                countries = mapper.readValue(response.toString(), mapper.getTypeFactory().constructCollectionType(List.class, Country.class));
-            } catch (Exception e) {
-                System.err.println("json parsing impossible");
-                throw e;
-            }
-            countries.forEach(System.out::println);
+            return buildCountriesFromResponse(countriesApiConnection);
         }
-        callApi = new URL(PROVIDER_API_ENDPOINT);
+        return new ArrayList<>(0);
+    }
+
+    private List<Country> buildCountriesFromResponse(HttpURLConnection countriesApiConnection) throws IOException {
+        ObjectMapper jsonToObjectMapper = new ObjectMapper();
+
+        String jsonCountryList = getResponseFromConnection(countriesApiConnection);
+
+        List<Country> countryData = jsonToObjectMapper.readValue(
+                jsonCountryList,
+                jsonToObjectMapper.getTypeFactory().constructCollectionType(List.class, Country.class)
+        );
+
+        return countryData;
+    }
+
+    private String getResponseFromConnection(HttpURLConnection apiConnection) throws IOException {
+        String responseLine;
+        BufferedReader responseReader = new BufferedReader(new InputStreamReader(apiConnection.getInputStream()));
+        StringBuilder response = new StringBuilder();
+
+        while ((responseLine = responseReader.readLine()) != null) {
+            response.append(responseLine);
+        };
+
+        return response.toString();
+    }
+
+    private HttpURLConnection openConnection(String apiEndpoint) {
         try {
-            connection = (HttpURLConnection) callApi.openConnection();
-        } catch (IOException e) {
-            System.err.println("unable to connect to the URL");
-            throw e;
+            URL apiUrl = new URL(apiEndpoint);
+            HttpURLConnection apiConnection = (HttpURLConnection) apiUrl.openConnection();
+            apiConnection.setRequestMethod("GET");
+            apiConnection.setRequestProperty("User-Request", "Mozilla 5.0");
+            return apiConnection;
+        } catch (Exception e) {
+            System.out.println("Unable to connect with " + apiEndpoint);
         }
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("User-Request", "Mozilla 5.0");
+        return null;
+    }
 
-        responseCode = connection.getResponseCode();
+    private List<Provider> getApiProvidersData() throws Exception{
+
+        HttpURLConnection providersApiConnection = openConnection(PROVIDERS_API_ENDPOINT);
+        int responseCode = providersApiConnection.getResponseCode();
         if (responseCode == HttpURLConnection.HTTP_OK) {
-            System.out.println("Connessione andata a buon fine");
-            try {
-                ObjectMapper mapper = new ObjectMapper();
-                BufferedReader jackiefile = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputStr;
-                StringBuffer response = new StringBuffer();
-
-                while ((inputStr = jackiefile.readLine()) != null) {
-                    response.append(inputStr);
-                }
-                System.out.println(response.toString());
-                List<Provider> providers = mapper.readValue(response.toString(), mapper.getTypeFactory().constructCollectionType(List.class, Provider.class));
-                providers.forEach(System.out::println);
-            } catch (Exception e) {
-                System.err.println("unable to parse providers");
-                throw e;
-            }
+            return buildProvidersFromResponse(providersApiConnection);
         }
+
+        return null;
+    }
+
+    private List<Provider> buildProvidersFromResponse(HttpURLConnection providersApiConnection) throws IOException {
+        ObjectMapper jsonToObjectMapper = new ObjectMapper();
+        String jsonProvidersList = getResponseFromConnection(providersApiConnection);
+
+        List<Provider> providers = jsonToObjectMapper.readValue(
+                jsonProvidersList,
+                new TypeReference<List<Provider>>() {}
+        );
+
+        return providers;
     }
 }
