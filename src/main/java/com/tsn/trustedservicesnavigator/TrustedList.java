@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -18,14 +19,8 @@ public class TrustedList {
     private static TrustedList instance;
     private List<Country> countries;
 
-    public TrustedList() {
+    private TrustedList() {
         this.countries = new ArrayList<>(0);
-
-        try {
-            this.fillWithApiData();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public static TrustedList getInstance() {
@@ -40,18 +35,18 @@ public class TrustedList {
     }
 
     public void fillWithApiData() throws Exception {
-        List<Country> apiCountries = getApiCountriesData();
+        countries = getApiCountriesData();
         List<Provider> apiProviders = getApiProvidersData();
 
-        fillTrustedListWithCountries(apiCountries);
-        fillCountriesWithProviders(apiCountries, apiProviders);
+        linkCountriesAndProviders(apiProviders);
     }
 
-    private void fillCountriesWithProviders(List<Country> apiCountries, List<Provider> apiProviders) {
-        for (Provider provider : apiProviders) {
-            String providerCountryCode = provider.getCountryCode();
+    private void linkCountriesAndProviders(List<Provider> providersToLink) {
+        for (Provider provider : providersToLink) {
+            Country providerCountry = getCountryFromCode(provider.getCountryCode());
 
-            getCountryFromCode(providerCountryCode).getProviders().add(provider);
+            provider.setCountry(providerCountry);
+            providerCountry.getProviders().add(provider);
         }
     }
 
@@ -60,12 +55,8 @@ public class TrustedList {
             if (country.getCode().equals(countryCode))
                 return country;
         }
-        return null;
-    }
 
-
-    private void fillTrustedListWithCountries(List<Country> apiCountries) {
-        countries = apiCountries;
+        throw new IllegalArgumentException(countryCode);
     }
 
     private List<Country> getApiCountriesData() throws IOException {
@@ -74,7 +65,19 @@ public class TrustedList {
         if (responseCode == HttpURLConnection.HTTP_OK) {
             return buildCountriesFromResponse(countriesApiConnection);
         }
-        return new ArrayList<>(0);
+
+        throw new ConnectException("Failed connection to the api, response code: " + responseCode);
+    }
+
+    private List<Provider> getApiProvidersData() throws Exception{
+
+        HttpURLConnection providersApiConnection = openConnection(PROVIDERS_API_ENDPOINT);
+        int responseCode = providersApiConnection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            return buildProvidersFromResponse(providersApiConnection);
+        }
+
+        throw new ConnectException("Failed connection to the api, response code: " + responseCode);
     }
 
     private List<Country> buildCountriesFromResponse(HttpURLConnection countriesApiConnection) throws IOException {
@@ -82,12 +85,14 @@ public class TrustedList {
 
         String jsonCountryList = getResponseFromConnection(countriesApiConnection);
 
-        List<Country> countryData = jsonToObjectMapper.readValue(
-                jsonCountryList,
-                jsonToObjectMapper.getTypeFactory().constructCollectionType(List.class, Country.class)
-        );
+        return jsonToObjectMapper.readValue(jsonCountryList, new TypeReference<>(){});
+    }
 
-        return countryData;
+    private List<Provider> buildProvidersFromResponse(HttpURLConnection providersApiConnection) throws IOException {
+        ObjectMapper jsonToObjectMapper = new ObjectMapper();
+        String jsonProvidersList = getResponseFromConnection(providersApiConnection);
+
+        return jsonToObjectMapper.readValue(jsonProvidersList, new TypeReference<>(){});
     }
 
     private String getResponseFromConnection(HttpURLConnection apiConnection) throws IOException {
@@ -111,30 +116,8 @@ public class TrustedList {
             return apiConnection;
         } catch (Exception e) {
             System.out.println("Unable to connect with " + apiEndpoint);
+            System.out.println(e.getMessage());
+            throw new RuntimeException();
         }
-        return null;
-    }
-
-    private List<Provider> getApiProvidersData() throws Exception{
-
-        HttpURLConnection providersApiConnection = openConnection(PROVIDERS_API_ENDPOINT);
-        int responseCode = providersApiConnection.getResponseCode();
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            return buildProvidersFromResponse(providersApiConnection);
-        }
-
-        return null;
-    }
-
-    private List<Provider> buildProvidersFromResponse(HttpURLConnection providersApiConnection) throws IOException {
-        ObjectMapper jsonToObjectMapper = new ObjectMapper();
-        String jsonProvidersList = getResponseFromConnection(providersApiConnection);
-
-        List<Provider> providers = jsonToObjectMapper.readValue(
-                jsonProvidersList,
-                new TypeReference<List<Provider>>() {}
-        );
-
-        return providers;
     }
 }

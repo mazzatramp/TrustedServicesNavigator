@@ -2,13 +2,13 @@ package com.tsn.trustedservicesnavigator;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Provider {
+    private Country country;
     private String countryCode;
     private int providerId;
     private String name;
@@ -25,12 +25,20 @@ public class Provider {
             @JsonProperty("qServiceTTypes") List<String> serviceTypes,
             @JsonProperty("services") List<Service> services
     ){
-        this.countryCode=countryCode;
+        this.countryCode = countryCode;
         this.providerId = providerId;
         this.name = name;
         this.trustmark = trustmark;
         this.serviceTypes = serviceTypes;
         this.services= services;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     public String getCountryCode() {

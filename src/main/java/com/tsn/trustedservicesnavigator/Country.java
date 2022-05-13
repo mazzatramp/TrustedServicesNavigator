@@ -16,11 +16,15 @@ public class Country {
     private List<Provider> providers;
 
     @JsonCreator
-    public Country(@JsonProperty("countryName") String name, @JsonProperty("countryCode") String code) {
+    public Country(
+            @JsonProperty("countryName") String name,
+            @JsonProperty("countryCode") String code
+    ) {
         this.name = name;
         this.code = code;
         providers = new ArrayList<>(0);
     }
+
     public String getName() {
         return name;
     }
@@ -64,8 +68,7 @@ public class Country {
     public String toString() {
         return "Country{" +
                 "name='" + name + "', " +
-                "code='" + code + "', " +
-                "Providers='" + providers + '\'' +
+                "code='" + code + '\'' +
                 '}';
     }
 }

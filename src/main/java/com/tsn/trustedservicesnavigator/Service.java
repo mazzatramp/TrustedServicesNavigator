@@ -6,11 +6,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
-import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Service {
+    private Provider provider;
+
     private int serviceId;
     private String name;
     private String type;
@@ -22,14 +23,19 @@ public class Service {
             @JsonProperty("serviceId") int serviceId,
             @JsonProperty("serviceName") String name,
             @JsonProperty("type") String type,
-            @JsonProperty("currentStatus") String status,
+            @JsonProperty("currentStatus") String statusUrl,
             @JsonProperty("qServiceTypes") List<String> serviceTypes
     ) {
         this.serviceId = serviceId;
         this.name = name;
         this.type = type;
-        this.status = status;
+        this.status = getStatusFromUrl(statusUrl);
         this.serviceTypes = serviceTypes;
+    }
+
+    private String getStatusFromUrl(String statusUrl) {
+        String[] splittedUrl = statusUrl.split("/");
+        return splittedUrl[splittedUrl.length-1];
     }
 
     public int getServiceId() {
