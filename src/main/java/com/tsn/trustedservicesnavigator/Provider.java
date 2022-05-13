@@ -52,23 +52,18 @@ public class Provider {
     public int getProviderId() {
         return providerId;
     }
-
     public void setProviderId(int providerId) {
         this.providerId = providerId;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public String getTrustmark() {
         return trustmark;
     }
-
     public void setTrustmark(String trustmark) {
         this.trustmark = trustmark;
     }
@@ -88,7 +83,6 @@ public class Provider {
     public void setServices(List<Service> services) {
         this.services = services;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
