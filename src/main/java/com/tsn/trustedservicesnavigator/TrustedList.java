@@ -1,12 +1,10 @@
 package com.tsn.trustedservicesnavigator;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class TrustedList {
@@ -33,7 +31,6 @@ public class TrustedList {
 
     public void fillWithApiData() throws Exception {
         countries = buildJSONFromURL(COUNTRIES_API_ENDPOINT, Country.class);
-        countries.forEach(System.out::println);
         List<Provider> apiProviders = buildJSONFromURL(PROVIDERS_API_ENDPOINT, Provider.class);
         linkCountriesAndProviders(apiProviders);
     }
