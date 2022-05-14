@@ -10,6 +10,7 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TrustedList {
@@ -35,9 +36,8 @@ public class TrustedList {
     }
 
     public void fillWithApiData() throws Exception {
-        countries = getApiCountriesData();
-        List<Provider> apiProviders = getApiProvidersData();
-
+        countries = buildCountriesFromURL(COUNTRIES_API_ENDPOINT);
+        List<Provider> apiProviders = buildProvidersFromURL(PROVIDERS_API_ENDPOINT);
         linkCountriesAndProviders(apiProviders);
     }
 
@@ -59,65 +59,13 @@ public class TrustedList {
         throw new IllegalArgumentException(countryCode);
     }
 
-    private List<Country> getApiCountriesData() throws IOException {
-        HttpURLConnection countriesApiConnection = openConnection(COUNTRIES_API_ENDPOINT);
-        int responseCode = countriesApiConnection.getResponseCode();
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            return buildCountriesFromResponse(countriesApiConnection);
-        }
-
-        throw new ConnectException("Failed connection to the api, response code: " + responseCode);
-    }
-
-    private List<Provider> getApiProvidersData() throws Exception{
-
-        HttpURLConnection providersApiConnection = openConnection(PROVIDERS_API_ENDPOINT);
-        int responseCode = providersApiConnection.getResponseCode();
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            return buildProvidersFromResponse(providersApiConnection);
-        }
-
-        throw new ConnectException("Failed connection to the api, response code: " + responseCode);
-    }
-
-    private List<Country> buildCountriesFromResponse(HttpURLConnection countriesApiConnection) throws IOException {
+    private List<Country> buildCountriesFromURL(String endpoint) throws IOException {
         ObjectMapper jsonToObjectMapper = new ObjectMapper();
-
-        String jsonCountryList = getResponseFromConnection(countriesApiConnection);
-
-        return jsonToObjectMapper.readValue(jsonCountryList, new TypeReference<>(){});
+        return jsonToObjectMapper.readValue(new URL(endpoint), new TypeReference<>(){});
     }
 
-    private List<Provider> buildProvidersFromResponse(HttpURLConnection providersApiConnection) throws IOException {
+    private List<Provider> buildProvidersFromURL(String endpoint) throws IOException {
         ObjectMapper jsonToObjectMapper = new ObjectMapper();
-        String jsonProvidersList = getResponseFromConnection(providersApiConnection);
-
-        return jsonToObjectMapper.readValue(jsonProvidersList, new TypeReference<>(){});
-    }
-
-    private String getResponseFromConnection(HttpURLConnection apiConnection) throws IOException {
-        String responseLine;
-        BufferedReader responseReader = new BufferedReader(new InputStreamReader(apiConnection.getInputStream()));
-        StringBuilder response = new StringBuilder();
-
-        while ((responseLine = responseReader.readLine()) != null) {
-            response.append(responseLine);
-        };
-
-        return response.toString();
-    }
-
-    private HttpURLConnection openConnection(String apiEndpoint) {
-        try {
-            URL apiUrl = new URL(apiEndpoint);
-            HttpURLConnection apiConnection = (HttpURLConnection) apiUrl.openConnection();
-            apiConnection.setRequestMethod("GET");
-            apiConnection.setRequestProperty("User-Request", "Mozilla 5.0");
-            return apiConnection;
-        } catch (Exception e) {
-            System.out.println("Unable to connect with " + apiEndpoint);
-            System.out.println(e.getMessage());
-            throw new RuntimeException();
-        }
+        return jsonToObjectMapper.readValue(new URL(endpoint), new TypeReference<>(){});
     }
 }
