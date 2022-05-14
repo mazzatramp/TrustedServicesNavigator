@@ -1,32 +1,41 @@
 package com.tsn.trustedservicesnavigator;
 
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Service {
-    private int providerId;
+    private Provider provider;
+
     private int serviceId;
-    private String countryCode;
     private String name;
     private String type;
     private String status;
-    private String serviceType;
+    private List<String> serviceTypes;
 
-    public Service(int providerId, int serviceId, String countryCode, String name, String type, String status, String serviceType) {
-        this.providerId = providerId;
+    @JsonCreator
+    public Service(
+            @JsonProperty("serviceId") int serviceId,
+            @JsonProperty("serviceName") String name,
+            @JsonProperty("type") String type,
+            @JsonProperty("currentStatus") String statusUrl,
+            @JsonProperty("qServiceTypes") List<String> serviceTypes
+    ) {
         this.serviceId = serviceId;
-        this.countryCode = countryCode;
         this.name = name;
         this.type = type;
-        this.status = status;
-        this.serviceType = serviceType;
+        this.status = getStatusFromUrl(statusUrl);
+        this.serviceTypes = serviceTypes;
     }
 
-    public int getProviderId() {
-        return providerId;
-    }
-
-    public void setProviderId(int providerId) {
-        this.providerId = providerId;
+    private String getStatusFromUrl(String statusUrl) {
+        String[] splittedUrl = statusUrl.split("/");
+        return splittedUrl[splittedUrl.length-1];
     }
 
     public int getServiceId() {
@@ -35,14 +44,6 @@ public class Service {
 
     public void setServiceId(int serviceId) {
         this.serviceId = serviceId;
-    }
-
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
     }
 
     public String getName() {
@@ -69,12 +70,12 @@ public class Service {
         this.status = status;
     }
 
-    public String getServiceType() {
-        return serviceType;
+    public List<String> getServiceTypes() {
+        return serviceTypes;
     }
 
-    public void setServiceType(String serviceType) {
-        this.serviceType = serviceType;
+    public void setServiceTypes(List<String> serviceTypes) {
+        this.serviceTypes = serviceTypes;
     }
 
     @Override
@@ -82,12 +83,7 @@ public class Service {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Service service = (Service) o;
-        return providerId == service.providerId && serviceId == service.serviceId && countryCode.equals(service.countryCode);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(providerId, serviceId, countryCode);
+        return serviceId == service.serviceId;
     }
 
     @Override
@@ -95,7 +91,7 @@ public class Service {
         return "Service{" +
                 "name='" + name + '\'' +
                 ", status='" + status + '\'' +
-                ", serviceType='" + serviceType + '\'' +
+                ", serviceTypes='" + serviceTypes + '\'' +
                 '}';
     }
 }

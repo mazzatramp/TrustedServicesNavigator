@@ -1,10 +1,22 @@
 package com.tsn.trustedservicesnavigator;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TrustedList {
+    private static final String COUNTRIES_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list";
+    private static final String PROVIDERS_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list";
+
     private static TrustedList instance;
-    private ArrayList<Country> countries;
+    private List<Country> countries;
+
+    private TrustedList() {
+        this.countries = new ArrayList<>(0);
+    }
 
     public static TrustedList getInstance() {
         if (instance == null) {
@@ -13,15 +25,36 @@ public class TrustedList {
         return instance;
     }
 
-    private TrustedList() {
-        countries = new ArrayList<>(0);
-    }
-
-    public ArrayList<Country> getCountries() {
+    public List<Country> getCountries() {
         return countries;
     }
 
-    public void setCountries(ArrayList<Country> countries) {
-        this.countries = countries;
+    public void fillWithApiData() throws Exception {
+        countries = buildJSONFromURL(COUNTRIES_API_ENDPOINT, Country.class);
+        List<Provider> apiProviders = buildJSONFromURL(PROVIDERS_API_ENDPOINT, Provider.class);
+        linkCountriesAndProviders(apiProviders);
+    }
+
+    private void linkCountriesAndProviders(List<Provider> providersToLink) {
+        for (Provider provider : providersToLink) {
+            Country providerCountry = getCountryFromCode(provider.getCountryCode());
+
+            provider.setCountry(providerCountry);
+            providerCountry.getProviders().add(provider);
+        }
+    }
+
+    private Country getCountryFromCode(String countryCode) {
+        for (Country country : countries) {
+            if (country.getCode().equals(countryCode))
+                return country;
+        }
+
+        throw new IllegalArgumentException(countryCode);
+    }
+
+    private <T> List<T> buildJSONFromURL(String endpoint, Class<T> type) throws IOException {
+        ObjectMapper jsonToObjectMapper = new ObjectMapper();
+        return jsonToObjectMapper.readValue(new URL(endpoint), jsonToObjectMapper.getTypeFactory().constructCollectionType(List.class, type));
     }
 }
