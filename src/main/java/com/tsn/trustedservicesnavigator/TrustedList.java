@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TrustedList {
@@ -31,8 +32,9 @@ public class TrustedList {
     }
 
     public void fillWithApiData() throws Exception {
-        countries = buildCountriesFromURL(COUNTRIES_API_ENDPOINT);
-        List<Provider> apiProviders = buildProvidersFromURL(PROVIDERS_API_ENDPOINT);
+        countries = buildJSONFromURL(COUNTRIES_API_ENDPOINT, Country.class);
+        countries.forEach(System.out::println);
+        List<Provider> apiProviders = buildJSONFromURL(PROVIDERS_API_ENDPOINT, Provider.class);
         linkCountriesAndProviders(apiProviders);
     }
 
@@ -54,13 +56,8 @@ public class TrustedList {
         throw new IllegalArgumentException(countryCode);
     }
 
-    private List<Country> buildCountriesFromURL(String endpoint) throws IOException {
+    private <T> List<T> buildJSONFromURL(String endpoint, Class<T> type) throws IOException {
         ObjectMapper jsonToObjectMapper = new ObjectMapper();
-        return jsonToObjectMapper.readValue(new URL(endpoint), new TypeReference<>(){});
-    }
-
-    private List<Provider> buildProvidersFromURL(String endpoint) throws IOException {
-        ObjectMapper jsonToObjectMapper = new ObjectMapper();
-        return jsonToObjectMapper.readValue(new URL(endpoint), new TypeReference<>(){});
+        return jsonToObjectMapper.readValue(new URL(endpoint), jsonToObjectMapper.getTypeFactory().constructCollectionType(List.class, type));
     }
 }
