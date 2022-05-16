@@ -7,29 +7,21 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrustedList {
+public class TrustedList implements Cloneable {
     private static final String COUNTRIES_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list";
     private static final String PROVIDERS_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list";
 
-    private static TrustedList instance;
     private List<Country> countries;
 
-    private TrustedList() {
+    public TrustedList() {
         this.countries = new ArrayList<>(0);
-    }
-
-    public static TrustedList getInstance() {
-        if (instance == null) {
-            instance = new TrustedList();
-        }
-        return instance;
     }
 
     public List<Country> getCountries() {
         return countries;
     }
 
-    public void fillWithApiData() throws Exception {
+    public void downloadApiData() throws IOException {
         countries = buildJSONFromURL(COUNTRIES_API_ENDPOINT, Country.class);
         List<Provider> apiProviders = buildJSONFromURL(PROVIDERS_API_ENDPOINT, Provider.class);
         linkCountriesAndProviders(apiProviders);
@@ -55,6 +47,21 @@ public class TrustedList {
 
     private <T> List<T> buildJSONFromURL(String endpoint, Class<T> type) throws IOException {
         ObjectMapper jsonToObjectMapper = new ObjectMapper();
-        return jsonToObjectMapper.readValue(new URL(endpoint), jsonToObjectMapper.getTypeFactory().constructCollectionType(List.class, type));
+        return jsonToObjectMapper.readValue(
+                new URL(endpoint),
+                jsonToObjectMapper.getTypeFactory().constructCollectionType(List.class, type)
+        );
+    }
+
+    @Override
+    public TrustedList clone() {
+        try {
+            TrustedList clone = (TrustedList) super.clone();
+            clone.countries = new ArrayList<>();
+            this.countries.forEach(country -> clone.getCountries().add(country.clone()));
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -13,9 +13,17 @@ public class TrustedServicesNavigatorApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(TrustedServicesNavigatorApplication.class.getResource("navigation-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
 
+        NavigationMediator navigationMediator = new NavigationMediator();
+        linkNavigatorAndController(fxmlLoader.getController(), navigationMediator);
+
         stage.setTitle("Trusted Services Navigator App");
         stage.setScene(scene);
         stage.show();
+    }
+
+    private void linkNavigatorAndController(UserInterfaceController controller, NavigationMediator navigationMediator) {
+        navigationMediator.setUserInterfaceController(controller);
+        controller.setNavigationMediator(navigationMediator);
     }
 
     public static void main(String[] args) {

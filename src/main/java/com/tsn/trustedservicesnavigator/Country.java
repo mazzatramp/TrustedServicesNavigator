@@ -1,18 +1,16 @@
 package com.tsn.trustedservicesnavigator;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Country {
+public class Country implements Cloneable {
     private String name;
     private String code;
-    @JsonIgnore
+
     private List<Provider> providers;
 
     @JsonCreator
@@ -29,7 +27,6 @@ public class Country {
         return name;
     }
 
-    @JsonSetter("countryName")
     public void setName(String name) {
         this.name = name;
     }
@@ -38,7 +35,6 @@ public class Country {
         return code;
     }
 
-    @JsonSetter("countryCode")
     public void setCode(String code) {
         this.code = code;
     }
@@ -70,5 +66,22 @@ public class Country {
                 "name='" + name + "', " +
                 "code='" + code + '\'' +
                 '}';
+    }
+
+    @Override
+    public Country clone() {
+        try {
+            Country countryClone = (Country) super.clone();
+            countryClone.setProviders(new ArrayList<>());
+            this.getProviders().forEach(
+                    provider -> {
+                        Provider providerClone = provider.clone();
+                        providerClone.setCountry(countryClone);
+                        countryClone.getProviders().add(providerClone);
+                    });
+            return countryClone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

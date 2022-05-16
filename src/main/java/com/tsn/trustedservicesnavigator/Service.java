@@ -1,15 +1,12 @@
 package com.tsn.trustedservicesnavigator;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Service {
+public class Service implements  Cloneable{
     private Provider provider;
 
     private int serviceId;
@@ -34,14 +31,15 @@ public class Service {
     }
 
     private String getStatusFromUrl(String statusUrl) {
-        String[] splittedUrl = statusUrl.split("/");
-        return splittedUrl[splittedUrl.length-1];
+        String[] splitUrl = statusUrl.split("/");
+        return splitUrl[splitUrl.length-1];
     }
 
     public int getServiceId() {
         return serviceId;
     }
 
+    @JsonSetter
     public void setServiceId(int serviceId) {
         this.serviceId = serviceId;
     }
@@ -78,6 +76,14 @@ public class Service {
         this.serviceTypes = serviceTypes;
     }
 
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -93,5 +99,16 @@ public class Service {
                 ", status='" + status + '\'' +
                 ", serviceTypes='" + serviceTypes + '\'' +
                 '}';
+    }
+
+    @Override
+    public Service clone() {
+        try {
+            Service clone = (Service) super.clone();
+            clone.setProvider(null);
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

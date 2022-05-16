@@ -2,14 +2,15 @@ package com.tsn.trustedservicesnavigator;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Provider {
+public class Provider implements Cloneable {
     private Country country;
-    private String countryCode;
+
     private int providerId;
     private String name;
     private String trustmark;
@@ -25,12 +26,15 @@ public class Provider {
             @JsonProperty("qServiceTTypes") List<String> serviceTypes,
             @JsonProperty("services") List<Service> services
     ){
-        this.countryCode = countryCode;
+        this.country = new Country("", countryCode);
         this.providerId = providerId;
         this.name = name;
         this.trustmark = trustmark;
         this.serviceTypes = serviceTypes;
-        this.services= services;
+        this.services = services;
+        for (Service service : services) {
+            service.setProvider(this);
+        }
     }
 
     public Country getCountry() {
@@ -42,11 +46,11 @@ public class Provider {
     }
 
     public String getCountryCode() {
-        return countryCode;
+        return country.getCode();
     }
 
     public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
+        this.country = new Country("", countryCode);
     }
 
     public int getProviderId() {
@@ -102,5 +106,23 @@ public class Provider {
                 "name='" + name + '\'' +
                 ", trustmark='" + trustmark + '\'' +
                 '}';
+    }
+
+    @Override
+    public Provider clone() {
+        try {
+            Provider providerClone = (Provider) super.clone();
+            providerClone.setServices(new ArrayList<>());
+            providerClone.setCountry(null);
+            this.getServices().forEach(
+                    service -> {
+                        Service serviceClone = service.clone();
+                        serviceClone.setProvider(providerClone);
+                        providerClone.getServices().add(serviceClone);
+                    });
+            return providerClone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
