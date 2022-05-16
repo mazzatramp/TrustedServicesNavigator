@@ -56,7 +56,6 @@ public class UserInterfaceController {
     private void fillNavigationTreeView() {
         TreeItem<String> countryTreeItem, providerTreeItem, serviceTreeItem;
         TrustedList dataToShow = navigationMediator.getFilteredList();
-        System.out.println(dataToShow.getCountries());
 
         displayed.setRoot(new TreeItem<>());
         for (Country countryToShow : dataToShow.getCountries()) {
