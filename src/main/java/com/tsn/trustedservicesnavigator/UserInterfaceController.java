@@ -30,10 +30,10 @@ public class UserInterfaceController {
         progressBar.progressProperty().bind(task.progressProperty());
     }
 
-    public void fillMenus() {
+    public void fillFiltersAndDisplay() {
         //runLater is needed in order to avoid issues adding a lot of nodes at once
         Platform.runLater(() -> {
-            fillNavigationTreeView();
+            fillDisplayTreeView();
             fillCountryAndProvidersFilterTreeView();
         });
     }
@@ -53,7 +53,7 @@ public class UserInterfaceController {
 
     }
 
-    private void fillNavigationTreeView() {
+    private void fillDisplayTreeView() {
         TreeItem<String> countryTreeItem, providerTreeItem, serviceTreeItem;
         TrustedList dataToShow = navigationMediator.getFilteredList();
 
@@ -72,9 +72,9 @@ public class UserInterfaceController {
         }
     }
 
-    public void updateFilters() {
+    public void handleFilterClick() {
         if (!progressBar.isVisible()) {
-            fillNavigationTreeView();
+            fillDisplayTreeView();
         }
     }
 

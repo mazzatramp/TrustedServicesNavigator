@@ -3,13 +3,14 @@ package com.tsn.trustedservicesnavigator;
 import java.util.List;
 
 public class FilterController {
-    private final FilterByCountry countryFilter;
+    private final CountryFilter countryFilter;
+
 
     public FilterController() {
-        countryFilter = new FilterByCountry();
+        countryFilter = new CountryFilter();
     }
 
-    public void setCountryFilter(List<String> countryWhitelist) {
+    public void setCountryWhitelist(List<String> countryWhitelist) {
         countryFilter.setWhitelist(countryWhitelist);
     }
 

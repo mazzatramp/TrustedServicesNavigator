@@ -3,11 +3,11 @@ package com.tsn.trustedservicesnavigator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilterByCountry extends Filter {
+public class CountryFilter extends Filter {
 
     private List<String> whitelist;
 
-    public FilterByCountry() {
+    public CountryFilter() {
         this.whitelist = new ArrayList<>(0);
     }
 

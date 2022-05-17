@@ -6,14 +6,14 @@ import java.io.IOException;
 
 public class NavigationMediator {
     private UserInterfaceController userInterfaceController;
-    private final FilterController filter;
+    private final FilterController filterController;
     private final TrustedList completeList;
     private TrustedList filteredList;
 
     public NavigationMediator() {
         this.completeList = new TrustedList();
         this.filteredList = new TrustedList();
-        this.filter = new FilterController();
+        this.filterController = new FilterController();
     }
 
     public void setUserInterfaceController(UserInterfaceController userInterfaceController) {
@@ -23,12 +23,12 @@ public class NavigationMediator {
 
     public TrustedList getFilteredList() {
         readActiveFilters();
-        filteredList = filter.getFilteredDataFrom(completeList);
+        filteredList = filterController.getFilteredDataFrom(completeList);
         return filteredList;
     }
 
     private void readActiveFilters() {
-        filter.setCountryFilter(userInterfaceController.getSelectedCountries());
+        filterController.setCountryWhitelist(userInterfaceController.getSelectedCountries());
     }
 
     public TrustedList getCompleteList() {
@@ -50,7 +50,7 @@ public class NavigationMediator {
             protected Void call() {
                 try {
                     completeList.downloadApiData();
-                    userInterfaceController.fillMenus();
+                    userInterfaceController.fillFiltersAndDisplay();
                 } catch (IOException e) {
                     System.err.println("Can't download Api Data.");
                     System.err.println(e.getMessage());
