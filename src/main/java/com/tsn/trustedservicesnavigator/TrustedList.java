@@ -52,7 +52,13 @@ public class TrustedList implements Cloneable {
                 jsonToObjectMapper.getTypeFactory().constructCollectionType(List.class, type)
         );
     }
-
+    public List<Provider> getAllProvider() {
+        List<Provider> allProviders= new ArrayList<Provider>();
+        for (Country country: countries) {
+            allProviders.addAll(country.getProviders());
+        }
+        return allProviders;
+    }
     @Override
     public TrustedList clone() {
         try {

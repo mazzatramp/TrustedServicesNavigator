@@ -3,6 +3,8 @@ package com.tsn.trustedservicesnavigator;
 import javafx.concurrent.Task;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NavigationMediator {
     private UserInterfaceController userInterfaceController;
@@ -29,6 +31,9 @@ public class NavigationMediator {
 
     private void readActiveFilters() {
         filterController.setCountryWhitelist(userInterfaceController.getSelectedCountries());
+        List<String> providers=new ArrayList<String>();
+        providers.add("Intesa San Paolo");
+        filterController.setProviderWhitelist(providers);
     }
 
     public TrustedList getCompleteList() {
