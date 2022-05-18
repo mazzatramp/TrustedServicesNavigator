@@ -4,17 +4,21 @@ import javafx.concurrent.Task;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class NavigationMediator {
     private UserInterfaceController userInterfaceController;
     private final FilterController filterController;
     private final TrustedList completeList;
+    private final Set<String> serviceTypes;
     private TrustedList filteredList;
 
     public NavigationMediator() {
         this.completeList = new TrustedList();
         this.filteredList = new TrustedList();
+        this.serviceTypes = new HashSet<>();
         this.filterController = new FilterController();
     }
 
@@ -36,6 +40,9 @@ public class NavigationMediator {
     public TrustedList getCompleteList() {
         return completeList;
     }
+    public Set<String> getAllServiceTypes() {
+        return serviceTypes;
+    }
 
     public void fillCompleteListFromApiData() {
         Task<Void> downloadingApiData = getDownloadApiDataTask();
@@ -46,6 +53,17 @@ public class NavigationMediator {
         th.start();
     }
 
+
+    private void fillMetadata() {
+        completeList.getCountries().forEach(country -> {
+            country.getProviders().forEach(provider -> {
+                serviceTypes.addAll(provider.getServiceTypes());
+                System.out.println(serviceTypes);
+                System.out.println("rasars");
+            });
+        });
+    }
+
     private Task<Void> getDownloadApiDataTask() {
         return new Task<>() {
             @Override
@@ -53,6 +71,7 @@ public class NavigationMediator {
                 try {
                     completeList.downloadApiData();
                     userInterfaceController.fillFiltersAndDisplay();
+                    fillMetadata();
                 } catch (IOException e) {
                     System.err.println("Can't download Api Data.");
                     System.err.println(e.getMessage());

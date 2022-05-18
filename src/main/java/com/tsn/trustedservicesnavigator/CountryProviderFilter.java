@@ -25,7 +25,6 @@ public class CountryProviderFilter extends Filter {
         listToFilter.getCountries().removeIf(country -> !whitelist.containsKey(country.getName()));
         listToFilter.getCountries().forEach(country -> {
             List<String> providers = whitelist.get(country.getName());
-            providers.forEach(System.out::println);
             country.getProviders().removeIf(provider -> !providers.contains(provider.getName()));
         });
         return listToFilter;

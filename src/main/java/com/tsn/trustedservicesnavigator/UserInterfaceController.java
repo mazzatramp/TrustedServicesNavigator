@@ -21,12 +21,16 @@ public class UserInterfaceController {
     private TreeView<CheckBox> countryProviderFilterSelection;
 
     @FXML
+    private TreeView<CheckBox> serviceTypeFilterSelection;
+
+    @FXML
     private ProgressBar progressBar;
 
     @FXML
     public void initialize() {
         displayed.setRoot(new TreeItem<>("Navigation Root"));
         countryProviderFilterSelection.setRoot(new TreeItem<>(new CheckBox("Filter Root")));
+        serviceTypeFilterSelection.setRoot(new TreeItem<>(new CheckBox("Service Root")));
     }
 
     public void bindProgressBarWith(Task<Void> task) {
@@ -39,6 +43,7 @@ public class UserInterfaceController {
         Platform.runLater(() -> {
             fillDisplayTreeView();
             fillCountryAndProvidersFilterTreeView();
+            fillServiceTypesFilterTreeView();
         });
     }
 
@@ -54,7 +59,11 @@ public class UserInterfaceController {
             }
             countryProviderFilterSelection.getRoot().getChildren().add(countryTreeItem);
         }
+    }
 
+    private void fillServiceTypesFilterTreeView() {
+        for (String serviceType : navigationMediator.getAllServiceTypes())
+            serviceTypeFilterSelection.getRoot().getChildren().add(new TreeItem<>(new CheckBox(serviceType)));
     }
 
     private void fillDisplayTreeView() {
@@ -96,6 +105,10 @@ public class UserInterfaceController {
             }
         }
         return selectedCountries;
+    }
+
+    public List<String> getSelectedServiceTypes() {
+        return null;
     }
 
     public void setNavigationMediator(NavigationMediator navigationMediator) {
