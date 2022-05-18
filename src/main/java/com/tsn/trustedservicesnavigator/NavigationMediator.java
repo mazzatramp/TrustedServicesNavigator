@@ -22,13 +22,11 @@ public class NavigationMediator {
     }
 
     public TrustedList getFilteredList() {
-        readActiveFilters();
-        filteredList = filterController.getFilteredDataFrom(completeList);
-        return filteredList;
+        return filterController.getFilteredDataFrom(completeList);
     }
 
-    private void readActiveFilters() {
-        filterController.setCountryWhitelist(userInterfaceController.getSelectedCountries());
+    public void readActiveFiltersFrom(FilterSelectionAccordion filterSelectionAccordion) {
+        filterController.setCountryWhitelist(filterSelectionAccordion.getSelectedCountries());
     }
 
     public TrustedList getCompleteList() {

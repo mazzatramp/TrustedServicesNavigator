@@ -5,7 +5,6 @@ import java.util.List;
 public class FilterController {
     private final CountryFilter countryFilter;
 
-
     public FilterController() {
         countryFilter = new CountryFilter();
     }

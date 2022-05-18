@@ -4,64 +4,26 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 
-<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tsn.trustedservicesnavigator.UserInterfaceController">
-   <children>
-       <MenuBar>
-          <menus>
-              <Menu mnemonicParsing="false" text="File">
-                 <items>
-                     <MenuItem mnemonicParsing="false" text="Close" />
-                 </items>
-              </Menu>
-              <Menu mnemonicParsing="false" text="Edit">
-                 <items>
-                     <MenuItem mnemonicParsing="false" text="Delete" />
-                 </items>
-              </Menu>
-              <Menu mnemonicParsing="false" text="Help">
-                 <items>
-                     <MenuItem mnemonicParsing="false" text="About" />
-                 </items>
-              </Menu>
-          </menus>
-       </MenuBar>
-       <SplitPane dividerPositions="0.3" VBox.vgrow="ALWAYS">
-          <items>
-              <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                 <children>
-                     <Accordion prefHeight="573.0" prefWidth="342.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                         <panes>
-                             <TitledPane animated="false" text="Countries and Providers">
-                                <content>
-                                     <TreeView fx:id="countryProviderFilterSelection" prefHeight="457.0" prefWidth="274.0" showRoot="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                </content>
-                             </TitledPane>
-                             <TitledPane animated="false" text="Service Types">
-                                <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                                </content>
-                             </TitledPane>
-                             <TitledPane animated="false" text="Statuses">
-                                <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                                </content>
-                             </TitledPane>
-                         </panes>
-                     </Accordion>
-                 </children>
-              </AnchorPane>
-              <AnchorPane layoutX="10.0" layoutY="10.0">
-                 <children>
-                     <TreeView fx:id="displayed" layoutX="94.0" layoutY="135.0" prefHeight="533.0" prefWidth="556.0" showRoot="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     <ProgressBar fx:id="progressBar" layoutX="128.0" layoutY="278.0" prefHeight="15.0" prefWidth="300.0" />
-                 </children>
-              </AnchorPane>
-          </items>
-       </SplitPane>
-       <ToolBar prefHeight="40.0" prefWidth="200.0">
-          <items>
-              <Button mnemonicParsing="false" onAction="#handleFilterClick" text="Filter" />
-          </items>
-       </ToolBar>
-   </children>
+<?import com.tsn.trustedservicesnavigator.DisplayPane?>
+<?import com.tsn.trustedservicesnavigator.FilterSelectionAccordion?>
+<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.tsn.trustedservicesnavigator.UserInterfaceController">
+    <MenuBar>
+        <Menu mnemonicParsing="false" text="File">
+            <MenuItem mnemonicParsing="false" text="Close"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+            <MenuItem mnemonicParsing="false" text="Delete"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+            <MenuItem mnemonicParsing="false" text="About"/>
+        </Menu>
+    </MenuBar>
+    <SplitPane dividerPositions="0.3" VBox.vgrow="ALWAYS">
+        <FilterSelectionAccordion fx:id="filterSelection"/>
+        <DisplayPane fx:id="displayPane"/>
+    </SplitPane>
+    <ToolBar prefHeight="40.0" prefWidth="200.0">
+        <Button mnemonicParsing="false" onAction="#handleFilterClick" text="Filter"/>
+    </ToolBar>
 </VBox>
