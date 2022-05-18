@@ -19,10 +19,12 @@
             <MenuItem mnemonicParsing="false" text="About"/>
         </Menu>
     </MenuBar>
+
     <SplitPane dividerPositions="0.3" VBox.vgrow="ALWAYS">
         <FilterSelectionAccordion fx:id="filterSelection"/>
         <DisplayPane fx:id="displayPane"/>
     </SplitPane>
+
     <ToolBar prefHeight="40.0" prefWidth="200.0">
         <Button mnemonicParsing="false" onAction="#handleFilterClick" text="Filter"/>
     </ToolBar>

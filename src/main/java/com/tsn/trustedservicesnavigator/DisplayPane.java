@@ -40,17 +40,31 @@ public class DisplayPane extends AnchorPane {
 
         displayed.setRoot(new TreeItem<>());
         for (Country countryToShow : dataToShow.getCountries()) {
-            countryTreeItem = new TreeItem<>(countryToShow.getName());
-            for (Provider providerToShow : countryToShow.getProviders()) {
-                providerTreeItem = new TreeItem<>(providerToShow.getName());
-                for (Service serviceToShow : providerToShow.getServices()) {
-                    serviceTreeItem = new TreeItem<>(serviceToShow.getName());
-                    providerTreeItem.getChildren().add(serviceTreeItem);
-                }
-                countryTreeItem.getChildren().add(providerTreeItem);
-            }
+            countryTreeItem = getFilledCountryItem(countryToShow);
             displayed.getRoot().getChildren().add(countryTreeItem);
         }
+    }
+
+    private TreeItem<String> getFilledCountryItem(Country countryToShow) {
+        TreeItem<String> countryTreeItem, providerTreeItem;
+
+        countryTreeItem = new TreeItem<>(countryToShow.getName());
+        for (Provider providerToShow : countryToShow.getProviders()) {
+            providerTreeItem = getFilledProviderItem(providerToShow);
+            countryTreeItem.getChildren().add(providerTreeItem);
+        }
+        return countryTreeItem;
+    }
+
+    private TreeItem<String> getFilledProviderItem(Provider providerToShow) {
+        TreeItem<String> providerTreeItem, serviceTreeItem;
+
+        providerTreeItem = new TreeItem<>(providerToShow.getName());
+        for (Service serviceToShow : providerToShow.getServices()) {
+            serviceTreeItem = new TreeItem<>(serviceToShow.getName());
+            providerTreeItem.getChildren().add(serviceTreeItem);
+        }
+        return providerTreeItem;
     }
 
     public boolean canShowResults() {

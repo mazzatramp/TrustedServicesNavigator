@@ -14,12 +14,12 @@
                       AnchorPane.topAnchor="0.0"/>
         </TitledPane>
         <TitledPane text="Service Types">
-            <TreeView fx:id="serviceTypes" prefHeight="457.0" prefWidth="274.0" showRoot="false"
+            <ListView fx:id="serviceTypes" prefHeight="457.0" prefWidth="274.0"
                       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                       AnchorPane.topAnchor="0.0"/>
         </TitledPane>
         <TitledPane text="Statuses">
-            <TreeView fx:id="statuses" prefHeight="457.0" prefWidth="274.0" showRoot="false"
+            <ListView fx:id="statuses" prefHeight="457.0" prefWidth="274.0"
                       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                       AnchorPane.topAnchor="0.0"/>
         </TitledPane>

@@ -25,8 +25,8 @@ public class NavigationMediator {
         return filterController.getFilteredDataFrom(completeList);
     }
 
-    public void readActiveFiltersFrom(FilterSelectionAccordion filterSelectionAccordion) {
-        filterController.setCountryWhitelist(filterSelectionAccordion.getSelectedCountries());
+    public void readActiveFiltersFrom(FilterSelectionAccordion filterSelection) {
+        filterController.setCountryWhitelist(filterSelection.getSelectedCountries());
     }
 
     public TrustedList getCompleteList() {
