@@ -30,10 +30,7 @@ public class NavigationMediator {
     }
 
     private void readActiveFilters() {
-        filterController.setCountryWhitelist(userInterfaceController.getSelectedCountries());
-        List<String> providers=new ArrayList<String>();
-        providers.add("Intesa San Paolo");
-        filterController.setProviderWhitelist(providers);
+        filterController.setCountryProviderWhitelist(userInterfaceController.getSelectedCountriesAndProviders());
     }
 
     public TrustedList getCompleteList() {

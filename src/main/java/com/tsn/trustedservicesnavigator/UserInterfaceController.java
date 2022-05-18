@@ -3,11 +3,14 @@ package com.tsn.trustedservicesnavigator;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserInterfaceController {
     private NavigationMediator navigationMediator;
@@ -16,6 +19,7 @@ public class UserInterfaceController {
     private TreeView<String> displayed;
     @FXML
     private TreeView<CheckBox> countryProviderFilterSelection;
+
     @FXML
     private ProgressBar progressBar;
 
@@ -78,14 +82,17 @@ public class UserInterfaceController {
         }
     }
 
-    public List<String> getSelectedCountries() {
+    public Map<String, List<String>> getSelectedCountriesAndProviders() {
         ObservableList<TreeItem<CheckBox>> countries = countryProviderFilterSelection.getRoot().getChildren();
-        List<String> selectedCountries = new ArrayList<>(0);
+        Map<String, List<String>> selectedCountries = new HashMap<>(0);
 
         for (TreeItem<CheckBox> countryTreeItem : countries) {
             CheckBox countryCheckBox = countryTreeItem.getValue();
             if (countryCheckBox.isSelected()) {
-                selectedCountries.add(countryCheckBox.getText());
+                List<String> providers = new ArrayList<>();
+                for (TreeItem<CheckBox> providerTreeItem : countryTreeItem.getChildren())
+                    if (providerTreeItem.getValue().isSelected()) providers.add(providerTreeItem.getValue().getText());
+                selectedCountries.put(countryCheckBox.getText(), providers);
             }
         }
         return selectedCountries;
@@ -93,5 +100,11 @@ public class UserInterfaceController {
 
     public void setNavigationMediator(NavigationMediator navigationMediator) {
         this.navigationMediator = navigationMediator;
+    }
+
+    public void updateFilters(ActionEvent actionEvent) {
+        if (!progressBar.isVisible()) {
+            fillDisplayTreeView();
+        }
     }
 }
