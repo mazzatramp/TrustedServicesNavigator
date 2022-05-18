@@ -60,7 +60,7 @@
        </SplitPane>
        <ToolBar prefHeight="40.0" prefWidth="200.0">
           <items>
-              <Button mnemonicParsing="false" onAction="#updateFilters" text="Filter" />
+              <Button mnemonicParsing="false" onAction="#handleFilterClick" text="Filter" />
           </items>
        </ToolBar>
    </children>
