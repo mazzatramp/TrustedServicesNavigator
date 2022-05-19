@@ -21,18 +21,29 @@ public class NavigationMediator {
 
     public void setUserInterfaceController(UserInterfaceController userInterfaceController) {
         this.userInterfaceController = userInterfaceController;
+        fillCompleteListFromApiData();
     }
 
     public TrustedList getFilteredList() {
         return filterController.getFilteredDataFrom(completeList);
     }
 
-    private void readActiveFilters(FilterSelectionAccordion filterSelection) {
-        filterController.setCountryProviderWhitelist(userInterfaceController.getSelectedCountriesAndProviders());
+    public void readActiveFiltersFrom(FilterSelectionAccordion filterSelection) {
+        filterController.setCountryProviderWhitelist(filterSelection.getSelectedCountriesAndProviders());
+        filterController.setServiceTypeFilter(filterSelection.getSelectedServiceTypes());
     }
 
     public TrustedList getCompleteList() {
         return completeList;
+    }
+
+    public void fillCompleteListFromApiData() {
+        Task<Void> downloadingApiData = getDownloadApiDataTask();
+
+        userInterfaceController.bindProgressBarWith(downloadingApiData);
+
+        Thread th = new Thread(downloadingApiData);
+        th.start();
     }
 
     private Task<Void> getDownloadApiDataTask() {

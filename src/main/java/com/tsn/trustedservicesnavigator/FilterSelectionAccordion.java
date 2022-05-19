@@ -8,16 +8,18 @@ import javafx.scene.control.cell.CheckBoxTreeCell;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FilterSelectionAccordion extends Accordion {
 
     @FXML
     private TreeView<String> countriesAndProviders;
     @FXML
-    private List<CheckBox> serviceTypes;
+    private ListView<CheckBox> serviceTypes;
     @FXML
-    private List<CheckBox> statuses;
+    private ListView<CheckBox> statuses;
 
     public FilterSelectionAccordion() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("filter-selection-accordion.fxml"));
@@ -52,17 +54,45 @@ public class FilterSelectionAccordion extends Accordion {
         countriesAndProviders.refresh();
     }
 
-    public List<String> getSelectedCountries() {
+    public void fillServiceTypesFilterTreeView(TrustedList dataToShow) {
+        dataToShow.getServiceTypes().stream().sorted().forEach(
+                serviceType -> serviceTypes.getItems().add(new CheckBox(serviceType))
+        );
+    }
+
+    public Map<String, List<String>> getSelectedCountriesAndProviders() {
         ObservableList<TreeItem<String>> countries = countriesAndProviders.getRoot().getChildren();
-        List<String> selectedCountries = new ArrayList<>(0);
+        Map<String, List<String>> selectedCountriesAndProviders = new HashMap<>(0);
 
         for (TreeItem<String> countryTreeItem : countries) {
-            CheckBoxTreeItem c = (CheckBoxTreeItem) countryTreeItem;
-            String countryCheckBox = (String) c.getValue();
-            if (c.isSelected()) {
-                selectedCountries.add(countryCheckBox);
+            CheckBoxTreeItem countryCheckBox = (CheckBoxTreeItem)countryTreeItem;
+            String countryName = (String) countryCheckBox.getValue();
+            if (countryCheckBox.isSelected()) {
+                List<String> providers = new ArrayList<>();
+                for (TreeItem<String> providerTreeItem : countryTreeItem.getChildren()) {
+                    CheckBoxTreeItem providerCheckBox = (CheckBoxTreeItem) providerTreeItem;
+                    String providerName = (String) providerCheckBox.getValue();
+                    if (providerCheckBox.isSelected()) {
+                        providers.add(providerName);
+                    }
+                }
+                selectedCountriesAndProviders.put(countryName, providers);
             }
         }
-        return selectedCountries;
+
+        return selectedCountriesAndProviders;
     }
+
+    public List<String> getSelectedServiceTypes() {
+        List<String> selectedServiceTypes = new ArrayList<>(0);
+
+        serviceTypes.getItems().forEach(serviceType -> {
+            if (serviceType.isSelected()) {
+                selectedServiceTypes.add(serviceType.getText());
+            }}
+        );
+
+        return selectedServiceTypes;
+    }
+
 }

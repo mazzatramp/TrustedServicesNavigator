@@ -3,14 +3,15 @@ package com.tsn.trustedservicesnavigator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceTypeFilter {
+public class ServiceTypeFilter extends Filter {
     public List<String> whitelist;
 
     public ServiceTypeFilter() {
         this.whitelist= new ArrayList<String>(0);
     }
 
-    public TrustedList apply(TrustedList listToFilter) {
+    @Override
+    public TrustedList applyTo(TrustedList listToFilter) {
       if (whitelist.isEmpty()) return listToFilter;
       else return filterByWhitelist(listToFilter);
     }
@@ -18,7 +19,9 @@ public class ServiceTypeFilter {
     public void setWhitelist(List<String> whitelist) {
         this.whitelist = whitelist;
     }
+
     public TrustedList filterByWhitelist (TrustedList listToFilter) {
+
         return listToFilter;
     }
 }

@@ -13,7 +13,7 @@ public class CountryProviderFilter extends Filter {
     }
 
     @Override
-    public TrustedList apply(TrustedList listToFilter) {
+    public TrustedList applyTo(TrustedList listToFilter) {
         if (whitelist.isEmpty()) {
             return listToFilter;
         } else {

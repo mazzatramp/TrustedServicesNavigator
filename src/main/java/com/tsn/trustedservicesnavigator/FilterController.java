@@ -1,5 +1,6 @@
 package com.tsn.trustedservicesnavigator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,13 @@ public class FilterController {
         serviceTypeFilter = new ServiceTypeFilter();
     }
 
+    private ArrayList<Filter> filters() {
+        ArrayList<Filter> filters = new ArrayList<>(0);
+        filters.add(countryProviderFilter);
+        filters.add(serviceTypeFilter);
+        return filters;
+    }
+
     public void setCountryProviderWhitelist(Map<String, List<String>> countryProviderWhitelist) {
         countryProviderFilter.setWhitelist(countryProviderWhitelist);
     }
@@ -22,8 +30,9 @@ public class FilterController {
 
     public TrustedList getFilteredDataFrom(TrustedList target) {
         TrustedList clone = target.clone();
-        clone = countryProviderFilter.apply(clone);
-        clone = serviceTypeFilter.apply(clone);
+        filters().forEach(
+                filter -> filter.applyTo(clone)
+        );
         return clone;
     }
 }
