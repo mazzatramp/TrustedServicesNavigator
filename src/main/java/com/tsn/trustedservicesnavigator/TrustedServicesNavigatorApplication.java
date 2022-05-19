@@ -21,9 +21,9 @@ public class TrustedServicesNavigatorApplication extends Application {
         stage.show();
     }
 
-    private void linkNavigatorAndController(UserInterfaceController controller, NavigationMediator navigationMediator) {
-        navigationMediator.setUserInterfaceController(controller);
-        controller.setNavigationMediator(navigationMediator);
+    private void linkNavigatorAndController(UserInterfaceController userInterfaceController, NavigationMediator navigationMediator) {
+        navigationMediator.setUserInterfaceController(userInterfaceController);
+        userInterfaceController.setNavigationMediator(navigationMediator);
     }
 
     public static void main(String[] args) {

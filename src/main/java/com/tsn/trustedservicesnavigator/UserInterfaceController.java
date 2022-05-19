@@ -1,7 +1,6 @@
 package com.tsn.trustedservicesnavigator;
 
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,39 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 public class UserInterfaceController {
+    public DisplayPane displayPane;
+    public FilterSelectionAccordion filterSelection;
     private NavigationMediator navigationMediator;
-
-    @FXML
-    private TreeView<String> displayed;
-    @FXML
-    private TreeView<CheckBox> countryProviderFilterSelection;
-
-    @FXML
-    private TreeView<CheckBox> serviceTypeFilterSelection;
-
-    @FXML
-    private ProgressBar progressBar;
-
-    @FXML
-    public void initialize() {
-        displayed.setRoot(new TreeItem<>("Navigation Root"));
-        countryProviderFilterSelection.setRoot(new TreeItem<>(new CheckBox("Filter Root")));
-        serviceTypeFilterSelection.setRoot(new TreeItem<>(new CheckBox("Service Root")));
-    }
-
-    public void bindProgressBarWith(Task<Void> task) {
-        progressBar.visibleProperty().bind(task.runningProperty());
-        progressBar.progressProperty().bind(task.progressProperty());
-    }
-
-    public void fillFiltersAndDisplay() {
-        //runLater is needed in order to avoid issues adding a lot of nodes at once
-        Platform.runLater(() -> {
-            fillDisplayTreeView();
-            fillCountryAndProvidersFilterTreeView();
-            fillServiceTypesFilterTreeView();
-        });
-    }
 
     private void fillCountryAndProvidersFilterTreeView() {
         TreeItem<CheckBox> countryTreeItem, providerTreeItem;
@@ -85,9 +54,20 @@ public class UserInterfaceController {
         }
     }
 
+    public void fillFiltersAndDisplay() {
+        //runLater is needed in order to avoid issues adding a lot of nodes at once
+        Platform.runLater(() -> {
+            TrustedList dataAtStartupTime = navigationMediator.getCompleteList();
+            displayPane.fillDisplayTreeView(dataAtStartupTime);
+            filterSelection.fillCountryAndProvidersFilterTreeView(dataAtStartupTime);
+        });
+    }
+
     public void handleFilterClick() {
-        if (!progressBar.isVisible()) {
-            fillDisplayTreeView();
+        if (displayPane.canShowResults()) {
+            navigationMediator.readActiveFiltersFrom(filterSelection);
+            TrustedList filteredList = navigationMediator.getFilteredList();
+            displayPane.fillDisplayTreeView(filteredList);
         }
     }
 
@@ -115,9 +95,7 @@ public class UserInterfaceController {
         this.navigationMediator = navigationMediator;
     }
 
-    public void updateFilters(ActionEvent actionEvent) {
-        if (!progressBar.isVisible()) {
-            fillDisplayTreeView();
-        }
+    public void bindProgressBarWith(Task task) {
+        displayPane.bindProgressBarWith(task);
     }
 }
