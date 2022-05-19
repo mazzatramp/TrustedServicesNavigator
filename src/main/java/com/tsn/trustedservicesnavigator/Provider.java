@@ -23,7 +23,7 @@ public class Provider implements Cloneable {
             @JsonProperty("tspId") int providerId,
             @JsonProperty("name") String name,
             @JsonProperty("trustmark") String trustmark,
-            @JsonProperty("qServiceTTypes") List<String> serviceTypes,
+            @JsonProperty("qServiceTypes") List<String> serviceTypes,
             @JsonProperty("services") List<Service> services
     ){
         this.country = new Country("", countryCode);

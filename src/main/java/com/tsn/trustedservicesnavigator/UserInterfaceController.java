@@ -62,7 +62,7 @@ public class UserInterfaceController {
     }
 
     private void fillServiceTypesFilterTreeView() {
-        for (String serviceType : navigationMediator.getAllServiceTypes())
+        for (String serviceType : navigationMediator.getCompleteList().getServiceTypes())
             serviceTypeFilterSelection.getRoot().getChildren().add(new TreeItem<>(new CheckBox(serviceType)));
     }
 

@@ -5,16 +5,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TrustedList implements Cloneable {
     private static final String COUNTRIES_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list";
     private static final String PROVIDERS_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list";
 
     private List<Country> countries;
+    private Set<String> serviceTypes;
 
     public TrustedList() {
         this.countries = new ArrayList<>(0);
+        this.serviceTypes = new HashSet<>(0);
     }
 
     public List<Country> getCountries() {
@@ -25,6 +29,15 @@ public class TrustedList implements Cloneable {
         countries = buildJSONFromURL(COUNTRIES_API_ENDPOINT, Country.class);
         List<Provider> apiProviders = buildJSONFromURL(PROVIDERS_API_ENDPOINT, Provider.class);
         linkCountriesAndProviders(apiProviders);
+        retrieveAllServiceTypes();
+    }
+
+    private void retrieveAllServiceTypes() {
+        countries.forEach(country -> {
+            country.getProviders().forEach(provider -> {
+                serviceTypes.addAll(provider.getServiceTypes());
+            });
+        });
     }
 
     private void linkCountriesAndProviders(List<Provider> providersToLink) {
@@ -69,5 +82,9 @@ public class TrustedList implements Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Set<String> getServiceTypes() {
+        return serviceTypes;
     }
 }
