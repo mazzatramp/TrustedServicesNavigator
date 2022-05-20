@@ -60,6 +60,11 @@ public class FilterSelectionAccordion extends Accordion {
         );
     }
 
+    public void fillStatusTreeView(TrustedList dataToShow) {
+        dataToShow.getStatuses().stream().sorted().forEach(
+                status -> statuses.getItems().add(new CheckBox(status))
+        );
+    }
     public Map<String, List<String>> getSelectedCountriesAndProviders() {
         ObservableList<TreeItem<String>> countries = countriesAndProviders.getRoot().getChildren();
         Map<String, List<String>> selectedCountriesAndProviders = new HashMap<>(0);
@@ -93,6 +98,17 @@ public class FilterSelectionAccordion extends Accordion {
         );
 
         return selectedServiceTypes;
+    }
+    public List<String> getSelectedStatuses() {
+        List<String> selectedStatuses = new ArrayList<>(0);
+
+        statuses.getItems().forEach(status -> {
+            if (status.isSelected()) {
+                selectedStatuses.add(status.getText());
+            }}
+        );
+
+        return selectedStatuses;
     }
 
 }

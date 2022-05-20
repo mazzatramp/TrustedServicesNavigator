@@ -26,6 +26,7 @@ public class UserInterfaceController {
             displayPane.fillDisplayTreeView(dataAtStartupTime);
             filterSelection.fillCountryAndProvidersFilterTreeView(dataAtStartupTime);
             filterSelection.fillServiceTypesFilterTreeView(dataAtStartupTime);
+            filterSelection.fillStatusTreeView(dataAtStartupTime);
         });
     }
 

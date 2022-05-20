@@ -8,15 +8,18 @@ public class FilterController {
     private final CountryProviderFilter countryProviderFilter;
     private final ServiceTypeFilter serviceTypeFilter;
 
+    private final StatusFilter statusFilter;
     public FilterController() {
         countryProviderFilter = new CountryProviderFilter();
         serviceTypeFilter = new ServiceTypeFilter();
+        statusFilter = new StatusFilter();
     }
 
     private ArrayList<Filter> filters() {
         ArrayList<Filter> filters = new ArrayList<>(0);
         filters.add(countryProviderFilter);
         filters.add(serviceTypeFilter);
+        filters.add(statusFilter);
         return filters;
     }
 
@@ -28,6 +31,9 @@ public class FilterController {
         serviceTypeFilter.setWhitelist(serviceTypeWhitelist);
     }
 
+    public void setStatusFilter(List<String> statusWhitelist) {
+        statusFilter.setWhitelist(statusWhitelist);
+    }
     public TrustedList getFilteredDataFrom(TrustedList target) {
         TrustedList clone = target.clone();
         filters().forEach(

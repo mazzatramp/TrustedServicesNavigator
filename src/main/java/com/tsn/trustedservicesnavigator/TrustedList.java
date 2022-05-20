@@ -16,9 +16,12 @@ public class TrustedList implements Cloneable {
     private List<Country> countries;
     private Set<String> serviceTypes;
 
+    private Set<String> statuses;
+
     public TrustedList() {
         this.countries = new ArrayList<>(0);
         this.serviceTypes = new HashSet<>(0);
+        this.statuses = new HashSet<>(0);
     }
 
     public List<Country> getCountries() {
@@ -29,14 +32,17 @@ public class TrustedList implements Cloneable {
         countries = buildJSONFromURL(COUNTRIES_API_ENDPOINT, Country.class);
         List<Provider> apiProviders = buildJSONFromURL(PROVIDERS_API_ENDPOINT, Provider.class);
         linkCountriesAndProviders(apiProviders);
-        retrieveAllServiceTypes();
+        constructMetadata();
     }
 
-    private void retrieveAllServiceTypes() {
+    private void constructMetadata() {
         countries.forEach(country -> {
             country.getProviders().forEach(provider -> {
                 serviceTypes.addAll(provider.getServiceTypes());
-                provider.getServices().forEach(service -> serviceTypes.addAll(service.getServiceTypes()));
+                provider.getServices().forEach(service -> {
+                    serviceTypes.addAll(service.getServiceTypes());
+                    statuses.add(service.getStatus());
+                });
             });
         });
     }
@@ -81,5 +87,8 @@ public class TrustedList implements Cloneable {
 
     public Set<String> getServiceTypes() {
         return serviceTypes;
+    }
+    public Set<String> getStatuses() {
+        return statuses;
     }
 }
