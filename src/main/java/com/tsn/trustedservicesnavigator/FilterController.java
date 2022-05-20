@@ -39,8 +39,6 @@ public class FilterController {
         filters().forEach(
                 filter -> filter.applyTo(clone)
         );
-        clone.getCountries().forEach(country -> country.getProviders().removeIf(provider -> provider.getServices().isEmpty()));
-        clone.getCountries().removeIf(country -> country.getProviders().isEmpty());
         return clone;
     }
 }
