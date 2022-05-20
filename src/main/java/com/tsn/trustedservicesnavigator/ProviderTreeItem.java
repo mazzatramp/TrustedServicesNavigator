@@ -11,9 +11,9 @@ public class ProviderTreeItem extends TreeItem<String> {
 
         setValue(referredProvider.getName());
 
-        for (Service serviceToShow : referredProvider.getServices()) {
-            this.getChildren().add(new ServiceTreeItem(serviceToShow));
-        }
+        referredProvider.getServices().forEach(service -> {
+            this.getChildren().add(new ServiceTreeItem(service));
+        });
     }
 
     public Provider getReferredProvider() {

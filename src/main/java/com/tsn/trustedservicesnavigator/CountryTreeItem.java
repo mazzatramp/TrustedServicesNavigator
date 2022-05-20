@@ -8,12 +8,11 @@ public class CountryTreeItem extends TreeItem<String> {
 
     public CountryTreeItem(Country country) {
         this.referredCountry = country;
+        setValue(referredCountry.getName());
 
-        setValue(country.getName());
-
-        for (Provider providerToShow : country.getProviders()) {
-            this.getChildren().add(new ProviderTreeItem(providerToShow));
-        }
+        referredCountry.getProviders().forEach(provider -> {
+            this.getChildren().add(new ProviderTreeItem(provider));
+        });
     }
 
     public Country getReferredCountry() {

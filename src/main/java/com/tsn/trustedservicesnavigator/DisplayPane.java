@@ -36,11 +36,10 @@ public class DisplayPane extends AnchorPane {
     }
 
     public void fillDisplayTreeView(TrustedList dataToShow) {
-
         displayed.setRoot(new TreeItem<>());
-        for (Country countryToShow : dataToShow.getCountries()) {
-            displayed.getRoot().getChildren().add(new CountryTreeItem(countryToShow));
-        }
+        dataToShow.getCountries().forEach(country -> {
+            displayed.getRoot().getChildren().add(new CountryTreeItem(country));
+        });
     }
 
     public boolean canShowResults() {
