@@ -36,6 +36,7 @@ public class TrustedList implements Cloneable {
         countries.forEach(country -> {
             country.getProviders().forEach(provider -> {
                 serviceTypes.addAll(provider.getServiceTypes());
+                provider.getServices().forEach(service -> serviceTypes.addAll(service.getServiceTypes()));
             });
         });
     }
