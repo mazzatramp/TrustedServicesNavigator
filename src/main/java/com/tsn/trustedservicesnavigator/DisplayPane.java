@@ -16,7 +16,7 @@ public class DisplayPane extends AnchorPane {
     private TreeView<String> displayed;
 
     @FXML
-    private ProgressBar progressBar;
+    private ProgressBar downloadBar;
 
     public DisplayPane() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("display-pane.fxml"));
@@ -30,9 +30,9 @@ public class DisplayPane extends AnchorPane {
         }
     }
 
-    public void bindProgressBarWith(Task<Void> task) {
-        progressBar.visibleProperty().bind(task.runningProperty());
-        progressBar.progressProperty().bind(task.progressProperty());
+    public void bindProgressBarWith(Task<Void> downloadTask) {
+        downloadBar.visibleProperty().bind(downloadTask.runningProperty());
+        downloadBar.progressProperty().bind(downloadTask.progressProperty());
     }
 
     public void fillDisplayTreeView(TrustedList dataToShow) {
@@ -43,6 +43,6 @@ public class DisplayPane extends AnchorPane {
     }
 
     public boolean canShowResults() {
-        return !progressBar.isVisible();
+        return !downloadBar.isVisible();
     }
 }

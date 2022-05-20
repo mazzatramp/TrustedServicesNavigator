@@ -3,10 +3,6 @@ package com.tsn.trustedservicesnavigator;
 import javafx.concurrent.Task;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class NavigationMediator {
     private UserInterfaceController userInterfaceController;
@@ -30,8 +26,8 @@ public class NavigationMediator {
 
     public void readActiveFiltersFrom(FilterSelectionAccordion filterSelection) {
         filterController.setCountryProviderWhitelist(filterSelection.getSelectedCountriesAndProviders());
-        filterController.setServiceTypeFilter(filterSelection.getSelectedServiceTypes());
-        filterController.setStatusFilter(filterSelection.getSelectedStatuses());
+        filterController.setServiceTypeWhitelist(filterSelection.getSelectedServiceTypes());
+        filterController.setStatusWhitelist(filterSelection.getSelectedStatuses());
     }
 
     public TrustedList getCompleteList() {

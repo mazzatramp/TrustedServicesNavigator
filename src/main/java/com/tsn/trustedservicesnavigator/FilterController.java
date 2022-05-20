@@ -7,8 +7,8 @@ import java.util.Map;
 public class FilterController {
     private final CountryProviderFilter countryProviderFilter;
     private final ServiceTypeFilter serviceTypeFilter;
-
     private final StatusFilter statusFilter;
+
     public FilterController() {
         countryProviderFilter = new CountryProviderFilter();
         serviceTypeFilter = new ServiceTypeFilter();
@@ -27,11 +27,11 @@ public class FilterController {
         countryProviderFilter.setWhitelist(countryProviderWhitelist);
     }
 
-    public void setServiceTypeFilter(List<String> serviceTypeWhitelist) {
+    public void setServiceTypeWhitelist(List<String> serviceTypeWhitelist) {
         serviceTypeFilter.setWhitelist(serviceTypeWhitelist);
     }
 
-    public void setStatusFilter(List<String> statusWhitelist) {
+    public void setStatusWhitelist(List<String> statusWhitelist) {
         statusFilter.setWhitelist(statusWhitelist);
     }
     public TrustedList getFilteredDataFrom(TrustedList target) {
