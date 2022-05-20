@@ -72,7 +72,7 @@ public class FilterSelectionAccordion extends Accordion {
         for (TreeItem<String> countryTreeItem : countries) {
             CheckBoxTreeItem countryCheckBox = (CheckBoxTreeItem)countryTreeItem;
             String countryName = (String) countryCheckBox.getValue();
-            if (countryCheckBox.isSelected()) {
+            if (countryCheckBox.isSelected() || countryCheckBox.isIndeterminate()) {
                 List<String> providers = new ArrayList<>();
                 for (TreeItem<String> providerTreeItem : countryTreeItem.getChildren()) {
                     CheckBoxTreeItem providerCheckBox = (CheckBoxTreeItem) providerTreeItem;
