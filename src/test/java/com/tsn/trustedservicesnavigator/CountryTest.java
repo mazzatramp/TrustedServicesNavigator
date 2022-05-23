@@ -6,10 +6,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CountryTest {
 @Test
-    void italyNameIsItaly() 
+    void getName_NoInputs_ReturnsName()
 {
-  Country ITA = new Country("Italy","1");
-  assertEquals("Italy",ITA.getName());
+    //arrange
+    Country ITA = new Country("Italy","1");
+
+    //act
+    String actualName = ITA.getName();
+
+    //assert
+    assertEquals("Italy",actualName);
 }
 
 }
