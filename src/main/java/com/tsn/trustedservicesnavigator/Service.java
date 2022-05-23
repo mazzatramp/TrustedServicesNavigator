@@ -1,12 +1,13 @@
 package com.tsn.trustedservicesnavigator;
 
 import com.fasterxml.jackson.annotation.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Service implements  Cloneable{
+public class Service implements Cloneable, Comparable<Service> {
     private Provider provider;
 
     private int serviceId;
@@ -110,5 +111,10 @@ public class Service implements  Cloneable{
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
+    }
+
+    @Override
+    public int compareTo(@NotNull Service service) {
+        return Integer.compare(this.serviceId, service.serviceId);
     }
 }
