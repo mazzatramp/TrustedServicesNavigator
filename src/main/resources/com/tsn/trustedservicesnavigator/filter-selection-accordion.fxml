@@ -9,19 +9,31 @@
 <fx:root type="javafx.scene.control.Accordion" xmlns:fx="http://javafx.com/fxml">
     <panes>
         <TitledPane text="Countries and Providers">
-            <TreeView fx:id="countriesAndProviders" prefHeight="457.0" prefWidth="274.0" showRoot="false"
-                      AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                      AnchorPane.topAnchor="0.0"/>
+            <VBox>
+                <TreeView fx:id="countriesAndProviders" showRoot="false" VBox.vgrow="ALWAYS"/>
+                <HBox>
+                    <Hyperlink text="Select all"/>
+                    <Hyperlink text="Deselect all"/>
+                </HBox>
+            </VBox>
         </TitledPane>
         <TitledPane text="Service Types">
-            <ListView fx:id="serviceTypes" prefHeight="457.0" prefWidth="274.0"
-                      AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                      AnchorPane.topAnchor="0.0"/>
+            <VBox>
+                <ListView fx:id="serviceTypes" VBox.vgrow="ALWAYS"/>
+                <HBox>
+                    <Hyperlink text="Select all"/>
+                    <Hyperlink text="Deselect all"/>
+                </HBox>
+            </VBox>
         </TitledPane>
         <TitledPane text="Statuses">
-            <ListView fx:id="statuses" prefHeight="457.0" prefWidth="274.0"
-                      AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                      AnchorPane.topAnchor="0.0"/>
+            <VBox>
+                <ListView fx:id="statuses" VBox.vgrow="SOMETIMES"/>
+                <HBox>
+                    <Hyperlink text="Select all"/>
+                    <Hyperlink text="Deselect all"/>
+                </HBox>
+            </VBox>
         </TitledPane>
     </panes>
 </fx:root>
