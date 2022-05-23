@@ -3,23 +3,16 @@ package com.tsn.trustedservicesnavigator;
 import javafx.concurrent.Task;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class NavigationMediator {
     private UserInterfaceController userInterfaceController;
     private final FilterController filterController;
+
     private final TrustedList completeList;
-    private final Set<String> serviceTypes;
-    private TrustedList filteredList;
 
     public NavigationMediator() {
-        this.completeList = new TrustedList();
-        this.filteredList = new TrustedList();
-        this.serviceTypes = new HashSet<>();
         this.filterController = new FilterController();
+        this.completeList = new TrustedList();
     }
 
     public void setUserInterfaceController(UserInterfaceController userInterfaceController) {
@@ -28,20 +21,17 @@ public class NavigationMediator {
     }
 
     public TrustedList getFilteredList() {
-        readActiveFilters();
-        filteredList = filterController.getFilteredDataFrom(completeList);
-        return filteredList;
+        return filterController.getFilteredDataFrom(completeList);
     }
 
-    private void readActiveFilters() {
-        filterController.setCountryProviderWhitelist(userInterfaceController.getSelectedCountriesAndProviders());
+    public void readActiveFiltersFrom(FilterSelectionAccordion filterSelection) {
+        filterController.setCountryProviderWhitelist(filterSelection.getSelectedCountriesAndProviders());
+        filterController.setServiceTypeWhitelist(filterSelection.getSelectedServiceTypes());
+        filterController.setStatusWhitelist(filterSelection.getSelectedStatuses());
     }
 
     public TrustedList getCompleteList() {
         return completeList;
-    }
-    public Set<String> getAllServiceTypes() {
-        return serviceTypes;
     }
 
     public void fillCompleteListFromApiData() {
@@ -53,17 +43,6 @@ public class NavigationMediator {
         th.start();
     }
 
-
-    private void fillMetadata() {
-        completeList.getCountries().forEach(country -> {
-            country.getProviders().forEach(provider -> {
-                serviceTypes.addAll(provider.getServiceTypes());
-                System.out.println(serviceTypes);
-                System.out.println("rasars");
-            });
-        });
-    }
-
     private Task<Void> getDownloadApiDataTask() {
         return new Task<>() {
             @Override
@@ -71,7 +50,6 @@ public class NavigationMediator {
                 try {
                     completeList.downloadApiData();
                     userInterfaceController.fillFiltersAndDisplay();
-                    fillMetadata();
                 } catch (IOException e) {
                     System.err.println("Can't download Api Data.");
                     System.err.println(e.getMessage());

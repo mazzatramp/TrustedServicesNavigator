@@ -5,16 +5,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TrustedList implements Cloneable {
-    private static final String COUNTRIES_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list";
+    private static final String COUNTRIES_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list_no_lotl_territory";
     private static final String PROVIDERS_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list";
+
+    private final Set<String> serviceTypes;
+    private final Set<String> statuses;
 
     private List<Country> countries;
 
     public TrustedList() {
         this.countries = new ArrayList<>(0);
+        this.serviceTypes = new HashSet<>(0);
+        this.statuses = new HashSet<>(0);
     }
 
     public List<Country> getCountries() {
@@ -25,6 +32,19 @@ public class TrustedList implements Cloneable {
         countries = buildJSONFromURL(COUNTRIES_API_ENDPOINT, Country.class);
         List<Provider> apiProviders = buildJSONFromURL(PROVIDERS_API_ENDPOINT, Provider.class);
         linkCountriesAndProviders(apiProviders);
+        constructMetadata();
+    }
+
+    private void constructMetadata() {
+        countries.forEach(country -> {
+            country.getProviders().forEach(provider -> {
+                serviceTypes.addAll(provider.getServiceTypes());
+                provider.getServices().forEach(service -> {
+                    serviceTypes.addAll(service.getServiceTypes());
+                    statuses.add(service.getStatus());
+                });
+            });
+        });
     }
 
     private void linkCountriesAndProviders(List<Provider> providersToLink) {
@@ -52,22 +72,25 @@ public class TrustedList implements Cloneable {
                 jsonToObjectMapper.getTypeFactory().constructCollectionType(List.class, type)
         );
     }
-    public List<Provider> getAllProvider() {
-        List<Provider> allProviders= new ArrayList<Provider>();
-        for (Country country: countries) {
-            allProviders.addAll(country.getProviders());
-        }
-        return allProviders;
-    }
+
     @Override
     public TrustedList clone() {
         try {
             TrustedList clone = (TrustedList) super.clone();
             clone.countries = new ArrayList<>();
-            this.countries.forEach(country -> clone.getCountries().add(country.clone()));
+            this.countries.forEach(
+                    country -> clone.getCountries().add(country.clone())
+            );
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Set<String> getServiceTypes() {
+        return serviceTypes;
+    }
+    public Set<String> getStatuses() {
+        return statuses;
     }
 }

@@ -1,6 +1,7 @@
 package com.tsn.trustedservicesnavigator;
 
 import com.fasterxml.jackson.annotation.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Provider implements Cloneable {
+public class Provider implements Cloneable, Comparable<Provider> {
     private Country country;
 
     private int providerId;
@@ -23,7 +24,7 @@ public class Provider implements Cloneable {
             @JsonProperty("tspId") int providerId,
             @JsonProperty("name") String name,
             @JsonProperty("trustmark") String trustmark,
-            @JsonProperty("qServiceTTypes") List<String> serviceTypes,
+            @JsonProperty("qServiceTypes") List<String> serviceTypes,
             @JsonProperty("services") List<Service> services
     ){
         this.country = new Country("", countryCode);
@@ -92,7 +93,7 @@ public class Provider implements Cloneable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Provider provider = (Provider) o;
-        return providerId == provider.providerId;
+        return Objects.equals(this.name, provider.name);
     }
 
     @Override
@@ -124,5 +125,10 @@ public class Provider implements Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
+    }
+
+    @Override
+    public int compareTo(@NotNull Provider provider) {
+        return this.name.compareTo(provider.name);
     }
 }

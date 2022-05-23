@@ -2,12 +2,13 @@ package com.tsn.trustedservicesnavigator;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Country implements Cloneable {
+public class Country implements Cloneable, Comparable<Country> {
     private String name;
     private String code;
 
@@ -52,7 +53,12 @@ public class Country implements Cloneable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Country country = (Country) o;
-        return Objects.equals(code, country.code);
+        return Objects.equals(this.code, country.code);
+    }
+
+    @Override
+    public int compareTo(@NotNull Country country) {
+        return this.code.compareTo(country.code);
     }
 
     @Override

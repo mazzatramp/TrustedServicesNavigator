@@ -1,13 +1,12 @@
 package com.tsn.trustedservicesnavigator;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class ServiceTypeFilter extends Filter {
+public class StatusFilter extends Filter {
     public List<String> whitelist;
 
-    public ServiceTypeFilter() {
+    public StatusFilter() {
         this.whitelist = new ArrayList<>(0);
     }
 
@@ -24,8 +23,7 @@ public class ServiceTypeFilter extends Filter {
 
     public void filterByWhitelist (TrustedList listToFilter) {
         listToFilter.getCountries().forEach(country -> {
-            country.getProviders().removeIf(provider -> Collections.disjoint(whitelist, provider.getServiceTypes()));
-            country.getProviders().forEach(provider -> provider.getServices().removeIf(service -> Collections.disjoint(whitelist, service.getServiceTypes())));
+            country.getProviders().forEach(provider -> provider.getServices().removeIf(service -> !whitelist.contains(service.getStatus())));
         });
     }
 }

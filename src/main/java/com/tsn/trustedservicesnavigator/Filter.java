@@ -1,6 +1,6 @@
 package com.tsn.trustedservicesnavigator;
 
 public abstract class Filter {
-    public abstract TrustedList apply(TrustedList listToFilter);
+    public abstract void applyTo(TrustedList listToFilter);
 }
 

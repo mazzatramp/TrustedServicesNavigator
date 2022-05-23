@@ -13,21 +13,18 @@ public class CountryProviderFilter extends Filter {
     }
 
     @Override
-    public TrustedList apply(TrustedList listToFilter) {
-        if (whitelist.isEmpty()) {
-            return listToFilter;
-        } else {
-            return filterByWhitelist(listToFilter);
+    public void applyTo(TrustedList listToFilter) {
+        if (!whitelist.isEmpty()) {
+            filterByWhitelist(listToFilter);
         }
     }
 
-    private TrustedList filterByWhitelist(TrustedList listToFilter) {
+    private void filterByWhitelist(TrustedList listToFilter) {
         listToFilter.getCountries().removeIf(country -> !whitelist.containsKey(country.getName()));
         listToFilter.getCountries().forEach(country -> {
             List<String> providers = whitelist.get(country.getName());
             country.getProviders().removeIf(provider -> !providers.contains(provider.getName()));
         });
-        return listToFilter;
     }
 
     public void setWhitelist(Map<String, List<String>> whitelist) {
