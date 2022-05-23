@@ -29,7 +29,11 @@ public class CountryProviderFilterTitledPane extends FilterTitledPane {
     @Override
     protected void setSelectionStatusForAll(boolean selectionStatus) {
         countriesAndProviders.getRoot().getChildren().forEach(country-> {
-            ((CheckBoxTreeItem<String>) country).setSelected(selectionStatus);
+            CheckBoxTreeItem<String> checkBoxCountry = (CheckBoxTreeItem<String>) country;
+            checkBoxCountry.getChildren().forEach(provider -> {
+                ((CheckBoxTreeItem<String>) provider).setSelected(selectionStatus);
+            });
+
         });
     }
 

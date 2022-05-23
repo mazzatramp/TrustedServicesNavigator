@@ -58,4 +58,9 @@ public class FilterSelectionAccordion extends Accordion {
         return statuses.getSelected();
     }
 
+    public void resetFilters() {
+        countryAndProviders.setSelectionStatusForAll(false);
+        serviceTypes.setSelectionStatusForAll(false);
+        statuses.setSelectionStatusForAll(false);
+    }
 }
