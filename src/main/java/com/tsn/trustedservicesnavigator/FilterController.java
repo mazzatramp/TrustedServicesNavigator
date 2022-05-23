@@ -40,6 +40,24 @@ public class FilterController {
         filters().forEach(
                 filter -> filter.applyTo(clone)
         );
+
+        removeEmptyEntities(clone);
+
         return clone;
+    }
+
+    private void removeEmptyEntities(TrustedList clone) {
+        removeEmptyProviders(clone);
+        removeEmptyCountries(clone);
+    }
+
+    private void removeEmptyCountries(TrustedList clone) {
+        clone.getCountries().removeIf(country -> country.getProviders().isEmpty());
+    }
+
+    private void removeEmptyProviders(TrustedList clone) {
+        clone.getCountries().forEach(country -> {
+            country.getProviders().removeIf(provider -> provider.getServices().isEmpty());
+        });
     }
 }
