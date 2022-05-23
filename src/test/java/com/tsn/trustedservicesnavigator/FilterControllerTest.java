@@ -64,7 +64,7 @@ class FilterControllerTest {
         serviceTypes.add("QCertESig");
         serviceTypes.add("QCertESeal");
         FilterController fc = new FilterController();
-        fc.setServiceTypeFilter(serviceTypes);
+        fc.setServiceTypeWhitelist(serviceTypes);
 
         Map<String, List<String>> mappaCountriesProviders = new LinkedHashMap<>();
         List<String> providers = new ArrayList<>();
