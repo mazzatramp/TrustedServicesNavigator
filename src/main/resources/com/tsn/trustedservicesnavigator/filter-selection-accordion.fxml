@@ -6,22 +6,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import com.tsn.trustedservicesnavigator.CountryProviderFilterTitledPane?>
+<?import com.tsn.trustedservicesnavigator.StatusFilterTitledPane?>
+<?import com.tsn.trustedservicesnavigator.ServiceTypeFilterTitledPane?>
+
 <fx:root type="javafx.scene.control.Accordion" xmlns:fx="http://javafx.com/fxml">
     <panes>
-        <TitledPane text="Countries and Providers">
-            <TreeView fx:id="countriesAndProviders" prefHeight="457.0" prefWidth="274.0" showRoot="false"
-                      AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                      AnchorPane.topAnchor="0.0"/>
-        </TitledPane>
-        <TitledPane text="Service Types">
-            <ListView fx:id="serviceTypes" prefHeight="457.0" prefWidth="274.0"
-                      AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                      AnchorPane.topAnchor="0.0"/>
-        </TitledPane>
-        <TitledPane text="Statuses">
-            <ListView fx:id="statuses" prefHeight="457.0" prefWidth="274.0"
-                      AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                      AnchorPane.topAnchor="0.0"/>
-        </TitledPane>
+        <CountryProviderFilterTitledPane fx:id="countryAndProviders"/>
+        <ServiceTypeFilterTitledPane fx:id="serviceTypes"/>
+        <StatusFilterTitledPane fx:id="statuses"/>
     </panes>
 </fx:root>

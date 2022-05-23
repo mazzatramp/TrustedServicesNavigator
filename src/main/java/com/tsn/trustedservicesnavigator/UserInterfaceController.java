@@ -16,6 +16,8 @@ public class UserInterfaceController {
     private DisplayPane displayPane;
     @FXML
     private FilterSelectionAccordion filterSelection;
+    @FXML
+    public Hyperlink resetFilters;
 
     private NavigationMediator navigationMediator;
 
@@ -44,5 +46,9 @@ public class UserInterfaceController {
 
     public void bindProgressBarWith(Task task) {
         displayPane.bindProgressBarWith(task);
+    }
+
+    public void resetAllFilter() {
+        filterSelection.resetFilters();
     }
 }

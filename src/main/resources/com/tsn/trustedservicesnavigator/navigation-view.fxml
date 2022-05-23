@@ -26,6 +26,7 @@
     </SplitPane>
 
     <ToolBar prefHeight="40.0" prefWidth="200.0">
-        <Button mnemonicParsing="false" onAction="#handleFilterClick" text="Filter"/>
+        <Button text="Filter" onAction="#handleFilterClick"/>
+        <Hyperlink fx:id="resetFilters" text="Reset filters" onAction="#resetAllFilter"/>
     </ToolBar>
 </VBox>
