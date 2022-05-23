@@ -52,7 +52,7 @@ public class Country implements Cloneable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Country country = (Country) o;
-        return Objects.equals(code, country.code);
+        return Objects.equals(this.code, country.code);
     }
 
     @Override

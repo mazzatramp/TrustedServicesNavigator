@@ -99,6 +99,7 @@ public class FilterSelectionAccordion extends Accordion {
 
         return selectedServiceTypes;
     }
+
     public List<String> getSelectedStatuses() {
         List<String> selectedStatuses = new ArrayList<>(0);
 

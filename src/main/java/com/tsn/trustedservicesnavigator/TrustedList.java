@@ -13,10 +13,10 @@ public class TrustedList implements Cloneable {
     private static final String COUNTRIES_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list_no_lotl_territory";
     private static final String PROVIDERS_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list";
 
-    private List<Country> countries;
-    private Set<String> serviceTypes;
+    private final Set<String> serviceTypes;
+    private final Set<String> statuses;
 
-    private Set<String> statuses;
+    private List<Country> countries;
 
     public TrustedList() {
         this.countries = new ArrayList<>(0);
@@ -78,7 +78,9 @@ public class TrustedList implements Cloneable {
         try {
             TrustedList clone = (TrustedList) super.clone();
             clone.countries = new ArrayList<>();
-            this.countries.forEach(country -> clone.getCountries().add(country.clone()));
+            this.countries.forEach(
+                    country -> clone.getCountries().add(country.clone())
+            );
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);

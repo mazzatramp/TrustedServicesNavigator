@@ -26,11 +26,11 @@ public class Service implements  Cloneable{
         this.serviceId = serviceId;
         this.name = name;
         this.type = type;
-        this.status = getStatusFromUrl(statusUrl);
+        this.status = getLastPartFromUrl(statusUrl);
         this.serviceTypes = serviceTypes;
     }
 
-    private String getStatusFromUrl(String statusUrl) {
+    private String getLastPartFromUrl(String statusUrl) {
         String[] splitUrl = statusUrl.split("/");
         return splitUrl[splitUrl.length-1];
     }
@@ -89,7 +89,7 @@ public class Service implements  Cloneable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Service service = (Service) o;
-        return serviceId == service.serviceId;
+        return this.name.equals(service.name) && this.serviceId == service.serviceId;
     }
 
     @Override

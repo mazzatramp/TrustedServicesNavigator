@@ -92,7 +92,7 @@ public class Provider implements Cloneable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Provider provider = (Provider) o;
-        return providerId == provider.providerId;
+        return Objects.equals(this.name, provider.name);
     }
 
     @Override
