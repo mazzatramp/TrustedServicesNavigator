@@ -6,34 +6,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import com.tsn.trustedservicesnavigator.CountryProviderFilterTitledPane?>
+<?import com.tsn.trustedservicesnavigator.StatusFilterTitledPane?>
+<?import com.tsn.trustedservicesnavigator.ServiceTypeFilterTitledPane?>
+
 <fx:root type="javafx.scene.control.Accordion" xmlns:fx="http://javafx.com/fxml">
     <panes>
-        <TitledPane text="Countries and Providers">
-            <VBox>
-                <TreeView fx:id="countriesAndProviders" showRoot="false" VBox.vgrow="ALWAYS"/>
-                <HBox>
-                    <Hyperlink text="Select all"/>
-                    <Hyperlink text="Deselect all"/>
-                </HBox>
-            </VBox>
-        </TitledPane>
-        <TitledPane text="Service Types">
-            <VBox>
-                <ListView fx:id="serviceTypes" VBox.vgrow="ALWAYS"/>
-                <HBox>
-                    <Hyperlink text="Select all"/>
-                    <Hyperlink text="Deselect all"/>
-                </HBox>
-            </VBox>
-        </TitledPane>
-        <TitledPane text="Statuses">
-            <VBox>
-                <ListView fx:id="statuses" VBox.vgrow="SOMETIMES"/>
-                <HBox>
-                    <Hyperlink text="Select all"/>
-                    <Hyperlink text="Deselect all"/>
-                </HBox>
-            </VBox>
-        </TitledPane>
+        <CountryProviderFilterTitledPane fx:id="countryAndProviders"/>
+        <ServiceTypeFilterTitledPane fx:id="serviceTypes"/>
+        <StatusFilterTitledPane fx:id="statuses"/>
     </panes>
 </fx:root>
