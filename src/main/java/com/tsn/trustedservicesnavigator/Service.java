@@ -1,15 +1,13 @@
 package com.tsn.trustedservicesnavigator;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Service {
+public class Service implements Cloneable, Comparable<Service> {
     private Provider provider;
 
     private int serviceId;
@@ -29,19 +27,20 @@ public class Service {
         this.serviceId = serviceId;
         this.name = name;
         this.type = type;
-        this.status = getStatusFromUrl(statusUrl);
+        this.status = getLastPartFromUrl(statusUrl);
         this.serviceTypes = serviceTypes;
     }
 
-    private String getStatusFromUrl(String statusUrl) {
-        String[] splittedUrl = statusUrl.split("/");
-        return splittedUrl[splittedUrl.length-1];
+    private String getLastPartFromUrl(String statusUrl) {
+        String[] splitUrl = statusUrl.split("/");
+        return splitUrl[splitUrl.length-1];
     }
 
     public int getServiceId() {
         return serviceId;
     }
 
+    @JsonSetter
     public void setServiceId(int serviceId) {
         this.serviceId = serviceId;
     }
@@ -78,12 +77,20 @@ public class Service {
         this.serviceTypes = serviceTypes;
     }
 
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Service service = (Service) o;
-        return serviceId == service.serviceId;
+        return this.name.equals(service.name) && this.serviceId == service.serviceId;
     }
 
     @Override
@@ -93,5 +100,21 @@ public class Service {
                 ", status='" + status + '\'' +
                 ", serviceTypes='" + serviceTypes + '\'' +
                 '}';
+    }
+
+    @Override
+    public Service clone() {
+        try {
+            Service clone = (Service) super.clone();
+            clone.setProvider(null);
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
+
+    @Override
+    public int compareTo(@NotNull Service service) {
+        return Integer.compare(this.serviceId, service.serviceId);
     }
 }

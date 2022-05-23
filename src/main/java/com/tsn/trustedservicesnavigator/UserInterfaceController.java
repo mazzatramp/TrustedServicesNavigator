@@ -1,56 +1,48 @@
 package com.tsn.trustedservicesnavigator;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class UserInterfaceController {
     @FXML
-    private TreeView<String> servicesTreeView;
+    private DisplayPane displayPane;
     @FXML
-    private ProgressBar servicesDownloadProgressBar;
+    private FilterSelectionAccordion filterSelection;
 
-    @FXML
-    public void initialize() {
-        servicesTreeView.setRoot(new TreeItem<>("Root"));
-        fillServicesTreeView();
+    private NavigationMediator navigationMediator;
+
+    public void fillFiltersAndDisplay() {
+        //runLater is needed in order to avoid issues adding a lot of nodes at once
+        Platform.runLater(() -> {
+            TrustedList dataAtStartupTime = navigationMediator.getCompleteList();
+            displayPane.fillDisplayTreeView(dataAtStartupTime);
+            filterSelection.fillCountryAndProvidersFilterTreeView(dataAtStartupTime);
+            filterSelection.fillServiceTypesFilterTreeView(dataAtStartupTime);
+            filterSelection.fillStatusTreeView(dataAtStartupTime);
+        });
     }
 
-    private void fillServicesTreeView() {
-        TrustedList trustedList = TrustedList.getInstance();
-
-        Task<Integer> fillTreeViewTask = new Task<Integer>() {
-            @Override
-            protected Integer call() throws Exception {
-                trustedList.fillWithApiData();
-
-                for (Country country : trustedList.getCountries()) {
-                    TreeItem<String> countryItem = new TreeItem<>(country.getName());
-                    for (Provider provider : country.getProviders()) {
-                        TreeItem<String> providerItem = new TreeItem<>(provider.getName());
-                        for (Service service : provider.getServices()) {
-                            providerItem.getChildren().add(new TreeItem<>(service.getName()));
-                        }
-                        countryItem.getChildren().add(providerItem);
-                    }
-                    servicesTreeView.getRoot().getChildren().add(countryItem);
-                }
-
-
-                return 1;
-            }
-        };
-
-        servicesDownloadProgressBar.visibleProperty().bind(fillTreeViewTask.runningProperty());
-        servicesDownloadProgressBar.progressProperty().bind(fillTreeViewTask.progressProperty());
-
-        Thread th = new Thread(fillTreeViewTask);
-        th.setDaemon(true);
-        th.start();
-        servicesTreeView.refresh();
+    public void handleFilterClick() {
+        if (displayPane.canShowResults()) {
+            navigationMediator.readActiveFiltersFrom(filterSelection);
+            TrustedList filteredList = navigationMediator.getFilteredList();
+            displayPane.fillDisplayTreeView(filteredList);
+        }
     }
 
+    public void setNavigationMediator(NavigationMediator navigationMediator) {
+        this.navigationMediator = navigationMediator;
+    }
 
+    public void bindProgressBarWith(Task task) {
+        displayPane.bindProgressBarWith(task);
+    }
 }
