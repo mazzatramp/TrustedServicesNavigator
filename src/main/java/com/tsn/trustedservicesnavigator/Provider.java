@@ -1,7 +1,6 @@
 package com.tsn.trustedservicesnavigator;
 
 import com.fasterxml.jackson.annotation.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,7 +134,7 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedEntity 
     }
 
     @Override
-    public int compareTo(@NotNull Provider provider) {
+    public int compareTo(Provider provider) {
         return this.name.compareTo(provider.name);
     }
 

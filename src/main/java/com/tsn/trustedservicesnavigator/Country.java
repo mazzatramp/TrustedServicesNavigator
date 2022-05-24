@@ -2,7 +2,6 @@ package com.tsn.trustedservicesnavigator;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +62,7 @@ public class Country implements Cloneable, Comparable<Country>, TrustedEntity {
     }
 
     @Override
-    public int compareTo(@NotNull Country country) {
+    public int compareTo(Country country) {
         return this.code.compareTo(country.code);
     }
 

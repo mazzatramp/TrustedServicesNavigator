@@ -1,7 +1,6 @@
 package com.tsn.trustedservicesnavigator;
 
 import com.fasterxml.jackson.annotation.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -120,7 +119,7 @@ public class Service implements Cloneable, Comparable<Service>, TrustedEntity {
     }
 
     @Override
-    public int compareTo(@NotNull Service service) {
+    public int compareTo(Service service) {
         return Integer.compare(this.serviceId, service.serviceId);
     }
 
