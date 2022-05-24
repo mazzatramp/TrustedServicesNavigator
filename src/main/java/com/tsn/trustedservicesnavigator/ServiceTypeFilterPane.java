@@ -29,7 +29,7 @@ public class ServiceTypeFilterPane extends FilterPane {
         });
     }
 
-    protected List<String> getSelected() {
+    public List<String> getSelected() {
         List<String> selectedServiceTypes = new ArrayList<>(0);
 
         for (CheckBox serviceType : serviceTypes.getItems()) {

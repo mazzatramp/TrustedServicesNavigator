@@ -3,10 +3,7 @@ package com.tsn.trustedservicesnavigator;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,7 +30,7 @@ class CountryProviderFilterTest {
     @Test
     void applyTo_WholeListWithNoWhitelist_WholeListDoesNotChange() throws IOException {
         //arrange
-       CountryProviderFilter cpf = new CountryProviderFilter();
+       ProviderFilter cpf = new ProviderFilter();
        TrustedList listToFilter = getWholeList();
        List<Country> expectedListOfCountries = listToFilter.getCountries();
 
@@ -73,7 +70,7 @@ class CountryProviderFilterTest {
   @Test
     void applyTo_WholeListWithWhitelist_WholeListBecomesWhitelist() throws IOException {
         //arrange
-        CountryProviderFilter cpf = new CountryProviderFilter();
+        ProviderFilter cpf = new ProviderFilter();
         TrustedList listToFilter = getWholeList();
         List<Country> expectedListOfCountries = getATestWhitelist();
 

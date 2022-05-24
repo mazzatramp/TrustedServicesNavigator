@@ -10,6 +10,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.util.List;
 
 public abstract class FilterPane extends TitledPane {
     @FXML
@@ -20,7 +21,7 @@ public abstract class FilterPane extends TitledPane {
     private Hyperlink deselectAll;
 
     public FilterPane() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("filter-titled-pane.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("filter-pane.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
@@ -41,15 +42,18 @@ public abstract class FilterPane extends TitledPane {
         });
     }
 
-    protected abstract void setSelectionStatusForAll(boolean b);
+    protected abstract void setSelectionStatusForAll(boolean status);
 
     protected abstract void fill(TrustedList trustedList);
+
+    public abstract List<String> getSelected();
 
     protected void setFilterView(Control control) {
         AnchorPane.setTopAnchor(control, 0.0);
         AnchorPane.setLeftAnchor(control, 0.0);
         AnchorPane.setRightAnchor(control, 0.0);
         AnchorPane.setBottomAnchor(control, 0.0);
+        filterView.getChildren().removeAll();
         filterView.getChildren().add(control);
     }
 }

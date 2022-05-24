@@ -7,12 +7,11 @@ import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 public class FilterSelectionAccordion extends Accordion {
 
     @FXML
-    private CountryProviderFilterPane countryAndProviders;
+    private ProviderFilterPane providers;
     @FXML
     private StatusFilterPane statuses;
     @FXML
@@ -34,7 +33,7 @@ public class FilterSelectionAccordion extends Accordion {
     }
 
     public void fillCountryAndProvidersFilterTreeView(TrustedList dataToShow) {
-        countryAndProviders.fill(dataToShow);
+        providers.fill(dataToShow);
     }
 
     public void fillServiceTypesFilterTreeView(TrustedList dataToShow) {
@@ -45,8 +44,8 @@ public class FilterSelectionAccordion extends Accordion {
         statuses.fill(dataToShow);
     }
 
-    public Map<String, List<String>> getSelectedCountriesAndProviders() {
-        return countryAndProviders.getSelected();
+    public List<String> getSelectedProviders() {
+        return providers.getSelected();
     }
 
     public List<String> getSelectedServiceTypes() {
@@ -58,7 +57,7 @@ public class FilterSelectionAccordion extends Accordion {
     }
 
     public void resetFilters() {
-        countryAndProviders.setSelectionStatusForAll(false);
+        providers.setSelectionStatusForAll(false);
         serviceTypes.setSelectionStatusForAll(false);
         statuses.setSelectionStatusForAll(false);
     }

@@ -25,9 +25,9 @@ public class NavigationMediator {
     }
 
     public void readActiveFiltersFrom(FilterSelectionAccordion filterSelection) {
-        filterController.setCountryProviderWhitelist(filterSelection.getSelectedCountriesAndProviders());
-        filterController.setServiceTypeWhitelist(filterSelection.getSelectedServiceTypes());
-        filterController.setStatusWhitelist(filterSelection.getSelectedStatuses());
+        filterController.getCountryProviderFilter().setWhitelist(filterSelection.getSelectedProviders());
+        filterController.getStatusFilter().setWhitelist(filterSelection.getSelectedStatuses());
+        filterController.getServiceTypeFilter().setWhitelist(filterSelection.getSelectedServiceTypes());
     }
 
     public TrustedList getCompleteList() {

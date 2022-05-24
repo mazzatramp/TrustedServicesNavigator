@@ -1,16 +1,14 @@
 package com.tsn.trustedservicesnavigator;
 
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 public class FilterController {
-    private final CountryProviderFilter countryProviderFilter;
+    private final ProviderFilter countryProviderFilter;
     private final ServiceTypeFilter serviceTypeFilter;
     private final StatusFilter statusFilter;
 
     public FilterController() {
-        countryProviderFilter = new CountryProviderFilter();
+        countryProviderFilter = new ProviderFilter();
         serviceTypeFilter = new ServiceTypeFilter();
         statusFilter = new StatusFilter();
     }
@@ -23,27 +21,23 @@ public class FilterController {
         return filters.build();
     }
 
-    public void setCountryProviderWhitelist(Map<String, List<String>> countryProviderWhitelist) {
-        countryProviderFilter.setWhitelist(countryProviderWhitelist);
-    }
-
-    public void setServiceTypeWhitelist(List<String> serviceTypeWhitelist) {
-        serviceTypeFilter.setWhitelist(serviceTypeWhitelist);
-    }
-
-    public void setStatusWhitelist(List<String> statusWhitelist) {
-        statusFilter.setWhitelist(statusWhitelist);
-    }
-
     public TrustedList getFilteredDataFrom(TrustedList target) {
         TrustedList clone = target.clone();
-        filters().forEach(
-                filter -> filter.applyTo(clone)
-        );
-
+        filters().forEach(filter -> filter.applyTo(clone));
         removeEmptyEntities(clone);
-
         return clone;
+    }
+
+    public Filter getCountryProviderFilter() {
+        return countryProviderFilter;
+    }
+
+    public Filter getServiceTypeFilter() {
+        return serviceTypeFilter;
+    }
+
+    public Filter getStatusFilter() {
+        return statusFilter;
     }
 
     private void removeEmptyEntities(TrustedList clone) {

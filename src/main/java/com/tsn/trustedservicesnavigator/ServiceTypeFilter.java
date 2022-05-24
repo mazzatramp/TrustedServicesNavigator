@@ -18,6 +18,7 @@ public class ServiceTypeFilter extends Filter {
         }
     }
 
+    @Override
     public void setWhitelist(List<String> whitelist) {
         this.whitelist = whitelist;
     }
