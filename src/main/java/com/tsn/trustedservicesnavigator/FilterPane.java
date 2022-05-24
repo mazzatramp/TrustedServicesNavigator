@@ -1,5 +1,7 @@
 package com.tsn.trustedservicesnavigator;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Control;
@@ -9,7 +11,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
-public abstract class FilterTitledPane extends TitledPane {
+public abstract class FilterPane extends TitledPane {
     @FXML
     private AnchorPane filterView;
     @FXML
@@ -17,7 +19,7 @@ public abstract class FilterTitledPane extends TitledPane {
     @FXML
     private Hyperlink deselectAll;
 
-    public FilterTitledPane() {
+    public FilterPane() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("filter-titled-pane.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -40,6 +42,8 @@ public abstract class FilterTitledPane extends TitledPane {
     }
 
     protected abstract void setSelectionStatusForAll(boolean b);
+
+    protected abstract void fill(TrustedList trustedList);
 
     protected void setFilterView(Control control) {
         AnchorPane.setTopAnchor(control, 0.0);

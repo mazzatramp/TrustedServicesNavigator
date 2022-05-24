@@ -6,18 +6,17 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class FilterSelectionAccordion extends Accordion {
 
     @FXML
-    private CountryProviderFilterTitledPane countryAndProviders;
+    private CountryProviderFilterPane countryAndProviders;
     @FXML
-    private StatusFilterTitledPane statuses;
+    private StatusFilterPane statuses;
     @FXML
-    private ServiceTypeFilterTitledPane serviceTypes;
+    private ServiceTypeFilterPane serviceTypes;
 
     @FXML
     private HBox countryHyperlinksBox;

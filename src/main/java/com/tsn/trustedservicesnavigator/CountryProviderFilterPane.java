@@ -1,5 +1,7 @@
 package com.tsn.trustedservicesnavigator;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.scene.control.CheckBoxTreeItem;
 import javafx.scene.control.TreeItem;
@@ -11,11 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CountryProviderFilterTitledPane extends FilterTitledPane {
+public class CountryProviderFilterPane extends FilterPane {
 
     TreeView<String> countriesAndProviders;
 
-    public CountryProviderFilterTitledPane() {
+    public CountryProviderFilterPane() {
         this.setText("Country and Providers");
 
         countriesAndProviders = new TreeView<>();
@@ -60,13 +62,14 @@ public class CountryProviderFilterTitledPane extends FilterTitledPane {
         return selectedCountriesAndProviders;
     }
 
+    @Override
     public void fill(TrustedList dataToShow) {
         CheckBoxTreeItem<String> countryTreeItem, providerTreeItem;
 
         for (Country country : dataToShow.getCountries()) {
-            countryTreeItem = new CheckBoxTreeItem(country.getName());
+            countryTreeItem = new CheckBoxTreeItem<>(country.getName());
             for (Provider provider : country.getProviders()) {
-                providerTreeItem = new CheckBoxTreeItem(provider.getName());
+                providerTreeItem = new CheckBoxTreeItem<>(provider.getName());
                 countryTreeItem.getChildren().add(providerTreeItem);
             }
             countriesAndProviders.getRoot().getChildren().add(countryTreeItem);
@@ -74,4 +77,6 @@ public class CountryProviderFilterTitledPane extends FilterTitledPane {
 
         countriesAndProviders.refresh();
     }
+
+    
 }

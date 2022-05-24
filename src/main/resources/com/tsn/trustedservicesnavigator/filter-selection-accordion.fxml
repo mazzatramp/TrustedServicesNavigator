@@ -6,14 +6,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import com.tsn.trustedservicesnavigator.CountryProviderFilterTitledPane?>
-<?import com.tsn.trustedservicesnavigator.StatusFilterTitledPane?>
-<?import com.tsn.trustedservicesnavigator.ServiceTypeFilterTitledPane?>
+<?import com.tsn.trustedservicesnavigator.CountryProviderFilterPane?>
+<?import com.tsn.trustedservicesnavigator.StatusFilterPane?>
+<?import com.tsn.trustedservicesnavigator.ServiceTypeFilterPane?>
 
 <fx:root type="javafx.scene.control.Accordion" xmlns:fx="http://javafx.com/fxml">
     <panes>
-        <CountryProviderFilterTitledPane fx:id="countryAndProviders"/>
-        <ServiceTypeFilterTitledPane fx:id="serviceTypes"/>
-        <StatusFilterTitledPane fx:id="statuses"/>
+        <CountryProviderFilterPane fx:id="countryAndProviders"/>
+        <ServiceTypeFilterPane fx:id="serviceTypes"/>
+        <StatusFilterPane fx:id="statuses"/>
     </panes>
 </fx:root>

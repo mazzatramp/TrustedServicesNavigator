@@ -6,11 +6,11 @@ import javafx.scene.control.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceTypeFilterTitledPane extends FilterTitledPane {
+public class ServiceTypeFilterPane extends FilterPane {
 
     private ListView<CheckBox> serviceTypes;
 
-    public ServiceTypeFilterTitledPane() {
+    public ServiceTypeFilterPane() {
         this.setText("Service Types");
         serviceTypes = new ListView<>();
         setFilterView(serviceTypes);

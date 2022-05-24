@@ -2,16 +2,15 @@ package com.tsn.trustedservicesnavigator;
 
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TitledPane;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatusFilterTitledPane extends FilterTitledPane {
+public class StatusFilterPane extends FilterPane {
 
     private ListView<CheckBox> statuses;
 
-    public StatusFilterTitledPane() {
+    public StatusFilterPane() {
         this.setText("Statuses");
         statuses = new ListView<>();
         setFilterView(statuses);
