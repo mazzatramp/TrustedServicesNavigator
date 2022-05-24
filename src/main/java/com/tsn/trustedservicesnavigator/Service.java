@@ -122,9 +122,4 @@ public class Service implements Cloneable, Comparable<Service>, TrustedEntity {
     public int compareTo(Service service) {
         return Integer.compare(this.serviceId, service.serviceId);
     }
-
-    @Override
-    public String getDisplayableName() {
-        return this.name + ", " + this.serviceTypes + ", " + this.status;
-    }
 }

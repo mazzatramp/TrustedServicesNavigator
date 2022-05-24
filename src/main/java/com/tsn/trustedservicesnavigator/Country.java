@@ -95,9 +95,4 @@ public class Country implements Cloneable, Comparable<Country>, TrustedEntity {
             throw new AssertionError();
         }
     }
-
-    @Override
-    public String getDisplayableName() {
-        return this.name;
-    }
 }

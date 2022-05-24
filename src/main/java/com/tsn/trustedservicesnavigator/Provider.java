@@ -137,9 +137,4 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedEntity 
     public int compareTo(Provider provider) {
         return this.name.compareTo(provider.name);
     }
-
-    @Override
-    public String getDisplayableName() {
-        return this.name;
-    }
 }
