@@ -3,6 +3,7 @@ package com.tsn.trustedservicesnavigator;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -13,7 +14,7 @@ import java.io.IOException;
 public class DisplayPane extends AnchorPane {
 
     @FXML
-    private TreeView<String> displayed;
+    private TreeView<Label> displayed;
 
     @FXML
     private ProgressBar downloadBar;
@@ -36,13 +37,16 @@ public class DisplayPane extends AnchorPane {
     }
 
     public void fillDisplayTreeView(TrustedList dataToShow) {
-        TreeItem<String> root = new TreeItem<>();
+        TreeItem<Label> root = new TreeItem<>();
         dataToShow.getCountries().forEach(country -> {
-            TrustedEntityTreeItem countryTreeItem = new TrustedEntityTreeItem(country);
+            TrustedEntityLabel countryLabel = new TrustedEntityLabel(country);
+            TreeItem<Label> countryTreeItem = new TreeItem<>(countryLabel);
             country.getProviders().forEach(provider -> {
-                TrustedEntityTreeItem providerTreeItem = new TrustedEntityTreeItem(provider);
+                TrustedEntityLabel providerLabel = new TrustedEntityLabel(provider);
+                TreeItem<Label> providerTreeItem = new TreeItem<>(providerLabel);
                 provider.getServices().forEach(service -> {
-                    TrustedEntityTreeItem serviceTreeItem = new TrustedEntityTreeItem(service);
+                    TrustedEntityLabel serviceLabel = new TrustedEntityLabel(service);
+                    TreeItem<Label> serviceTreeItem = new TreeItem<>(serviceLabel);
                     providerTreeItem.getChildren().add(serviceTreeItem);
                 });
                 countryTreeItem.getChildren().add(providerTreeItem);
