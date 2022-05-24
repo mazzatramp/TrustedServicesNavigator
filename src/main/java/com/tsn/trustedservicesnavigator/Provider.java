@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Provider implements Cloneable, Comparable<Provider> {
+public class Provider implements Cloneable, Comparable<Provider>, TrustedEntity {
     private Country country;
 
     private int providerId;
@@ -130,5 +130,10 @@ public class Provider implements Cloneable, Comparable<Provider> {
     @Override
     public int compareTo(@NotNull Provider provider) {
         return this.name.compareTo(provider.name);
+    }
+
+    @Override
+    public String getDisplayableName() {
+        return this.name;
     }
 }

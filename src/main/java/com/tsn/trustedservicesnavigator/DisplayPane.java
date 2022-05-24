@@ -36,10 +36,20 @@ public class DisplayPane extends AnchorPane {
     }
 
     public void fillDisplayTreeView(TrustedList dataToShow) {
-        displayed.setRoot(new TreeItem<>());
+        TreeItem<String> root = new TreeItem<>();
         dataToShow.getCountries().forEach(country -> {
-            displayed.getRoot().getChildren().add(new CountryTreeItem(country));
+            TrustedEntityTreeItem countryTreeItem = new TrustedEntityTreeItem(country);
+            country.getProviders().forEach(provider -> {
+                TrustedEntityTreeItem providerTreeItem = new TrustedEntityTreeItem(provider);
+                provider.getServices().forEach(service -> {
+                    TrustedEntityTreeItem serviceTreeItem = new TrustedEntityTreeItem(service);
+                    providerTreeItem.getChildren().add(serviceTreeItem);
+                });
+                countryTreeItem.getChildren().add(providerTreeItem);
+            });
+            root.getChildren().add(countryTreeItem);
         });
+        displayed.setRoot(root);
     }
 
     public boolean canShowResults() {

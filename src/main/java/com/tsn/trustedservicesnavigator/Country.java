@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Country implements Cloneable, Comparable<Country> {
+public class Country implements Cloneable, Comparable<Country>, TrustedEntity {
     private String name;
     private String code;
 
@@ -89,5 +89,10 @@ public class Country implements Cloneable, Comparable<Country> {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
+    }
+
+    @Override
+    public String getDisplayableName() {
+        return this.name;
     }
 }

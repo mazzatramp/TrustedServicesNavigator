@@ -7,7 +7,7 @@ import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Service implements Cloneable, Comparable<Service> {
+public class Service implements Cloneable, Comparable<Service>, TrustedEntity {
     private Provider provider;
 
     private int serviceId;
@@ -116,5 +116,10 @@ public class Service implements Cloneable, Comparable<Service> {
     @Override
     public int compareTo(@NotNull Service service) {
         return Integer.compare(this.serviceId, service.serviceId);
+    }
+
+    @Override
+    public String getDisplayableName() {
+        return this.name + ", " + this.serviceTypes + ", " + this.status;
     }
 }
