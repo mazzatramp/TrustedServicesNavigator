@@ -24,8 +24,14 @@ public class Country implements Cloneable, Comparable<Country>, TrustedEntity {
         providers = new ArrayList<>(0);
     }
 
+    @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getInformation() {
+        return this.name + ", " + this.providers.size() + " providers";
     }
 
     public void setName(String name) {

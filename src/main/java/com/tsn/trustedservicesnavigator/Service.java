@@ -45,8 +45,14 @@ public class Service implements Cloneable, Comparable<Service>, TrustedEntity {
         this.serviceId = serviceId;
     }
 
+    @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getInformation() {
+        return this.name + ", " + this.serviceId + ", " + this.serviceTypes + ", " + this.status;
     }
 
     public void setName(String name) {

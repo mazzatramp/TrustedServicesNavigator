@@ -60,9 +60,16 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedEntity 
     public void setProviderId(int providerId) {
         this.providerId = providerId;
     }
+    @Override
     public String getName() {
         return name;
     }
+
+    @Override
+    public String getInformation() {
+        return this.name + ", " + this.serviceTypes + " (" + services.size() + ")";
+    }
+
     public void setName(String name) {
         this.name = name;
     }

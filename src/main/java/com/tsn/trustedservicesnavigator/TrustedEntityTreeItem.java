@@ -7,7 +7,7 @@ public class TrustedEntityTreeItem extends TreeItem<String> {
 
     public TrustedEntityTreeItem(TrustedEntity refereed) {
         this.refereed = refereed;
-        this.setValue(refereed.getDisplayableName());
+        this.setValue(refereed.getInformation());
     }
 
     public TrustedEntity getRefereed() {
