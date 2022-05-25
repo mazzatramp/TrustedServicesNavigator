@@ -5,24 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class ServiceTypeFilter extends Filter {
-    public List<String> whitelist;
-
-    public ServiceTypeFilter() {
-        this.whitelist = new ArrayList<>(0);
-    }
 
     @Override
-    public void applyTo(TrustedList listToFilter) {
-        if (!whitelist.isEmpty()) {
-            filterByWhitelist(listToFilter);
-        }
-    }
-
-    @Override
-    public void setWhitelist(List<String> whitelist) {
-        this.whitelist = whitelist;
-    }
-
     public void filterByWhitelist (TrustedList listToFilter) {
         listToFilter.getCountries().forEach(country -> {
             country.getProviders().removeIf(provider -> Collections.disjoint(whitelist, provider.getServiceTypes()));

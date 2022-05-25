@@ -1,43 +1,64 @@
 package com.tsn.trustedservicesnavigator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class FilterController {
-    private final ProviderFilter countryProviderFilter;
-    private final ServiceTypeFilter serviceTypeFilter;
-    private final StatusFilter statusFilter;
+    private final Filter providerFilter, serviceTypeFilter, statusFilter;
+    private NavigationMediator navigationMediator;
 
     public FilterController() {
-        countryProviderFilter = new ProviderFilter();
+        providerFilter = new ProviderFilter();
         serviceTypeFilter = new ServiceTypeFilter();
         statusFilter = new StatusFilter();
     }
 
     private Stream<Filter> filters() {
         Stream.Builder<Filter> filters = Stream.builder();
-        filters.add(countryProviderFilter);
+        filters.add(providerFilter);
         filters.add(serviceTypeFilter);
         filters.add(statusFilter);
         return filters.build();
     }
 
-    public TrustedList getFilteredDataFrom(TrustedList target) {
-        TrustedList clone = target.clone();
-        filters().forEach(filter -> filter.applyTo(clone));
-        removeEmptyEntities(clone);
-        return clone;
+    public void applyFiltersTo(TrustedList target) {
+        filters().forEach(filter -> filter.applyTo(target));
+        removeEmptyEntities(target);
     }
 
-    public Filter getCountryProviderFilter() {
-        return countryProviderFilter;
+    public Filter getProviderFilter() {
+        return providerFilter;
     }
-
     public Filter getServiceTypeFilter() {
         return serviceTypeFilter;
     }
-
     public Filter getStatusFilter() {
         return statusFilter;
+    }
+
+
+    public boolean wouldHaveZeroServices(Filter filter, String newWhitelistItem) {
+        boolean hasZeroServices;
+
+        List<String> realWhitelist = filter.getWhitelist();
+        List<String> testWhitelist = new ArrayList<>(realWhitelist);
+        testWhitelist.add(newWhitelistItem);
+        filter.setWhitelist(testWhitelist);
+
+        TrustedList filteredList = navigationMediator.getCompleteList().clone();
+
+        hasZeroServices = haveZeroResultsAppliedTo(filteredList);
+
+        filter.setWhitelist(realWhitelist);
+        return hasZeroServices;
+    }
+
+    private boolean haveZeroResultsAppliedTo(TrustedList test) {
+        filters().forEach(filter -> filter.applyTo(test));
+        removeEmptyEntities(test);
+
+        return test.getCountries().isEmpty();
     }
 
     private void removeEmptyEntities(TrustedList clone) {
@@ -45,13 +66,17 @@ public class FilterController {
         removeEmptyCountries(clone);
     }
 
-    private void removeEmptyCountries(TrustedList clone) {
-        clone.getCountries().removeIf(country -> country.getProviders().isEmpty());
-    }
-
     private void removeEmptyProviders(TrustedList clone) {
         clone.getCountries().forEach(country -> {
             country.getProviders().removeIf(provider -> provider.getServices().isEmpty());
         });
+    }
+
+    private void removeEmptyCountries(TrustedList clone) {
+        clone.getCountries().removeIf(country -> country.getProviders().isEmpty());
+    }
+
+    public void setNavigationMediator(NavigationMediator navigationMediator) {
+        this.navigationMediator = navigationMediator;
     }
 }

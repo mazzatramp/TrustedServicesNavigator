@@ -12,6 +12,7 @@ public class NavigationMediator {
 
     public NavigationMediator() {
         this.filterController = new FilterController();
+        filterController.setNavigationMediator(this);
         this.completeList = new TrustedList();
     }
 
@@ -21,13 +22,9 @@ public class NavigationMediator {
     }
 
     public TrustedList getFilteredList() {
-        return filterController.getFilteredDataFrom(completeList);
-    }
-
-    public void readActiveFiltersFrom(FilterSelectionAccordion filterSelection) {
-        filterController.getCountryProviderFilter().setWhitelist(filterSelection.getSelectedProviders());
-        filterController.getStatusFilter().setWhitelist(filterSelection.getSelectedStatuses());
-        filterController.getServiceTypeFilter().setWhitelist(filterSelection.getSelectedServiceTypes());
+        TrustedList clone = completeList.clone();
+        filterController.applyFiltersTo(clone);
+        return clone;
     }
 
     public TrustedList getCompleteList() {
@@ -58,5 +55,17 @@ public class NavigationMediator {
                 return null;
             }
         };
+    }
+
+    public FilterController getFilterController() {
+        return this.filterController;
+    }
+
+    public void readActiveFiltersFrom(FilterSelectionAccordion filterSelectionAccordion) {
+        FilterSelectionAccordion filterSelection = userInterfaceController.getFilterAccordion();
+        filterController.getProviderFilter().setWhitelist(filterSelection.getSelectedProviders());
+        filterController.getStatusFilter().setWhitelist(filterSelection.getSelectedStatuses());
+        filterController.getServiceTypeFilter().setWhitelist(filterSelection.getSelectedServiceTypes());
+
     }
 }

@@ -33,11 +33,33 @@ public class StatusFilterPane extends FilterPane {
         List<String> selectedStatuses = new ArrayList<>(0);
 
         for (CheckBox status : statuses.getItems()) {
-            if (status.isSelected()) {
+            if (!status.isDisabled() && status.isSelected()) {
                 selectedStatuses.add(status.getText());
             }
         }
 
         return selectedStatuses;
+    }
+
+    @Override
+    public List<String> getUnselected() {
+
+        List<String> selectedStatuses = new ArrayList<>(0);
+
+        for (CheckBox status : statuses.getItems()) {
+            if (!status.isSelected()) {
+                selectedStatuses.add(status.getText());
+            }
+        }
+
+        return selectedStatuses;
+    }
+
+    @Override
+    public void refreshDisableProperty(List<String> itemsToDisable) {
+        statuses.getItems().forEach(statusItem -> {
+            boolean toDisable = itemsToDisable.contains(statusItem.getText());
+            statusItem.setDisable(toDisable);
+        });
     }
 }

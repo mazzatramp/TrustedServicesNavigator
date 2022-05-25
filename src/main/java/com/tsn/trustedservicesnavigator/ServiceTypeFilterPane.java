@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ServiceTypeFilterPane extends FilterPane {
 
-    private ListView<CheckBox> serviceTypes;
+    private final ListView<CheckBox> serviceTypes;
 
     public ServiceTypeFilterPane() {
         this.setText("Service Types");
@@ -33,11 +33,32 @@ public class ServiceTypeFilterPane extends FilterPane {
         List<String> selectedServiceTypes = new ArrayList<>(0);
 
         for (CheckBox serviceType : serviceTypes.getItems()) {
-            if (serviceType.isSelected()) {
+            if (!serviceType.isDisabled() && serviceType.isSelected()) {
                 selectedServiceTypes.add(serviceType.getText());
             }
         }
 
         return selectedServiceTypes;
+    }
+
+    @Override
+    public List<String> getUnselected() {
+        List<String> selectedServiceTypes = new ArrayList<>(0);
+
+        for (CheckBox serviceType : serviceTypes.getItems()) {
+            if (!serviceType.isSelected()) {
+                selectedServiceTypes.add(serviceType.getText());
+            }
+        }
+
+        return selectedServiceTypes;
+    }
+
+    @Override
+    public void refreshDisableProperty(List<String> itemsToDisable) {
+        serviceTypes.getItems().forEach(serviceTypeItem -> {
+            boolean toDisable = itemsToDisable.contains(serviceTypeItem.getText());
+            serviceTypeItem.setDisable(toDisable);
+        });
     }
 }

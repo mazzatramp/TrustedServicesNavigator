@@ -2,14 +2,8 @@ package com.tsn.trustedservicesnavigator;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class UserInterfaceController {
     @FXML
@@ -42,13 +36,18 @@ public class UserInterfaceController {
 
     public void setNavigationMediator(NavigationMediator navigationMediator) {
         this.navigationMediator = navigationMediator;
+        this.filterSelection.setNavigationMediator(navigationMediator);
     }
 
-    public void bindProgressBarWith(Task task) {
+    public void bindProgressBarWith(Task<Void> task) {
         displayPane.bindProgressBarWith(task);
     }
 
     public void resetAllFilter() {
         filterSelection.resetFilters();
+    }
+
+    public FilterSelectionAccordion getFilterAccordion() {
+        return this.filterSelection;
     }
 }

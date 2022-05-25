@@ -64,19 +64,18 @@ class FilterControllerTest {
         serviceTypes.add("QCertESig");
         serviceTypes.add("QCertESeal");
         FilterController fc = new FilterController();
-        fc.setServiceTypeWhitelist(serviceTypes);
+        fc.getServiceTypeFilter().setWhitelist(serviceTypes);
 
-        Map<String, List<String>> mappaCountriesProviders = new LinkedHashMap<>();
         List<String> providers = new ArrayList<>();
         providers.add("JCC PAYMENT SYSTEMS LTD");
-        mappaCountriesProviders.put("Cyprus",providers);
-        fc.setCountryProviderWhitelist(mappaCountriesProviders);
+        fc.getProviderFilter().setWhitelist(providers);
 
         TrustedList initialList=new TrustedList();
         initialList.downloadApiData();
 
         //metodo da testare
-        TrustedList filteredList= fc.getFilteredDataFrom(initialList);
+        TrustedList filteredList = initialList.clone();
+        fc.applyFiltersTo(filteredList);
 
         //test
         //testare che lista e whitelist siano identiche non lo posso fare
