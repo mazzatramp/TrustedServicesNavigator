@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class TrustedList implements Cloneable {
     private static final String COUNTRIES_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list_no_lotl_territory";
@@ -23,7 +20,11 @@ public class TrustedList implements Cloneable {
         this.serviceTypes = new HashSet<>(0);
         this.statuses = new HashSet<>(0);
     }
-
+    public TrustedList(List<Country> countries) {
+        this(); //chiamata al primo costruttore
+        this.countries=countries;
+        this.constructMetadata();;
+    }
     public List<Country> getCountries() {
         return countries;
     }
@@ -92,5 +93,22 @@ public class TrustedList implements Cloneable {
     }
     public Set<String> getStatuses() {
         return statuses;
+    }
+
+    @Override
+    public boolean equals(Object trustedList ) {
+        if (this == trustedList) return true;
+        if (trustedList == null || getClass() != trustedList.getClass()) return false;
+        //TrustedList list = (TrustedList) trustedList; NON HO CPAITO COSA SIGNIFICHI
+        // return Objects.equals(countries, list.countries);
+        return (this.getCountries().equals(((TrustedList) trustedList).getCountries())
+                ||this.getServiceTypes().equals(((TrustedList) trustedList).getServiceTypes())
+                ||this.getStatuses().equals(((TrustedList) trustedList).getStatuses()));
+    }
+
+    //A CHE SERVE?
+    @Override
+    public int hashCode() {
+        return Objects.hash(countries);
     }
 }

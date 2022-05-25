@@ -57,8 +57,9 @@ class FilterControllerTest {
 
 
     @Test
-    void doesGetFilteredDataFromWork()throws IOException {
-        //preparazione
+    void GetFilteredDataFrom_WholeListWithAWhiteList_ReturnsWhitelist()throws IOException {
+        //arrange
+        //BRUTTO DOVERE FARE DIVERSE LISTE PER PAESI PROVIDER ETC SAREBBE BELLO LA CLASSE TRUSTELIST AVESSE COSTRUTTORE
         //sarebbe meglio mettere piu paesi e piu providers
         List<String> serviceTypes = new ArrayList<>();
         serviceTypes.add("QCertESig");
@@ -102,5 +103,30 @@ class FilterControllerTest {
 
 
     }
+
+    @Test
+    void GetFilteredDataFrom_NullArgumentWithAWhiteList_Returns()throws IOException {
+        //arrange
+        //BRUTTO DOVERE FARE DIVERSE LISTE PER PAESI PROVIDER ETC SAREBBE BELLO LA CLASSE TRUSTELIST AVESSE COSTRUTTORE
+        //sarebbe meglio mettere piu paesi e piu providers
+        List<String> serviceTypes = new ArrayList<>();
+        serviceTypes.add("QCertESig");
+        serviceTypes.add("QCertESeal");
+        FilterController fc = new FilterController();
+        fc.setServiceTypeWhitelist(serviceTypes);
+
+        Map<String, List<String>> mappaCountriesProviders = new LinkedHashMap<>();
+        List<String> providers = new ArrayList<>();
+        providers.add("JCC PAYMENT SYSTEMS LTD");
+        mappaCountriesProviders.put("Cyprus",providers);
+        fc.setCountryProviderWhitelist(mappaCountriesProviders);
+
+        TrustedList initialList= null;
+        assertThrows(NullPointerException.class,() ->  fc.getFilteredDataFrom(initialList));
+
+
+
+    }
+
 
 }
