@@ -16,11 +16,7 @@ class TrustedListTest {
 
     // DEVO FARE UN BEFOREEACH O QUALCOSA DEL GENERE CHE FACCIA IN MOD CHE NON DOVO FARE IL
     //DOWNLOAD DELLE API OGNI VOLTA
-    private  TrustedList getWholeList() throws IOException {
-        TrustedList initialList = new TrustedList();
-        initialList.downloadApiData();
-        return initialList;
-    }
+
 
     //DOWNLOADAPIDATA()
     @Nested
@@ -118,7 +114,7 @@ class TrustedListTest {
         @Test
     void clone_WholeTrustedList_ReturnsWholeTrustedList() throws IOException {
         //arrange
-        TrustedList listToClone = getWholeList();
+        TrustedList listToClone = Help.getWholeList();
         //act
         TrustedList clonedList = listToClone.clone();
         //assert
@@ -152,8 +148,8 @@ class TrustedListTest {
     class equals_Test{ @Test
     void wholeList_equals_WholeList_ReturnsTrue() throws IOException {
         //arrange
-        TrustedList list1 = getWholeList();
-        TrustedList list2 = getWholeList();
+        TrustedList list1 = Help.getWholeList();
+        TrustedList list2 = Help.getWholeList();
         //act
         boolean haveTrustedListTheSameValues = list1.equals(list2);
         //assert
@@ -172,7 +168,7 @@ class TrustedListTest {
         @Test
         void wholeList_Equals_NullList_ReturnsFalse() throws IOException {
             //arrange
-            TrustedList list1 = getWholeList();
+            TrustedList list1 = Help.getWholeList();
             TrustedList list2 = null;
             //act
             boolean haveTrustedListTheSameValues = list1.equals(list2);
