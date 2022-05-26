@@ -10,6 +10,6 @@ public class Help {
     }
     public static TrustedList getWholeList() throws IOException {
         if(wholeList==null) {constructWholeList();}
-        return wholeList;
+        return wholeList.clone();
     }
 }
