@@ -65,8 +65,8 @@ class FilterControllerTest {
             FilterController fc = new FilterController();
             List<String> listaStatuses = new ArrayList<>();
             Set<String> expectedstatuses= new HashSet<>();
-            expectedstatuses.add("http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/withdrawn");
-            listaStatuses.add("http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/withdrawn");
+            expectedstatuses.add("withdrawn");
+            listaStatuses.add("withdrawn");
             fc.getProviderFilter().setWhitelist(listaStatuses);
             fc.applyFiltersTo(lista);
             System.out.println(lista.getStatuses());
@@ -127,7 +127,7 @@ class FilterControllerTest {
             listaProv.add("PrimeSign GmbH");
             fc.getProviderFilter().setWhitelist(listaProv);
             fc.applyFiltersTo(lista);
-            String nuovoelemento ="http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/withdrawn";
+            String nuovoelemento ="withdrawn";
             boolean hazero = fc.wouldHaveZeroServices(fc.getStatusFilter(),nuovoelemento);
             System.out.println(lista.getStatuses());
 
@@ -145,7 +145,7 @@ class FilterControllerTest {
             listaProv.add("PrimeSign GmbH");
             fc.getProviderFilter().setWhitelist(listaProv);
             fc.applyFiltersTo(lista);
-            String nuovoelemento ="http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted";
+            String nuovoelemento ="granted";
             boolean hazero = fc.wouldHaveZeroServices(fc.getStatusFilter(),nuovoelemento);
             System.out.println(lista.getStatuses());
 
