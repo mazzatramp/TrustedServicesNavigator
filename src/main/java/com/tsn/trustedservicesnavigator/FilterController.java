@@ -1,5 +1,6 @@
 package com.tsn.trustedservicesnavigator;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -38,7 +39,7 @@ public class FilterController {
     }
 
 
-    public boolean wouldHaveZeroServices(Filter filter, String newWhitelistItem) {
+    public boolean wouldHaveZeroServices(Filter filter, String newWhitelistItem) throws IOException {
         boolean hasZeroServices;
 
         List<String> realWhitelist = filter.getWhitelist();
@@ -46,8 +47,8 @@ public class FilterController {
         testWhitelist.add(newWhitelistItem);
         filter.setWhitelist(testWhitelist);
 
-        TrustedList filteredList = navigationMediator.getCompleteList().clone();
-
+        //TrustedList filteredList = navigationMediator.getCompleteList().clone();
+        TrustedList filteredList = Aiuto.getWholeList();
         hasZeroServices = haveZeroResultsAppliedTo(filteredList);
 
         filter.setWhitelist(realWhitelist);
