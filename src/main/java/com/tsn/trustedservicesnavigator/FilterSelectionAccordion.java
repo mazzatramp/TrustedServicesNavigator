@@ -65,8 +65,12 @@ public class FilterSelectionAccordion extends Accordion {
 
         unselectedItems.forEach(unselected -> {
             Filter filter = filterPane.getAssociatedFilter();
-            if (navigationMediator.getFilterController().wouldHaveZeroServices(filter, unselected))
-                itemsToDisable.add(unselected);
+            try {
+                if (navigationMediator.getFilterController().wouldHaveZeroServices(filter, unselected))
+                    itemsToDisable.add(unselected);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
 
         filterPane.refreshDisableProperty(itemsToDisable);
