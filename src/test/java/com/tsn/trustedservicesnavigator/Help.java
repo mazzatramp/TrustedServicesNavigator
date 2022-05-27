@@ -12,4 +12,6 @@ public class Help {
         if(wholeList==null) {constructWholeList();}
         return wholeList.clone();
     }
+
+    //METTERE GETPROVIDERN GETSERVICETYPEN GETSTATUSN
 }
