@@ -1,5 +1,6 @@
 package com.tsn.trustedservicesnavigator;
 
+import com.tsn.trustedservicesnavigator.frontend.UserInterfaceController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

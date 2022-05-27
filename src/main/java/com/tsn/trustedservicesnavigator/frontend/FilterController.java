@@ -1,4 +1,10 @@
-package com.tsn.trustedservicesnavigator;
+package com.tsn.trustedservicesnavigator.frontend;
+
+import com.tsn.trustedservicesnavigator.frontend.filters.ServiceTypeFilter;
+import com.tsn.trustedservicesnavigator.frontend.filters.StatusFilter;
+import com.tsn.trustedservicesnavigator.backend.TrustedList;
+import com.tsn.trustedservicesnavigator.frontend.filters.CountryProviderFilter;
+import com.tsn.trustedservicesnavigator.frontend.filters.Filter;
 
 import java.util.List;
 import java.util.Map;
@@ -37,12 +43,8 @@ public class FilterController {
 
     public TrustedList getFilteredDataFrom(TrustedList target) {
         TrustedList clone = target.clone();
-        filters().forEach(
-                filter -> filter.applyTo(clone)
-        );
-
+        filters().forEach(filter -> filter.applyTo(clone));
         removeEmptyEntities(clone);
-
         return clone;
     }
 

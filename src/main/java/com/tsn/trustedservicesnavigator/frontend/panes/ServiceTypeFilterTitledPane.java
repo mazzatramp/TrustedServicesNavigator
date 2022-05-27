@@ -1,5 +1,6 @@
-package com.tsn.trustedservicesnavigator;
+package com.tsn.trustedservicesnavigator.frontend.panes;
 
+import com.tsn.trustedservicesnavigator.backend.TrustedList;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 

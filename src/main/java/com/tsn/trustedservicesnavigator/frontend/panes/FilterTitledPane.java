@@ -1,4 +1,4 @@
-package com.tsn.trustedservicesnavigator;
+package com.tsn.trustedservicesnavigator.frontend.panes;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

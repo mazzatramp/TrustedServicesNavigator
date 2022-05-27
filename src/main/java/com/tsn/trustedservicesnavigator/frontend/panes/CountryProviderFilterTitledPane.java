@@ -1,5 +1,8 @@
-package com.tsn.trustedservicesnavigator;
+package com.tsn.trustedservicesnavigator.frontend.panes;
 
+import com.tsn.trustedservicesnavigator.backend.Country;
+import com.tsn.trustedservicesnavigator.backend.Provider;
+import com.tsn.trustedservicesnavigator.backend.TrustedList;
 import javafx.collections.ObservableList;
 import javafx.scene.control.CheckBoxTreeItem;
 import javafx.scene.control.TreeItem;
