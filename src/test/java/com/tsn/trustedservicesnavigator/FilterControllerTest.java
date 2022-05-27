@@ -1,5 +1,7 @@
 package com.tsn.trustedservicesnavigator;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
@@ -7,27 +9,53 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("When I have a FilterController") //SULLA GUIDA DI JUNIT I DISPLAYNAME SONO UN PO DIVERSI, BISOGNA DECIDERE QUALE USARE
 class FilterControllerTest {
-    //APPLYFILTERSTO
+    FilterController fc;
+    //CHE DEBBA FARE ANCHE TEST SENZA AVERE INSTANZIATO FC?
+    @BeforeEach
+    void createAFilterController(){
+        fc = new FilterController();
+    }
+
+    @DisplayName("and I use the method applyFiltersTo")
     @Nested
     class ApplyFiltersTo{
-        @Test
-        //METTO UN PROVIDER NELLA WHITELIST,FILTRO E CONTROLLO CHE LA TLISTA ABBIA SOLO QUEL PROVIDER
-        void provaconunprovider() throws IOException {
-            TrustedList lista = Help.getWholeList();
-            FilterController fc = new FilterController();
+        @DisplayName("with a whole list as an argument")
+        @Nested
+        class WholeListAsArgument{
+            TrustedList lista;
+            @BeforeEach
+            void createAWholeList() throws IOException {
+                lista = Help.getWholeList(); //MA NON E' CHE DOPO FILTRO IN UN TEST QUA SOTTO E LA LISTA CAMBIA?
+            }
+            @DisplayName("and a provider in the list whitelist, i should have only that provider in the filtered list")
+            @Test
+            void ProviderInTheWhitelist() throws IOException {
+                //arrange
+            //FilterController fc = new FilterController();
             List<String> listaProv = new ArrayList<>();
             String providerExpected= ("A-Trust Gesellschaft für Sicherheitssysteme im elektronischen Datenverkehr GmbH");
-            listaProv.add("A-Trust Gesellschaft für Sicherheitssysteme im elektronischen Datenverkehr GmbH");
+            listaProv.add(providerExpected);
             fc.getProviderFilter().setWhitelist(listaProv);
-            fc.applyFiltersTo(lista);
-            System.out.println(lista.getCountries().get(0).getProviders().get(0).getName());
-            assertEquals(providerExpected,lista.getCountries().get(0).getProviders().get(0).getName());
-        }
-        //METTO UN PROVIDER NELLA WHITELIST,FILTRO E CONTROLLO CHE LA TLISTA ABBIA SOLO LA COUNTRY DI QUEL PROVIDER
 
-        @Test
-        void mettounproviderdiunostatoevedochequellostatocisia() throws IOException {
+            //act
+            fc.applyFiltersTo(lista);
+
+            //assert
+            assertEquals(providerExpected,lista.getCountries().get(0).getProviders().get(0).getName());
+            //DEVO CONTROLLARE CHE LA LISTA ABBIA SOLO QUEL PROVIDER
+                lista.getCountries().forEach(country -> {
+                    country.getProviders().forEach(provider -> {
+                       assertTrue(provider.getName().equals(providerExpected));
+                        });
+                    });
+            }
+
+             /* DA QUANTO HO CAPITO QUESTO NON E' SEMPRE VERO PERCHE' CI SONO PROVIDER CON PIU' COUNTRIES
+             @DisplayName(" and a provider in the list whitelist, i should have only the country of that provider")
+            @Test
+            void mettounproviderdiunostatoevedochequellostatocisia() throws IOException {
             TrustedList lista = Help.getWholeList();
             FilterController fc = new FilterController();
             List<String> listaProv = new ArrayList<>();
@@ -40,39 +68,71 @@ class FilterControllerTest {
                 fail("dovrebbe esserci solo l'austria");
             }
             assertEquals(countryexpected,lista.getCountries().get(0).getName());
-        }
+            }*/
+
+            @DisplayName("and a service type in the list whitelist, i should have only services that have at least that service type")
+            @Test
+            void serviceTypeInTheWhitelist() throws IOException {
+                //FilterController fc = new FilterController();
+                List<String> listaServiceTypes = new ArrayList<>();
+                String expectedservicetype= "QCertESeal";
+                listaServiceTypes.add(expectedservicetype);
+                fc.getServiceTypeFilter().setWhitelist(listaServiceTypes);
+
+                fc.applyFiltersTo(lista);
+
+                //lista.fillServiceTypesAndStatuses();
+                lista.getCountries().forEach(country -> {
+                    country.getProviders().forEach(provider -> {
+                        provider.getServices().forEach(service -> {
+                            assertTrue(lista.getServiceTypes().contains(expectedservicetype));
+                            if(!(lista.getServiceTypes().contains(expectedservicetype))){
+                                fail("un servizio non contiene QCertESeal"); //DECIDERE SE E' MEGLIO FAIL O ASSERTTRUE
+                            }
+                        });
+                    });
+                });
+                //assertTrue(lista.getServiceTypes().contains(expectedservicetype));
+
+                //DOVREBBE ESSERE GIUSTO USARE ASSERT EQUALS PER I SET MA NON SONO SICURO AL 100%
+
+            }
 
 
-        @Test
-        //QUESTO FALLISCE PERCHE NON E STATO CORRETTO IL BUG
-        void mettounservicetypeecontrollochelalistaabbiaquesiservicetypes() throws IOException {
-            TrustedList lista = Help.getWholeList();
-            FilterController fc = new FilterController();
-            List<String> listaServiceTypes = new ArrayList<>();
-            Set<String> expectedservicetype= new HashSet<>();
-            expectedservicetype.add("QCertESeal");
-            listaServiceTypes.add("QCertESeal");
-            fc.getProviderFilter().setWhitelist(listaServiceTypes);
-            fc.applyFiltersTo(lista);
-            System.out.println(lista.getServiceTypes());
-            assertEquals(expectedservicetype,lista.getServiceTypes());
-            //DOVREBBE ESSERE GIUSTO USARE ASSERT EQUALS PER I SET MA NON SONO SICURO AL 100%
+            //SIAMO SICURI CI SIA UNA CORRISPONDENZA UNO A UNO FRA SERVIZI E STATUSES?
+            @DisplayName("and a status in the whitelist, i should only have services with that status")
+            @Test
+            
+            void statusInTheWhitelist() throws IOException {
+
+                //TrustedList lista = Help.getWholeList();
+                //FilterController fc = new FilterController();
+                List<String> listaStatuses = new ArrayList<>();
+                String expectedstatuses = "withdrawn";
+                listaStatuses.add(expectedstatuses);
+                fc.getStatusFilter().setWhitelist(listaStatuses);
+
+
+                fc.applyFiltersTo(lista);
+                //lista.constructMetadata();
+
+                lista.getCountries().forEach(country -> {
+                    country.getProviders().forEach(provider -> {
+                        provider.getServices().forEach(service -> {
+                            assertTrue(service.getStatus().equals(expectedstatuses));
+                        });
+                    });
+                });
+                //DOVREBBE ESSERE GIUSTO USARE ASSERT EQUALS PER I SET MA NON SONO SICURO AL 100%
+                //HO NOTATO CHE SE UNO METTE UN FILTRO CHE NON ESISTE DA LISTA VUOTA, VOGLIAMO CHE SIA QUESTO IL COMPARTAMENTO DEL CODICE?
+            }
+
+            //METTERE ANCHE COMBINAZIONE DI FILTRI SENSATA
+            //METTERE  ANCHE COMBINAZIONE DI FILTRI INSENSATA
+            //METTERE COMBINAZIONE DI FILTRI SEQUENZIALE SENSATA
+            //METTRE COMBINAZIONE DI FILTRI SEQUENZIALE INSENSATA
         }
-        @Test
-            //QUESTO FALLISCE PERCHE NON E STATO CORRETTO IL BUG
-        void mettounostatuspercontrollochelalistaabbiaquellostatus() throws IOException {
-            TrustedList lista = Help.getWholeList();
-            FilterController fc = new FilterController();
-            List<String> listaStatuses = new ArrayList<>();
-            Set<String> expectedstatuses= new HashSet<>();
-            expectedstatuses.add("withdrawn");
-            listaStatuses.add("withdrawn");
-            fc.getProviderFilter().setWhitelist(listaStatuses);
-            fc.applyFiltersTo(lista);
-            System.out.println(lista.getStatuses());
-            assertEquals(expectedstatuses,lista.getStatuses());
-            //DOVREBBE ESSERE GIUSTO USARE ASSERT EQUALS PER I SET MA NON SONO SICURO AL 100%
-        }
+
     //INSERISCI LISTA NULLA/VUOTA/PIENA A META
     //E CONTROLLA CHE FUNZI COJN UN FILTRO PROVIDER, UN FILTRO STATUS, SERVICE TYPES
     //E TUTTE LE COMBINAZIONI DI QUESTI FILTRI. POI CI SONO ANCHE I CASI LIMITE TIPO
@@ -80,7 +140,7 @@ class FilterControllerTest {
     //CONTROLLA SIANO STATE RIMOSSE ENTITA VUOTE
     }
 
-    //WOULDHAVEZEROSERVICES
+    @DisplayName(" and I use the method wouldHaveZeroServices")
     @Nested
     class WouldHaveZeroServices{
         //Provo a mettere un filtro con un provider e poi metto un tipodiservizio che quel provider non ha
