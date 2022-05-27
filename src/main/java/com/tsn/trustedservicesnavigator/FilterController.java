@@ -26,6 +26,7 @@ public class FilterController {
     public void applyFiltersTo(TrustedList target) {
         filters().forEach(filter -> filter.applyTo(target));
         removeEmptyEntities(target);
+        target.fillServiceTypesAndStatuses();
     }
 
     public Filter getProviderFilter() {
