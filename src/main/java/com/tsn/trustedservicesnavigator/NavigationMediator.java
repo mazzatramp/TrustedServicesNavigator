@@ -1,5 +1,9 @@
 package com.tsn.trustedservicesnavigator;
 
+import com.tsn.trustedservicesnavigator.backend.TrustedList;
+import com.tsn.trustedservicesnavigator.frontend.FilterController;
+import com.tsn.trustedservicesnavigator.frontend.UserInterfaceController;
+import com.tsn.trustedservicesnavigator.frontend.panes.FilterSelectionAccordion;
 import javafx.concurrent.Task;
 
 import java.io.IOException;
@@ -7,7 +11,6 @@ import java.io.IOException;
 public class NavigationMediator {
     private UserInterfaceController userInterfaceController;
     private final FilterController filterController;
-
     private final TrustedList completeList;
 
     public NavigationMediator() {

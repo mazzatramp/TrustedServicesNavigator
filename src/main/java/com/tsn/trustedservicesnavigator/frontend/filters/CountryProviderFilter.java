@@ -1,4 +1,6 @@
-package com.tsn.trustedservicesnavigator;
+package com.tsn.trustedservicesnavigator.frontend.filters;
+
+import com.tsn.trustedservicesnavigator.backend.TrustedList;
 
 import java.util.HashMap;
 import java.util.List;

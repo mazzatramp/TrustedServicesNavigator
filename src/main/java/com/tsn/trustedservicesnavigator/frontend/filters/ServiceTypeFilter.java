@@ -1,4 +1,7 @@
-package com.tsn.trustedservicesnavigator;
+package com.tsn.trustedservicesnavigator.frontend.filters;
+
+import com.tsn.trustedservicesnavigator.backend.TrustedList;
+import com.tsn.trustedservicesnavigator.frontend.filters.Filter;
 
 import java.util.ArrayList;
 import java.util.Collections;

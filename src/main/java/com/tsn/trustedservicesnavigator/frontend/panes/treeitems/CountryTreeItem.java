@@ -1,5 +1,6 @@
-package com.tsn.trustedservicesnavigator;
+package com.tsn.trustedservicesnavigator.frontend.panes.treeitems;
 
+import com.tsn.trustedservicesnavigator.backend.Country;
 import javafx.scene.control.TreeItem;
 
 public class CountryTreeItem extends TreeItem<String> {

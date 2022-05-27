@@ -1,21 +1,21 @@
-package com.tsn.trustedservicesnavigator;
+package com.tsn.trustedservicesnavigator.frontend;
 
+import com.tsn.trustedservicesnavigator.NavigationMediator;
+import com.tsn.trustedservicesnavigator.backend.TrustedList;
+import com.tsn.trustedservicesnavigator.frontend.panes.DisplayPane;
+import com.tsn.trustedservicesnavigator.frontend.panes.FilterSelectionAccordion;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class UserInterfaceController {
     @FXML
     private DisplayPane displayPane;
     @FXML
     private FilterSelectionAccordion filterSelection;
+    @FXML
+    private SplitPane splitPane;
     @FXML
     public Hyperlink resetFilters;
 

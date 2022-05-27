@@ -1,4 +1,4 @@
-package com.tsn.trustedservicesnavigator;
+package com.tsn.trustedservicesnavigator.backend;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

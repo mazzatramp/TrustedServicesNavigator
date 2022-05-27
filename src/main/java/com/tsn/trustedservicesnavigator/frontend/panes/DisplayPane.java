@@ -1,5 +1,7 @@
-package com.tsn.trustedservicesnavigator;
+package com.tsn.trustedservicesnavigator.frontend.panes;
 
+import com.tsn.trustedservicesnavigator.frontend.panes.treeitems.CountryTreeItem;
+import com.tsn.trustedservicesnavigator.backend.TrustedList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,10 +13,8 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 
 public class DisplayPane extends AnchorPane {
-
     @FXML
     private TreeView<String> displayed;
-
     @FXML
     private ProgressBar downloadBar;
 
