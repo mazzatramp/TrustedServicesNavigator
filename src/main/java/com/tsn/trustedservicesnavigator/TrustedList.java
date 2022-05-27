@@ -23,7 +23,7 @@ public class TrustedList implements Cloneable {
     public TrustedList(List<Country> countries) {
         this(); //chiamata al primo costruttore
         this.countries=countries;
-        this.constructMetadata();;
+        this.fillServiceTypesAndStatuses();;
     }
     public List<Country> getCountries() {
         return countries;
@@ -33,19 +33,26 @@ public class TrustedList implements Cloneable {
         countries = buildJSONFromURL(COUNTRIES_API_ENDPOINT, Country.class);
         List<Provider> apiProviders = buildJSONFromURL(PROVIDERS_API_ENDPOINT, Provider.class);
         linkCountriesAndProviders(apiProviders);
-        constructMetadata();
+        fillServiceTypesAndStatuses();
     }
 
-    private void constructMetadata() {
+    public void fillServiceTypesAndStatuses() {
+        statuses.clear();
+        serviceTypes.clear();
         countries.forEach(country -> {
+            //System.out.println(country);
             country.getProviders().forEach(provider -> {
-                serviceTypes.addAll(provider.getServiceTypes());
+                //System.out.println(provider);
                 provider.getServices().forEach(service -> {
+                   // System.out.println("ecco gli statuses che aggiungo " + service.getStatus());
+                   // System.out.println("ecco i serviceTypes che aggiungo " + service.getServiceTypes());
                     serviceTypes.addAll(service.getServiceTypes());
                     statuses.add(service.getStatus());
                 });
             });
         });
+        //System.out.println(statuses);
+        //System.out.println(serviceTypes);
     }
 
     private void linkCountriesAndProviders(List<Provider> providersToLink) {
