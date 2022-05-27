@@ -4,6 +4,7 @@ import com.tsn.trustedservicesnavigator.NavigationMediator;
 import com.tsn.trustedservicesnavigator.backend.TrustedList;
 import com.tsn.trustedservicesnavigator.frontend.panes.DisplayPane;
 import com.tsn.trustedservicesnavigator.frontend.panes.FilterSelectionAccordion;
+import com.tsn.trustedservicesnavigator.frontend.panes.InfoPane;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -17,9 +18,18 @@ public class UserInterfaceController {
     @FXML
     private SplitPane splitPane;
     @FXML
+    private InfoPane infoPane;
+    @FXML
     public Hyperlink resetFilters;
 
     private NavigationMediator navigationMediator;
+
+    @FXML
+    public void initialize() {
+        displayPane.setUserInterfaceController(this);
+        infoPane.setUserInterfaceController(this);
+        setInfoPaneVisible(false);
+    }
 
     public void fillFiltersAndDisplay() {
         //runLater is needed in order to avoid issues adding a lot of nodes at once
@@ -42,6 +52,18 @@ public class UserInterfaceController {
 
     public void setNavigationMediator(NavigationMediator navigationMediator) {
         this.navigationMediator = navigationMediator;
+    }
+
+    public void openInfoPaneWithInfo(String providerInfo, String serviceInfo) {
+        infoPane.setInfo(providerInfo, serviceInfo);
+        setInfoPaneVisible(true);
+    }
+
+    public void setInfoPaneVisible(boolean visible) {
+        if (infoPane.isVisible() && visible) return;
+        infoPane.setVisible(visible);
+        if (visible) splitPane.getItems().add(infoPane);
+        else splitPane.getItems().remove(infoPane);
     }
 
     public void bindProgressBarWith(Task task) {
