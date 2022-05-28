@@ -1,5 +1,7 @@
 package com.tsn.trustedservicesnavigator;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -7,168 +9,189 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("A Country")
 class CountryTest {
-    //HELPER METHOD
-    private Country getCountryN(int indexOfTheCountry) throws IOException {
-        //SAREBBE BELLO TESTARE CON TUTTE LE COUNTRIES. QUINDI IL GET DOVREBBE TORNARE
-        //TUTTE LE COUNTRIES DA 0 A 28
-        TrustedList initialList = Help.getWholeList();
-        Country aCountry = initialList.getCountries().get(indexOfTheCountry);
-        return aCountry;
-    }
+    Country country;
 
-    //EQUALS
     @Nested
-    class Equals{ @Test
-        void aCountry_equals_SameCountry_ReturnsTrue() throws IOException {
-        //arrange
-        Country country1 = getCountryN(0);
-        Country country2 = getCountryN(0);
-        //act
-        boolean areCountriesTHeSame = country1.equals(country2);
-        //assert
-        assertTrue(areCountriesTHeSame);
+    @DisplayName("when null")
+    class WhenNull {
+        @BeforeEach
+        void setCountryNull() {
+
+            country = null;
         }
-        @Test
-        void aCountry_equals_AnotherCountry_ReturnsFalse() throws IOException {
-            //arrange
-            Country country1 = getCountryN(0);
-            Country country2 = getCountryN(1);
-            //act
-            boolean areCountriesTHeSame = country1.equals(country2);
-            //assert
-            assertFalse(areCountriesTHeSame);
+
+        @DisplayName("and I use the method clone()")
+        @Nested
+        class Clone {
+            @DisplayName("returns an Error")
+            @Test
+            void clone_NullCountry_returnsError() {
+                //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
+                //METODO CLONE SE VOGLIO CLONARE QUALCOSA DI NULL
+                //arrange
+                Country countryToClone = country;
+                //assert
+                assertThrows(NullPointerException.class, () -> countryToClone.clone());
+                //assertEquals(getWholeList(),clonedList)
+            }
         }
-        @Test
-        void emptyList_Equals_EmptyList_ReturnsTrue() throws IOException {
-            //arrange
-            TrustedList list1 = new TrustedList();
-            TrustedList list2 = new TrustedList();
-            //act
-            boolean haveTrustedListTheSameValues = list1.equals(list2);
-            //assert
-            assertTrue(haveTrustedListTheSameValues);
-        }
-        @Test
-        void aCountry_Equals_NullCountry_ReturnsFalse() throws IOException {
-            //arrange
-            Country country1 = getCountryN(0);
-            Country country2 = null;
-            //act
-            boolean areCountriesTHeSame = country1.equals(country2);
-            //assert
-            assertFalse(areCountriesTHeSame);
-        }
-    /*
-    //NULLequalsNULL devo provare anche
-    COSA CONVIENE FARE IN QUESTO CASO?
-    @Test
-    void equals_NullListWithWholeList_ReturnsIDK() throws IOException {
-        //arrange
-        TrustedList list1 = null;
-        TrustedList list2 = getWholeList();
-        //act
-        boolean haveTrustedListTheSameValues = list1.equals(list2);
-        //assert
-        assertFalse(haveTrustedListTheSameValues);
-    }*/
-    /*
-    DOVREI FARLO CON STESSI VALORI MA OGGETTO DIVERSO, NON PENSO NEL CASO PRIMA FOSSE COSI
-    @Test
-    void equals_APartialListAndSamePartialList_ReturnsTrue() throws IOException {
-        //arrange
-        TrustedList list1 = getWholeList();
-        TrustedList list2 = getWholeList();
-        //act
-        boolean haveTrustedListTheSameValues = list1.equals(list2);
-        //assert
-        assertTrue(haveTrustedListTheSameValues);
-    }*/}
-    //----------------------------------------------------------------------------
-    //COMPARETO
-    @Nested
-    class CompareTo{
-        //STESSA COUNTRY
-        @Test
-        void aCountry_CompareTo_SameCountry_ReturnsZero() throws IOException {
-            //arrange
-            Country country1 = getCountryN(0);
-            Country country2 = getCountryN(0);
-            //act
-            int comparison = country1.compareTo(country2);
-            int expected =0;
-            //assert
-            assertEquals(expected, comparison);
-        }
-        //COUNTRY MAGGIORE
-        //DEVO METTERE ANCHE DIFFERENZA O BASTA POS E NEG
-        @Test
-        void aCountry_CompareTo_BiggerCountry_ReturnNegative() throws IOException {
-            //arrange
-            Country country1 = getCountryN(0);
-            Country country2 = getCountryN(1);
-            //act
-            int comparison = country1.compareTo(country2);
-            //assert
-            assertTrue(comparison<0);
+
+       // @DisplayName("and I use the method equals(Object)")
+        @Nested
+        class Equals{
 
         }
-        //COUNTRY MINORE
-        //NULL A SX
-        //NULL A DX
-        //NULL NULLL
-        //EMPTY A SX
-        //EMPTY A DX
-        //EMPTY EMPTY
+       // @DisplayName("and I use the method compareTo(Country)")
+        @Nested
+        class CompareTo{
+
+        }
+
+
+
     }
+
+    @Test
+    @DisplayName("is instantiated with new Country(String,String)")
+    void isInstantiatedWithNewCountry() {
+
+        new Country("Italia", "IT");
+    }
+
+    @Nested
+    @DisplayName("when new")
+    class WhenNew {
+        //POTREMMO TOGLIERE POSSIBIITA DI AVERE COUNTRIES VUOTE
+        @BeforeEach
+        void createACountry() {
+
+            country = new Country("Austria", "AT");
+        }
+
+        @DisplayName("and I use the method equals(Object)")
+        @Nested
+        class Equals {
+            //CON QUESTO METODO DUE COUNTRIES CON LO STESSO NOME MA PROVIDERS DIVERSI SONO UGUALI
+            @DisplayName("with a country as argument")
+            @Nested
+            class CountryAsArgument {
+                Country argumentCountry;
+
+                @DisplayName("and the two countries are the same, method should return true")
+                @Test
+                void SameCountryAsArgument() {
+                    //arrange
+                    Country argumentCountry = country;
+                    //act
+                    boolean areCountriesTHeSame = country.equals(argumentCountry);
+                    //assert
+                    assertTrue(areCountriesTHeSame);
+                }
+
+                @DisplayName("and the two countries are not the same, method should return false")
+                @Test
+                void NotSameCountryAsArgument() {
+                    //arrange
+                    Country argumentCountry = new Country("Italia", "IT");
+                    //act
+                    boolean areCountriesTHeSame = country.equals(argumentCountry);
+                    //assert
+                    assertFalse(areCountriesTHeSame);
+                }
+            }
+
+            @DisplayName("with a country null as argument, method should return false")
+            @Test
+            void NullAsArgument() {
+                //arrange
+                Country argumentCountry = null;
+                //act
+                boolean areCountriesTHeSame = country.equals(argumentCountry);
+                //assert
+                assertFalse(areCountriesTHeSame);
+            }
+            /*
+            //NULLequalsNULL devo provare anche
+            //NUllequalsWHolelist
+
+            /*
+            DOVREI FARLO CON STESSI VALORI MA OGGETTO DIVERSO, NON PENSO NEL CASO PRIMA FOSSE COSI
+            */
+        }
+
+        @DisplayName("and I use the method compareTo(Country)")
+        @Nested
+        class CompareTo {
+            @DisplayName("with a country as argument")
+            @Nested
+            class CountryAsArgument {
+                Country argumentCountry;
+
+                @DisplayName("and the two countries are the same, method should return 0")
+                @Test
+                void SameCountryAsArgument() throws IOException {
+                    //arrange
+                    Country argumentCountry = country;
+                    //act
+                    int comparison = country.compareTo(argumentCountry);
+                    int expectedreturn = 0;
+                    //assert
+                    assertEquals(expectedreturn, comparison);
+                }
+
+                //COUNTRY MAGGIORE
+                //DEVO METTERE ANCHE DIFFERENZA O BASTA POS E NEG?
+                @DisplayName("and the argument country is greater, method should return a negative number")
+                @Test
+                void aCountry_CompareTo_BiggerCountry_ReturnNegative() throws IOException {
+                    //arrange
+                    Country argumentCountry = Help.getCountryN(1);
+                    //act
+                    int comparison = country.compareTo(argumentCountry);
+                    //assert
+                    assertTrue(comparison < 0);
+
+                }
+            }
+
+            //COUNTRY MINORE
+            //NULL A SX
+            //NULL A DX
+            //NULL NULLL
+            //EMPTY A SX
+            //EMPTY A DX
+            //EMPTY EMPTY
+        }
+
+        @DisplayName("and I use the method clone()")
+        @Nested
+        class Clone {
+            @DisplayName("It returns the same country")
+            @Test
+            void cloneACountryReturnsSameCountry() throws IOException {
+                //arrange
+                Country countryToBeCloned = country;
+                //act
+                Country clonedCountry = countryToBeCloned.clone();
+                //assert
+                assertEquals(countryToBeCloned, clonedCountry);
+            }
+            /* SE ABBIAMO UN COSTRUTTORE E' PIU' COMODO
+            @Test
+            void clone_EmptyCountry_ReturnsEmptyCountry() {
+                }*/
+
+        }
+    }
+}
     //----------------------------------------------------------------------------
     //HASHCODE E TOSTRING?
-    //CLONE
-    @Nested
-    class Clone{ @Test
-    void clone_aCountry_ReturnsSameCountry() throws IOException {
-        //arrange
-        Country countryToBeCloned = getCountryN(0);
-        //act
-        Country clonedCountry= countryToBeCloned.clone();
-        //assert
-        assertEquals(countryToBeCloned,clonedCountry);
-    }
-        /* SE ABBIAMO UN COSTRUTTORE E PIU COMODO
-        @Test
-        void clone_EmptyCountry_ReturnsEmptyCountry() {
-            //arrange
-            TrustedList listToClone = new TrustedList();
-            //act
-            TrustedList clonedList = listToClone.clone();
-            //assert
-            //mettere un fail se non è vuota?
-            assertEquals(listToClone,clonedList);
-        }*/
-        @Test
-        void clone_NullCountry_returnsError(){ //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
-            //METODO CLONE SE VOGLIO CLONARE QUALCOSA DI NULL
-            //arrange
-            Country countryToClone =null;
-            //assert
-            assertThrows(NullPointerException.class,() ->  countryToClone.clone());
-            //assertEquals(getWholeList(),clonedList)
-        }
-  /* POCO INTERESSANTE
-    @Test
-    void clone_WholeTrustedList_ReturnsWholeTrustedList() throws IOException {
-        //arrange
-        TrustedList listToClone = getWholeList();
-        //act
-        TrustedList clonedList = listToClone.clone();
-        //assert
-        assertEquals(listToClone,clonedList);
-    }
-*/
-    }
-
     //----------------------------------------------------------------------------
    //TOSTRING
+    //I GET E SET
+    /*
     @Test
     void getName_NoInputs_ReturnsName()
 {
@@ -182,4 +205,4 @@ class CountryTest {
     assertEquals("Italy",actualName);
 }
 
-}
+}*/
