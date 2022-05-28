@@ -54,6 +54,7 @@ public class Country implements Cloneable, Comparable<Country>, TrustedEntity {
     }
 
     @Override
+    //Vogliamo davvero che equals si comporti cosi?
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
