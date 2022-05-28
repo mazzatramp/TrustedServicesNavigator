@@ -1,10 +1,8 @@
 package com.trustedservicesnavigator.frontend;
 
-import com.trustedservicesnavigator.NavigationMediator;
-import com.trustedservicesnavigator.domain.TrustedList;
-import com.trustedservicesnavigator.frontend.panes.DisplayPane;
-import com.trustedservicesnavigator.frontend.panes.FilterSelectionAccordion;
-import com.trustedservicesnavigator.frontend.panes.InfoPane;
+import com.trustedservicesnavigator.*;
+import com.trustedservicesnavigator.domain.*;
+import com.trustedservicesnavigator.frontend.panes.*;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -27,6 +25,7 @@ public class UserInterfaceController {
     @FXML
     public void initialize() {
         infoPane.setUserInterfaceController(this);
+        displayPane.setUserInterfaceController(this);
         setInfoPaneVisible(false);
     }
 

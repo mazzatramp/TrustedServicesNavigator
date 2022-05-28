@@ -1,15 +1,17 @@
 package com.trustedservicesnavigator.frontend.panes;
 
 import com.trustedservicesnavigator.domain.TrustedList;
+import com.trustedservicesnavigator.frontend.UserInterfaceController;
 import com.trustedservicesnavigator.frontend.panes.treeitems.TrustedEntityLabel;
 import javafx.concurrent.Task;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 
@@ -21,6 +23,8 @@ public class DisplayPane extends AnchorPane {
     @FXML
     private ProgressBar downloadBar;
 
+    private UserInterfaceController userInterfaceController;
+
     public DisplayPane() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("display-pane.fxml"));
         fxmlLoader.setRoot(this);
@@ -31,6 +35,9 @@ public class DisplayPane extends AnchorPane {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        EventHandler<MouseEvent> mouseEventEventHandler = (MouseEvent e) -> handleMouseClick(e);
+        displayed.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEventEventHandler);
     }
 
     public void bindProgressBarWith(Task<Void> downloadTask) {
@@ -60,5 +67,18 @@ public class DisplayPane extends AnchorPane {
 
     public boolean canShowResults() {
         return !downloadBar.isVisible();
+    }
+
+    public void setUserInterfaceController(UserInterfaceController userInterfaceController) {
+        this.userInterfaceController = userInterfaceController;
+    }
+
+    private void handleMouseClick(MouseEvent event) {
+        Node node = event.getPickResult().getIntersectedNode();
+        if (node instanceof Text || (node instanceof TreeCell && ((TreeCell) node).getText() != null)) {
+            if (displayed.getSelectionModel().getSelectedItem().getValue() instanceof TrustedEntityLabel selected) {
+                userInterfaceController.openInfoPaneWithInfo(String.valueOf(selected), null);
+            }
+        }
     }
 }
