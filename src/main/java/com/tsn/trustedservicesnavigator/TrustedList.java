@@ -102,15 +102,16 @@ public class TrustedList implements Cloneable {
         return statuses;
     }
 
+    //VOGLIAMO DAVVERO CHE EQUALS SI COMPORTI COSI?
     @Override
     public boolean equals(Object trustedList ) {
         if (this == trustedList) return true;
         if (trustedList == null || getClass() != trustedList.getClass()) return false;
-        //TrustedList list = (TrustedList) trustedList; NON HO CPAITO COSA SIGNIFICHI
+        TrustedList list = (TrustedList) trustedList;
         // return Objects.equals(countries, list.countries);
-        return (this.getCountries().equals(((TrustedList) trustedList).getCountries())
-                ||this.getServiceTypes().equals(((TrustedList) trustedList).getServiceTypes())
-                ||this.getStatuses().equals(((TrustedList) trustedList).getStatuses()));
+        return (this.getCountries().equals(list.getCountries())
+                && this.getServiceTypes().equals(list.getServiceTypes())
+                && this.getStatuses().equals(((list).getStatuses())));
     }
 
     //A CHE SERVE?
