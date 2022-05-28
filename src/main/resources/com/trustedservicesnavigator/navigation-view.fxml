@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<?import com.trustedservicesnavigator.frontend.panes.DisplayPane?>
+<?import com.trustedservicesnavigator.frontend.panes.FilterSelectionAccordion?>
+
+<?import com.trustedservicesnavigator.frontend.panes.InfoPane?>
+<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.trustedservicesnavigator.frontend.UserInterfaceController">
+    <MenuBar>
+        <Menu mnemonicParsing="false" text="File">
+            <MenuItem mnemonicParsing="false" text="Close"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+            <MenuItem mnemonicParsing="false" text="Delete"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+            <MenuItem mnemonicParsing="false" text="About"/>
+        </Menu>
+    </MenuBar>
+
+    <SplitPane fx:id="splitPane" dividerPositions="0.3" VBox.vgrow="ALWAYS">
+        <FilterSelectionAccordion fx:id="filterSelection"/>
+        <DisplayPane fx:id="displayPane"/>
+        <InfoPane fx:id="infoPane" />
+    </SplitPane>
+
+    <ToolBar prefHeight="40.0" prefWidth="200.0">
+        <Button text="Filter" onAction="#handleFilterClick"/>
+        <Hyperlink fx:id="resetFilters" text="Reset filters" onAction="#resetAllFilter"/>
+    </ToolBar>
+</VBox>

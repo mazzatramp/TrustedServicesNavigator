@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+
+<?import com.trustedservicesnavigator.frontend.panes.ProviderFilterPane?>
+<?import com.trustedservicesnavigator.frontend.panes.ServiceTypeFilterPane?>
+<?import com.trustedservicesnavigator.frontend.panes.StatusFilterPane?>
+
+<fx:root type="javafx.scene.control.Accordion" xmlns:fx="http://javafx.com/fxml">
+    <panes>
+        <ProviderFilterPane fx:id="providers"/>
+        <ServiceTypeFilterPane fx:id="serviceTypes"/>
+        <StatusFilterPane fx:id="statuses"/>
+    </panes>
+</fx:root>

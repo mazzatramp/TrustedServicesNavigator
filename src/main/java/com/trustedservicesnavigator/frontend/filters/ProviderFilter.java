@@ -1,0 +1,12 @@
+package com.trustedservicesnavigator.frontend.filters;
+
+import com.trustedservicesnavigator.domain.TrustedList;
+
+public class ProviderFilter extends Filter {
+    @Override
+    protected void filterByWhitelist(TrustedList listToFilter) {
+        listToFilter.getCountries().forEach(country -> {
+            country.getProviders().removeIf(provider -> !whitelist.contains(provider.getName()));
+        });
+    }
+}
