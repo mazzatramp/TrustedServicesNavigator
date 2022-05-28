@@ -3,6 +3,8 @@ package com.tsn.trustedservicesnavigator;
 import java.io.IOException;
 
 public class Help {
+    //DEVO TESTARE GLI HELP?
+    //SAREBBE MEGLIO AVERE QUESTI METODI NEL CODICE DEL PROGRAMMA
     private static TrustedList wholeList;
     private static void constructWholeList() throws IOException {
         wholeList= new TrustedList();
@@ -11,6 +13,11 @@ public class Help {
     public static TrustedList getWholeList() throws IOException {
         if(wholeList==null) {constructWholeList();}
         return wholeList.clone();
+    }
+    public static Country getCountryN(int indexOfTheCountry) throws IOException {
+        TrustedList initialList = Help.getWholeList();
+        Country aCountry = initialList.getCountries().get(indexOfTheCountry);
+        return aCountry;
     }
 
     //METTERE GETPROVIDERN GETSERVICETYPEN GETSTATUSN
