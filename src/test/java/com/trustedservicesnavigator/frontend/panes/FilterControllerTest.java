@@ -1,5 +1,6 @@
-package com.trustedservicesnavigator;
+package com.trustedservicesnavigator.frontend.panes;
 
+import com.trustedservicesnavigator.Help;
 import com.trustedservicesnavigator.domain.TrustedList;
 import com.trustedservicesnavigator.frontend.FilterController;
 import org.junit.jupiter.api.BeforeEach;

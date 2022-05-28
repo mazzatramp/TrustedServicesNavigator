@@ -1,4 +1,4 @@
-package com.trustedservicesnavigator;
+package com.trustedservicesnavigator.frontend.filters;
 
 import com.trustedservicesnavigator.frontend.filters.StatusFilter;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,5 +1,6 @@
-package com.trustedservicesnavigator;
+package com.trustedservicesnavigator.domain;
 
+import com.trustedservicesnavigator.Help;
 import com.trustedservicesnavigator.domain.Country;
 import com.trustedservicesnavigator.domain.TrustedList;
 import org.junit.jupiter.api.BeforeEach;

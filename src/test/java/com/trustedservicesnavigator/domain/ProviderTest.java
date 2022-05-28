@@ -1,4 +1,4 @@
-package com.trustedservicesnavigator;
+package com.trustedservicesnavigator.domain;
 
 import com.trustedservicesnavigator.domain.Provider;
 import com.trustedservicesnavigator.domain.Service;
