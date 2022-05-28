@@ -1,31 +1,48 @@
 package com.tsn.trustedservicesnavigator;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class StatusFilterTest {
-    /*private Service getService1(){
-     Service servizio1 = null;
-     servizio1.setStatus("http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/withdrawn");
-     servizio1.serviceName
 
-    }*/
-
-   /* @Test
-    void Service1_equals_Service1_ReturnsTrue()
-    {
-        //arrange
-
-
-        //act
-        String actualName = ITA.getName();
-
-        //assert
-        assertEquals("Italy",actualName);
-    }*/
-
-
+@DisplayName("A StatusFilter")
+public class StatusFilterTest {
+    StatusFilter sf;
+    @Nested
+    @DisplayName("when null")
+    class WhenNull {
+        @BeforeEach
+        void setOggettoNull() {
+          sf=null;
+        }
+        @DisplayName("and I use the method ...")
+        @Nested
+        class nomeMetodo1{}
+        @DisplayName("and I use the method ...")
+        @Nested
+        class nomeMetodo2{}
+    }
+    @Test
+    @DisplayName("is instantiated with new costruttoreOggetto")
+    void isInstantiatedWithNewClasse() {
+        //new Classe();
+    }
+    @Nested
+    @DisplayName("when new")
+    class WhenNew{
+        @BeforeEach
+        void createACountry() {
+            //nomeOggetto=new Classe()
+        }
+        @DisplayName("and I use the method ...")
+        @Nested
+        class nomeMetodo1{}
+        @DisplayName("and I use the method ...")
+        @Nested
+        class nomeMetodo2{}}
 }
