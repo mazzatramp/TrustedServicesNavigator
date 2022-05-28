@@ -2,13 +2,12 @@ package com.trustedservicesnavigator.domain;
 
 import com.trustedservicesnavigator.domain.Provider;
 import com.trustedservicesnavigator.domain.Service;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+
 import java.util.List;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
+@Disabled
 @DisplayName("A Provider")
 
 class ProviderTest {

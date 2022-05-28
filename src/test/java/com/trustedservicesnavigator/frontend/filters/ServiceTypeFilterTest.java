@@ -1,12 +1,9 @@
 package com.trustedservicesnavigator.frontend.filters;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 //SAREBBE BELLO ANCHE METTERE DEI TIMEOUT NEI TEST
-
+@Disabled
 @DisplayName("A nomeClasse")
 public class ServiceTypeFilterTest{
     //Classe nomeOggetto;
