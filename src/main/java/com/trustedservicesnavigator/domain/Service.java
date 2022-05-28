@@ -2,6 +2,7 @@ package com.trustedservicesnavigator.domain;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -50,8 +51,12 @@ public class Service implements Cloneable, Comparable<Service>, TrustedEntity {
     }
 
     @Override
-    public String getInformation() {
-        return this.name + ", " + this.serviceId + ", " + this.serviceTypes + ", " + this.status;
+    public List<String> getInformation() {
+        List<String> information = new ArrayList<>(3);
+        information.add(name);
+        information.add(serviceTypes.toString());
+        information.add(status);
+        return information;
     }
 
     public void setName(String name) {

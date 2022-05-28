@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.util.List;
 
 public class InfoPane extends AnchorPane {
     @FXML
@@ -31,22 +32,13 @@ public class InfoPane extends AnchorPane {
         close.setOnAction(actionEvent -> userInterfaceController.setInfoPaneVisible(false));
     }
 
-    public void setInfo(String providerInfo, String serviceInfo) {
-        StringBuilder builder = new StringBuilder();
-        if (providerInfo != null) {
-            builder.append("Provider\n");
-            builder.append(providerInfo);
+    public void setInfo(List<String> info) {
+        StringBuilder printingInformation = new StringBuilder();
+        for (String string : info) {
+            printingInformation.append(string);
+            printingInformation.append("\n");
         }
-
-        if (providerInfo != null && serviceInfo != null)
-            builder.append("\n———————\n");
-
-        if (serviceInfo != null) {
-            builder.append("Service\n");
-            builder.append(serviceInfo);
-        }
-
-        text.setText(builder.toString());
+        text.setText(printingInformation.toString());
     }
 
     public void setUserInterfaceController(UserInterfaceController userInterfaceController) {

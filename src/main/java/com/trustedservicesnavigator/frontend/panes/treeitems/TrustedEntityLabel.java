@@ -8,7 +8,7 @@ public class TrustedEntityLabel extends Label {
 
     public TrustedEntityLabel(TrustedEntity refereed) {
         this.refereed = refereed;
-        this.setText(refereed.getInformation());
+        this.setText(refereed.getName());
     }
 
     public TrustedEntity getRefereed() {

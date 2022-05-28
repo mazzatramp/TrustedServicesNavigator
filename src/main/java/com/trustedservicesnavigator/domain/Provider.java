@@ -65,8 +65,11 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedEntity 
     }
 
     @Override
-    public String getInformation() {
-        return this.name + ", " + this.serviceTypes + " (" + services.size() + ")";
+    public List<String> getInformation() {
+        List<String> information = new ArrayList<>(3);
+        information.add(name);
+        information.add(serviceTypes.toString());
+        return information;
     }
 
     public void setName(String name) {

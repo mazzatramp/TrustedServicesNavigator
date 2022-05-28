@@ -8,6 +8,8 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.util.List;
+
 public class UserInterfaceController {
     @FXML
     private DisplayPane displayPane;
@@ -53,8 +55,8 @@ public class UserInterfaceController {
         this.filterSelection.setNavigationMediator(navigationMediator);
     }
 
-    public void openInfoPaneWithInfo(String providerInfo, String serviceInfo) {
-        infoPane.setInfo(providerInfo, serviceInfo);
+    public void openInfoPaneWithInfo(List<String> info) {
+        infoPane.setInfo(info);
         setInfoPaneVisible(true);
     }
 
