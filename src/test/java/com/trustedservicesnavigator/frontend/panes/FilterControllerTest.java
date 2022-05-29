@@ -3,10 +3,8 @@ package com.trustedservicesnavigator.frontend.panes;
 import com.trustedservicesnavigator.Help;
 import com.trustedservicesnavigator.domain.TrustedList;
 import com.trustedservicesnavigator.frontend.FilterController;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -196,80 +194,251 @@ class FilterControllerTest {
         @DisplayName("and I use the method wouldHaveZeroServices")
         @Nested
         class WouldHaveZeroServices{
+
+            @DisplayName("with a Provider already filtered")
+            @Nested
+            class ProviderAlreadyFiltered{
+                @DisplayName("and as new Item a ServiceType of that provider")
+                @Nested
+                class withServiceTypeOfTheProvider{
+                    @DisplayName("should return false")
+                    @Test
+                    void mettoprovidercomefiltroepoiunoservicetypediquelprovider() throws IOException {
+                        TrustedList lista = Help.getWholeList();
+                        FilterController fc = new FilterController();
+                        List<String> listaProv = new ArrayList<>();
+                        listaProv.add("PrimeSign GmbH");
+                        fc.getProviderFilter().setWhitelist(listaProv);
+                        fc.applyFiltersTo(lista);
+                        String nuovoelemento ="QCertESig";
+                        boolean hazero = fc.wouldHaveZeroServices(fc.getServiceTypeFilter(),nuovoelemento);
+
+                        assertEquals(false, hazero);
+                        //System.out.println(lista.getCountries().get(0).getName());
+
+                        //assertEquals(countryexpected,lista.getCountries().get(0).getName());
+
+                    }
+                }
+                @DisplayName("and as new Item a ServiceType not of that provider")
+                @Nested
+                class withServiceTypeNotOfTheProvider{
+                    @DisplayName("should return true")
+                    @Test
+                    void mettoprovidercomefiltroepoiunoservicetypenondiquelprovider() throws IOException {
+                        TrustedList lista = Help.getWholeList();
+                        FilterController fc = new FilterController();
+                        List<String> listaProv = new ArrayList<>();
+                        listaProv.add("PrimeSign GmbH");
+                        fc.getProviderFilter().setWhitelist(listaProv);
+                        fc.applyFiltersTo(lista);
+                        String nuovoelemento ="QWAC";
+
+                        boolean hazero = fc.wouldHaveZeroServices(fc.getServiceTypeFilter(),nuovoelemento);
+
+                        assertEquals(true, hazero);
+                        //System.out.println(lista.getCountries().get(0).getName());
+
+                        //assertEquals(countryexpected,lista.getCountries().get(0).getName());
+
+                    }
+                }
+
+                @DisplayName("and as new Item a status of at least a service of that provider")
+                @Nested
+                class withStatusOfTheProvider{
+                    @DisplayName("should return false")
+                    @Test
+                    void mettoprovidercomefiltroepoiunostatusdiquelprovider() throws IOException {
+                        TrustedList lista = Help.getWholeList();
+                        FilterController fc = new FilterController();
+                        List<String> listaProv = new ArrayList<>();
+                        listaProv.add("PrimeSign GmbH");
+                        fc.getProviderFilter().setWhitelist(listaProv);
+                        fc.applyFiltersTo(lista);
+                        String nuovoelemento ="granted";
+                        boolean hazero = fc.wouldHaveZeroServices(fc.getStatusFilter(),nuovoelemento);
+                        System.out.println(lista.getStatuses());
+
+                        assertEquals(false, hazero);
+                        //System.out.println(lista.getCountries().get(0).getName());
+
+                        //assertEquals(countryexpected,lista.getCountries().get(0).getName());
+
+                    }
+                }
+                @DisplayName("and as new Item a status that is not of a service of that provider")
+                @Nested
+                class withStatusNotOfTheProvider{
+                    @DisplayName("should return true")
+                    @Test
+                    void mettoprovidercomefiltroepoiunostatusnondiquelprovider() throws IOException {
+                    TrustedList lista = Help.getWholeList();
+                    FilterController fc = new FilterController();
+                    List<String> listaProv = new ArrayList<>();
+                    listaProv.add("PrimeSign GmbH");
+                    fc.getProviderFilter().setWhitelist(listaProv);
+                    fc.applyFiltersTo(lista);
+                    String nuovoelemento ="withdrawn";
+                    boolean hazero = fc.wouldHaveZeroServices(fc.getStatusFilter(),nuovoelemento);
+                    System.out.println(lista.getStatuses());
+
+                    assertEquals(true, hazero);
+                    System.out.println(lista.getCountries());
+
+                    //assertEquals(countryexpected,lista.getCountries().get(0).getName());
+
+                }
+
+                }
+                @DisplayName("and as new Item a provider not of that country")
+                @Nested
+                class withProviderNotOfTheSameCOuntry{
+                    @DisplayName("should return false")
+                    @Test
+                    void providernotsamecountry() throws IOException {
+                        TrustedList lista = Help.getWholeList();
+                        FilterController fc = new FilterController();
+                        List<String> listaProv = new ArrayList<>();
+                        listaProv.add("PrimeSign GmbH");
+                        fc.getProviderFilter().setWhitelist(listaProv);
+                        fc.applyFiltersTo(lista);
+                        String nuovoelemento ="Federal Chamber of Notaries";
+                        boolean hazero = fc.wouldHaveZeroServices(fc.getProviderFilter(),nuovoelemento); //IN VERITA' SE LA LISTA AVESSE DEGLI
+                        //ALTRI FILTRI CHE FANNO SI CHE SIA IL PRIMO CHE IL SECONDO PROVIDER NON HANNO SERVIZI, IL METODO RITORNEREBBE TRUE
+                        //System.out.println(lista.getStatuses());
+                        assertEquals(false, hazero);
+                    }
+                }
+                @DisplayName("and as new Item a provider of that country")
+                @Nested
+                class withProviderOfTheSameCountry{
+                    @DisplayName("should return false")
+                    @Test
+                    void providersamecountry() throws IOException {
+                        TrustedList lista = Help.getWholeList();
+                        FilterController fc = new FilterController();
+                        List<String> listaProv = new ArrayList<>();
+                        listaProv.add("PrimeSign GmbH");
+                        fc.getProviderFilter().setWhitelist(listaProv);
+                        fc.applyFiltersTo(lista);
+                        String nuovoelemento ="A-Trust Gesellschaft für Sicherheitssysteme im elektronischen Datenverkehr GmbH";
+                        boolean hazero = fc.wouldHaveZeroServices(fc.getProviderFilter(),nuovoelemento); //IN VERITA' SE LA LISTA AVESSE DEGLI
+                        //ALTRI FILTRI CHE FANNO SI CHE SIA IL PRIMO CHE IL SECONDO PROVIDER NON HANNO SERVIZI, IL METODO RITORNEREBBE TRUE
+                        //System.out.println(lista.getStatuses());
+                        assertEquals(false, hazero);
+                    }
+                }
+
+            }
+            @DisplayName("with a ServiceType already filtered")
+            @Nested
+            class ServiceTypeFilterAsArgument{
+                @DisplayName("and as new Item a Provider without that servicetype")
+                @Nested
+                class withServiceTypeNotOfTheProvider{
+                    @DisplayName("should return true")
+                    @Test
+                    void mettoprovidercomefiltroepoiunoservicetypenondiquelprovider() throws IOException {
+                        TrustedList lista = Help.getWholeList();
+                        FilterController fc = new FilterController();
+                        List<String> listaServTypes = new ArrayList<>();
+                        listaServTypes.add("QWAC");
+                        String nuovoelemento ="PrimeSign GmbH";
+                        fc.getServiceTypeFilter().setWhitelist(listaServTypes);
+                        fc.applyFiltersTo(lista);
+
+                        boolean hazero = fc.wouldHaveZeroServices(fc.getProviderFilter(),nuovoelemento);
+
+                        assertEquals(true, hazero);
+                        //System.out.println(lista.getCountries().get(0).getName());
+
+                        //assertEquals(countryexpected,lista.getCountries().get(0).getName());
+
+                    }
+                }
+                @DisplayName("and as new Item a Provider with that servicetype")
+                @Nested
+                class withServiceTypeOfTheProvider {
+                    @DisplayName("should return false")
+                    @Test
+                    void mettoprovidercomefiltroepoiunoservicetypendiquelprovider() throws IOException {
+                        TrustedList lista = Help.getWholeList();
+                        FilterController fc = new FilterController();
+                        List<String> listaServTypes = new ArrayList<>();
+                        listaServTypes.add("QCertESig");
+                        String nuovoelemento = "PrimeSign GmbH";
+                        fc.getServiceTypeFilter().setWhitelist(listaServTypes);
+                        fc.applyFiltersTo(lista);
+
+                        boolean hazero = fc.wouldHaveZeroServices(fc.getProviderFilter(), nuovoelemento);
+
+                        assertEquals(false, hazero);
+                        //System.out.println(lista.getCountries().get(0).getName());
+
+                        //assertEquals(countryexpected,lista.getCountries().get(0).getName());
+
+                    }
+                }
+                //SE NON FILTRO PER PROVIDER CI SONO SEMPRE TUTTI I SERVICETYPES PER OGNI STATUSES E VICEVERSA QUINDI QUESTI TEST LI LASCEREI ALLA FINE
+            }
+            @DisplayName("with a status already filtered")
+            @Nested
+            class StatusFilterAsArgument{
+                @DisplayName("and as new Item a Provider without any service with that status")
+                @Nested
+                class withStatusNotOfTheProvider{
+                    @DisplayName("should return true")
+                    @Test
+                    void mettoprovidercomefiltroepoiunostatusnondiquelprovider() throws IOException {
+                        TrustedList lista = Help.getWholeList();
+                        FilterController fc = new FilterController();
+                        List<String> listastatuses = new ArrayList<>();
+                        listastatuses.add("withdrawn");
+                        String nuovoelemento ="PrimeSign GmbH";
+                        fc.getStatusFilter().setWhitelist(listastatuses);
+                        fc.applyFiltersTo(lista);
+
+                        boolean hazero = fc.wouldHaveZeroServices(fc.getProviderFilter(),nuovoelemento);
+
+                        assertEquals(true, hazero);
+                        //System.out.println(lista.getCountries().get(0).getName());
+
+                        //assertEquals(countryexpected,lista.getCountries().get(0).getName());
+
+                    }
+                }
+                @DisplayName("and as new Item a Provider with a service with that status")
+                @Nested
+                class withStatusOfTheProvider {
+                    @DisplayName("should return false")
+                    @Test
+                    void mettoprovidercomefiltroepoiunoservicetypendiquelprovider() throws IOException {
+                        TrustedList lista = Help.getWholeList();
+                        FilterController fc = new FilterController();
+                        List<String> listastatuses = new ArrayList<>();
+                        listastatuses.add("granted");
+                        String nuovoelemento ="PrimeSign GmbH";
+                        fc.getStatusFilter().setWhitelist(listastatuses);
+                        fc.applyFiltersTo(lista);
+
+                        boolean hazero = fc.wouldHaveZeroServices(fc.getProviderFilter(), nuovoelemento);
+
+                        assertEquals(false, hazero);
+                        //System.out.println(lista.getCountries().get(0).getName());
+
+                        //assertEquals(countryexpected,lista.getCountries().get(0).getName());
+
+                    }
+                }
+            }
             //NON CONTINUO A MIGLIORARE IL TEST PER PERICOLO CHE WOULDHAVEZEROSERVICE DIVENTI PRIVATO
             //Provo a mettere un filtro con un provider e poi metto un tipodiservizio che quel provider non ha
-            @Test
-            void mettoprovidercomefiltroepoiunoservicetypenondiquelprovider() throws IOException {
-                TrustedList lista = Help.getWholeList();
-                FilterController fc = new FilterController();
-                List<String> listaProv = new ArrayList<>();
-                listaProv.add("PrimeSign GmbH");
-                fc.getProviderFilter().setWhitelist(listaProv);
-                fc.applyFiltersTo(lista);
-                String nuovoelemento ="QWAC";
-                boolean hazero = fc.wouldHaveZeroServices(fc.getServiceTypeFilter(),nuovoelemento);
 
-                assertEquals(true, hazero);
-                //System.out.println(lista.getCountries().get(0).getName());
 
-                //assertEquals(countryexpected,lista.getCountries().get(0).getName());
 
-            }
-            @Test
-            void mettoprovidercomefiltroepoiunoservicetypediquelprovider() throws IOException {
-                TrustedList lista = Help.getWholeList();
-                FilterController fc = new FilterController();
-                List<String> listaProv = new ArrayList<>();
-                listaProv.add("PrimeSign GmbH");
-                fc.getProviderFilter().setWhitelist(listaProv);
-                fc.applyFiltersTo(lista);
-                String nuovoelemento ="QCertESig";
-                boolean hazero = fc.wouldHaveZeroServices(fc.getServiceTypeFilter(),nuovoelemento);
 
-                assertEquals(false, hazero);
-                //System.out.println(lista.getCountries().get(0).getName());
 
-                //assertEquals(countryexpected,lista.getCountries().get(0).getName());
-
-            }
-
-            @Test
-            void mettoprovidercomefiltroepoiunostatusnondiquelprovider() throws IOException {
-                TrustedList lista = Help.getWholeList();
-                FilterController fc = new FilterController();
-                List<String> listaProv = new ArrayList<>();
-                listaProv.add("PrimeSign GmbH");
-                fc.getProviderFilter().setWhitelist(listaProv);
-                fc.applyFiltersTo(lista);
-                String nuovoelemento ="withdrawn";
-                boolean hazero = fc.wouldHaveZeroServices(fc.getStatusFilter(),nuovoelemento);
-                System.out.println(lista.getStatuses());
-
-                assertEquals(true, hazero);
-                System.out.println(lista.getCountries());
-
-                //assertEquals(countryexpected,lista.getCountries().get(0).getName());
-
-            }
-            @Test
-            void mettoprovidercomefiltroepoiunostatusdiquelprovider() throws IOException {
-                TrustedList lista = Help.getWholeList();
-                FilterController fc = new FilterController();
-                List<String> listaProv = new ArrayList<>();
-                listaProv.add("PrimeSign GmbH");
-                fc.getProviderFilter().setWhitelist(listaProv);
-                fc.applyFiltersTo(lista);
-                String nuovoelemento ="granted";
-                boolean hazero = fc.wouldHaveZeroServices(fc.getStatusFilter(),nuovoelemento);
-                System.out.println(lista.getStatuses());
-
-                assertEquals(false, hazero);
-                //System.out.println(lista.getCountries().get(0).getName());
-
-                //assertEquals(countryexpected,lista.getCountries().get(0).getName());
-
-            }
-            //DOPO DEVO ANCHE CONTROLLARE CHE MESSO UNO STATUS
 
         }
     }
