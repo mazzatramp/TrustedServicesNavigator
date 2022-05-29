@@ -29,7 +29,7 @@ public abstract class Filter {
     protected abstract void filterByWhitelist(TrustedList listToFilter);
 
     public boolean wouldHaveZeroResultsAppliedTo(TrustedList filteredList) {
-        applyTo(filteredList);
+        applyTo(filteredList); //MA SE USO APPLYTO MODIFICO L'ARGOMENTO
         return filteredList.getCountries().isEmpty();
     }
 }
