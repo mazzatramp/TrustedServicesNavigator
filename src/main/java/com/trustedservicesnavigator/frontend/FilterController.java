@@ -48,18 +48,14 @@ public class FilterController {
     }
 
 
-    public boolean wouldHaveZeroServices(Filter filter, String newWhitelistItem) throws IOException {
+    public boolean wouldHaveZeroServices(Filter filter, String newWhitelistItem, TrustedList temporary) throws IOException {
         boolean hasZeroServices;
 
         List<String> realWhitelist = filter.getWhitelist();
         List<String> testWhitelist = new ArrayList<>(realWhitelist);
         testWhitelist.add(newWhitelistItem);
         filter.setWhitelist(testWhitelist);
-
-        //TrustedList filteredList = navigationMediator.getCompleteList().clone();
-        TrustedList filteredList = Aiuto.getWholeList();
-        hasZeroServices = haveZeroResultsAppliedTo(filteredList);
-
+        hasZeroServices = haveZeroResultsAppliedTo(temporary.clone());
         filter.setWhitelist(realWhitelist);
         return hasZeroServices;
     }

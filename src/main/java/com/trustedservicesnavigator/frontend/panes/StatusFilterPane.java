@@ -27,7 +27,11 @@ public class StatusFilterPane extends FilterPane {
     @Override
     public void fill(TrustedList dataToShow) {
         dataToShow.getStatuses().stream().sorted().forEach(
-                status -> statuses.getItems().add(new CheckBox(status))
+                status -> {
+                    CheckBox box = new CheckBox(status);
+                    box.selectedProperty().addListener(super.getSelectionListener());
+                    statuses.getItems().add(box);
+                }
         );
     }
 

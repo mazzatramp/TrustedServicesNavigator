@@ -27,7 +27,9 @@ public class ServiceTypeFilterPane extends FilterPane {
     @Override
     public void fill(TrustedList dataToShow) {
         dataToShow.getServiceTypes().forEach(serviceType -> {
-            serviceTypes.getItems().add(new CheckBox(serviceType));
+            CheckBox box = new CheckBox(serviceType);
+            box.selectedProperty().addListener(super.getSelectionListener());
+            serviceTypes.getItems().add(box);
         });
     }
 
