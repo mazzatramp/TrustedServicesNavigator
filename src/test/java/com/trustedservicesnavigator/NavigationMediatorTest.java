@@ -1,13 +1,13 @@
 package com.trustedservicesnavigator;
 
+import com.trustedservicesnavigator.frontend.UserInterfaceController;
+import com.trustedservicesnavigator.frontend.panes.FilterSelectionAccordion;
 import org.junit.jupiter.api.*;
 
-//SAREBBE BELLO ANCHE METTERE DEI TIMEOUT NEI TEST
+import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled //Togliere Disabled se si vuole far funzionare i tests
-@DisplayName("A nomeClasse")
-public class NavigationMediatorTest {
-    //Classe nomeOggetto;
+@DisplayName("A NavigationMediator")
+class NavigationMediatorTest {
     @Nested
     @DisplayName("when null")
     class WhenNull {
@@ -23,22 +23,59 @@ public class NavigationMediatorTest {
         class nomeMetodo2{}
     }
     @Test
-    @DisplayName("is instantiated with new costruttoreOggetto")
+    @DisplayName("is instantiated with new NavigationMediator()")
     void isInstantiatedWithNewClasse() {
-        //new Classe();
+        new NavigationMediator();
     }
+    NavigationMediator navigationMediator;
     @Nested
     @DisplayName("when new")
     class WhenNew{
         @BeforeEach
-        void createACountry() {
-            //nomeOggetto=new Classe()
+        @Test
+        void createANavigationMediator() {
+            navigationMediator = new NavigationMediator();
         }
-        @DisplayName("and I use the method ...")
-        @Nested
-        class nomeMetodo1{}
-        @DisplayName("and I use the method ...")
+        @Disabled
+        @DisplayName("and I use the method readActiveFiltersFrom")
+        @Test
+        void prova(){
+                UserInterfaceController userInterfaceController= new UserInterfaceController();
+                navigationMediator.setUserInterfaceController(userInterfaceController);
+                navigationMediator.readActiveFiltersFrom(new FilterSelectionAccordion());
+                //assertEquals(navigationMediator.getFilteredList().getCountries().getProviders, userInterfaceController.getFilterAccordion().getSelectedProviders());
+            }
+
+
+
+        }
+        @DisplayName("and I use the method ..")
         @Nested
         class nomeMetodo2{}}
-}
 
+/*
+    @Test
+    void setUserInterfaceController() {
+    }
+
+    @Test
+    void getFilteredList() {
+    }
+
+    @Test
+    void getCompleteList() {
+    }
+
+    @Test
+    void fillCompleteListFromApiData() {
+    }
+
+    @Test
+    void getFilterController() {
+    }
+
+    @Test
+    void readActiveFiltersFrom() {
+    }
+}
+*/
