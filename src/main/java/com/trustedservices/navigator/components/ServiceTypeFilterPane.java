@@ -19,7 +19,8 @@ public class ServiceTypeFilterPane extends FilterPane {
     @Override
     protected void setSelectionStatusForAll(boolean selectionStatus) {
         serviceTypes.getItems().forEach(checkBox -> {
-            checkBox.setSelected(selectionStatus);
+            if (!checkBox.isDisabled())
+                checkBox.setSelected(selectionStatus);
         });
     }
 

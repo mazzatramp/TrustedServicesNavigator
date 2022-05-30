@@ -19,7 +19,8 @@ public class StatusFilterPane extends FilterPane {
     @Override
     protected void setSelectionStatusForAll(boolean selectionStatus) {
         statuses.getItems().forEach(checkBox -> {
-            checkBox.setSelected(selectionStatus);
+            if (!checkBox.isDisabled())
+                checkBox.setSelected(selectionStatus);
         });
     }
 
