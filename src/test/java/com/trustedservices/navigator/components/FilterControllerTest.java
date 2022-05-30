@@ -49,7 +49,7 @@ class FilterControllerTest {
                     void FirstProviderInTheWhitelist() throws IOException {
                         //arrange
                         //FilterController fc = new FilterController();
-                        List<String> listaProv = new ArrayList<>();
+                        Set<String> listaProv = new HashSet<>();
                         listaProv.add(providerExpected);
                         filterController.getProviderFilter().setWhitelist(listaProv);
 
@@ -75,7 +75,7 @@ class FilterControllerTest {
                         //System.out.println(lista.getCountries().get(0).getProviders());
                         //arrange
                         //FilterController fc = new FilterController();
-                        List<String> listaServiceTypes = new ArrayList<>();
+                        Set<String> listaServiceTypes = new HashSet<>();
                         listaServiceTypes.add(providerExpected);
                         filterController.getServiceTypeFilter().setWhitelist(listaServiceTypes);
 
@@ -106,7 +106,7 @@ class FilterControllerTest {
                     @Test
                     void FirstFilterIsAServiceType() throws IOException {
                         //FilterController fc = new FilterController();
-                        List<String> listaServiceTypes = new ArrayList<>();
+                        Set<String> listaServiceTypes = new HashSet<>();
                         listaServiceTypes.add(expectedservicetype);
                         filterController.getServiceTypeFilter().setWhitelist(listaServiceTypes);
 
@@ -140,7 +140,7 @@ class FilterControllerTest {
                     void FirstFilterIsA() throws IOException {
                         //TrustedList lista = Help.getWholeList();
                         //FilterController fc = new FilterController();
-                        List<String> listaStatuses = new ArrayList<>();
+                        Set<String> listaStatuses = new HashSet<>();
                         listaStatuses.add(expectedstatuses);
                         filterController.getStatusFilter().setWhitelist(listaStatuses);
 
@@ -208,7 +208,7 @@ class FilterControllerTest {
                     void mettoprovidercomefiltroepoiunoservicetypediquelprovider() throws IOException {
                         TrustedList lista = Help.getWholeList();
                         FilterController fc = new FilterController();
-                        List<String> listaProv = new ArrayList<>();
+                        Set<String> listaProv = new HashSet<>();
                         listaProv.add("PrimeSign GmbH");
                         fc.getProviderFilter().setWhitelist(listaProv);
                         fc.applyFiltersTo(lista);
@@ -230,7 +230,7 @@ class FilterControllerTest {
                     void mettoprovidercomefiltroepoiunoservicetypenondiquelprovider() throws IOException {
                         TrustedList lista = Help.getWholeList();
                         FilterController fc = new FilterController();
-                        List<String> listaProv = new ArrayList<>();
+                        Set<String> listaProv = new HashSet<>();
                         listaProv.add("PrimeSign GmbH");
                         fc.getProviderFilter().setWhitelist(listaProv);
                         fc.applyFiltersTo(lista);
@@ -254,7 +254,7 @@ class FilterControllerTest {
                     void mettoprovidercomefiltroepoiunostatusdiquelprovider() throws IOException {
                         TrustedList lista = Help.getWholeList();
                         FilterController fc = new FilterController();
-                        List<String> listaProv = new ArrayList<>();
+                        Set<String> listaProv = new HashSet<>();
                         listaProv.add("PrimeSign GmbH");
                         fc.getProviderFilter().setWhitelist(listaProv);
                         fc.applyFiltersTo(lista);
@@ -277,7 +277,7 @@ class FilterControllerTest {
                     void mettoprovidercomefiltroepoiunostatusnondiquelprovider() throws IOException {
                     TrustedList lista = Help.getWholeList();
                     FilterController fc = new FilterController();
-                    List<String> listaProv = new ArrayList<>();
+                    Set<String> listaProv = new HashSet<>();
                     listaProv.add("PrimeSign GmbH");
                     fc.getProviderFilter().setWhitelist(listaProv);
                     fc.applyFiltersTo(lista);
@@ -301,7 +301,7 @@ class FilterControllerTest {
                     void providernotsamecountry() throws IOException {
                         TrustedList lista = Help.getWholeList();
                         FilterController fc = new FilterController();
-                        List<String> listaProv = new ArrayList<>();
+                        Set<String> listaProv = new HashSet<>();
                         listaProv.add("PrimeSign GmbH");
                         fc.getProviderFilter().setWhitelist(listaProv);
                         fc.applyFiltersTo(lista);
@@ -320,7 +320,7 @@ class FilterControllerTest {
                     void providersamecountry() throws IOException {
                         TrustedList lista = Help.getWholeList();
                         FilterController fc = new FilterController();
-                        List<String> listaProv = new ArrayList<>();
+                        Set<String> listaProv = new HashSet<>();
                         listaProv.add("PrimeSign GmbH");
                         fc.getProviderFilter().setWhitelist(listaProv);
                         fc.applyFiltersTo(lista);
@@ -344,7 +344,7 @@ class FilterControllerTest {
                     void mettoprovidercomefiltroepoiunoservicetypenondiquelprovider() throws IOException {
                         TrustedList lista = Help.getWholeList();
                         FilterController fc = new FilterController();
-                        List<String> listaServTypes = new ArrayList<>();
+                        Set<String> listaServTypes = new HashSet<>();
                         listaServTypes.add("QWAC");
                         String nuovoelemento ="PrimeSign GmbH";
                         fc.getServiceTypeFilter().setWhitelist(listaServTypes);
@@ -367,7 +367,7 @@ class FilterControllerTest {
                     void mettoprovidercomefiltroepoiunoservicetypendiquelprovider() throws IOException {
                         TrustedList lista = Help.getWholeList();
                         FilterController fc = new FilterController();
-                        List<String> listaServTypes = new ArrayList<>();
+                        Set<String> listaServTypes = new HashSet<>();
                         listaServTypes.add("QCertESig");
                         String nuovoelemento = "PrimeSign GmbH";
                         fc.getServiceTypeFilter().setWhitelist(listaServTypes);
@@ -395,7 +395,7 @@ class FilterControllerTest {
                     void mettoprovidercomefiltroepoiunostatusnondiquelprovider() throws IOException {
                         TrustedList lista = Help.getWholeList();
                         FilterController fc = new FilterController();
-                        List<String> listastatuses = new ArrayList<>();
+                        Set<String> listastatuses = new HashSet<>();
                         listastatuses.add("withdrawn");
                         String nuovoelemento ="PrimeSign GmbH";
                         fc.getStatusFilter().setWhitelist(listastatuses);
@@ -418,7 +418,7 @@ class FilterControllerTest {
                     void mettoprovidercomefiltroepoiunoservicetypendiquelprovider() throws IOException {
                         TrustedList lista = Help.getWholeList();
                         FilterController fc = new FilterController();
-                        List<String> listastatuses = new ArrayList<>();
+                        Set<String> listastatuses = new HashSet<>();
                         listastatuses.add("granted");
                         String nuovoelemento ="PrimeSign GmbH";
                         fc.getStatusFilter().setWhitelist(listastatuses);

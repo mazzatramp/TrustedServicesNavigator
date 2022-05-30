@@ -10,7 +10,9 @@ import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class FilterSelectionAccordion extends Accordion {
 
@@ -42,13 +44,13 @@ public class FilterSelectionAccordion extends Accordion {
         statuses.fillWith(data);
     }
 
-    public List<String> getSelectedProviders() {
+    public Set<String> getSelectedProviders() {
         return providers.getSelected();
     }
-    public List<String> getSelectedServiceTypes() {
+    public Set<String> getSelectedServiceTypes() {
         return serviceTypes.getSelected();
     }
-    public List<String> getSelectedStatuses() {
+    public Set<String> getSelectedStatuses() {
         return statuses.getSelected();
     }
 
@@ -60,8 +62,8 @@ public class FilterSelectionAccordion extends Accordion {
     }
 
     private void disableItemsOf(FilterPane filterPane) {
-        List<String> unselectedFilterItems = filterPane.getUnselected();
-        List<String> itemsToDisable = new ArrayList<>();
+        Set<String> unselectedFilterItems = filterPane.getUnselected();
+        Set<String> itemsToDisable = new HashSet<>();
 
         for (String unselected : unselectedFilterItems) {
             Filter filter = filterPane.getAssociatedFilter();

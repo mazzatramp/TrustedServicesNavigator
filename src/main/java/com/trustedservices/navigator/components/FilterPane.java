@@ -11,7 +11,9 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public abstract class FilterPane extends TitledPane {
     @FXML
@@ -49,9 +51,9 @@ public abstract class FilterPane extends TitledPane {
 
     public abstract void fillWith(TrustedList dataToShow);
 
-    public abstract List<String> getSelected();
-    public abstract List<String> getUnselected();
-    public abstract void disable(List<String> toDisable);
+    public abstract Set<String> getSelected();
+    public abstract Set<String> getUnselected();
+    public abstract void disable(Collection<String> toDisable);
 
     protected void setFilterView(Control control) {
         AnchorPane.setTopAnchor(control, 0.0);

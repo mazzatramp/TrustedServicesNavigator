@@ -4,8 +4,7 @@ import com.trustedservices.domain.TrustedList;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class StatusFilterPane extends FilterPane {
 
@@ -35,8 +34,8 @@ public class StatusFilterPane extends FilterPane {
         );
     }
 
-    public List<String> getSelected() {
-        List<String> selectedStatuses = new ArrayList<>(0);
+    public Set<String> getSelected() {
+        Set<String> selectedStatuses = new HashSet<>();
 
         for (CheckBox status : statuses.getItems()) {
             if (!status.isDisabled() && status.isSelected()) {
@@ -48,9 +47,9 @@ public class StatusFilterPane extends FilterPane {
     }
 
     @Override
-    public List<String> getUnselected() {
+    public Set<String> getUnselected() {
 
-        List<String> selectedStatuses = new ArrayList<>(0);
+        Set<String> selectedStatuses = new HashSet<>(0);
 
         for (CheckBox status : statuses.getItems()) {
             if (!status.isSelected()) {
@@ -62,7 +61,7 @@ public class StatusFilterPane extends FilterPane {
     }
 
     @Override
-    public void disable(List<String> itemsToDisable) {
+    public void disable(Collection<String> itemsToDisable) {
         statuses.getItems().forEach(statusItem -> {
             boolean toDisable = itemsToDisable.contains(statusItem.getText());
             statusItem.setDisable(toDisable);

@@ -1,4 +1,6 @@
 package com.trustedservices;
+import com.trustedservices.navigator.NavigationMediator;
+import com.trustedservices.navigator.UserInterfaceController;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,33 +21,36 @@ class NavigationMediatorTest {
         @Nested
         class nomeMetodo2{}
     }
+
     @Test
     @DisplayName("is instantiated with new NavigationMediator()")
     void isInstantiatedWithNewClasse() {
         new NavigationMediator();
     }
+
     NavigationMediator navigationMediator;
+
     @Nested
     @DisplayName("when new")
     class WhenNew{
+
         @BeforeEach
         @Test
         void createANavigationMediator() {
             navigationMediator = new NavigationMediator();
         }
+
         @Disabled
         @DisplayName("and I use the method readActiveFiltersFrom")
         @Test
         void prova(){
                 UserInterfaceController userInterfaceController= new UserInterfaceController();
                 navigationMediator.setUserInterfaceController(userInterfaceController);
-                navigationMediator.readActiveFiltersFrom(new FilterSelectionAccordion());
+                navigationMediator.updateActiveFiltersFromUserSelection();
                 //assertEquals(navigationMediator.getFilteredList().getCountries().getProviders, userInterfaceController.getFilterAccordion().getSelectedProviders());
             }
-
-
-
         }
+
         @DisplayName("and I use the method ..")
         @Nested
         class nomeMetodo2{}}

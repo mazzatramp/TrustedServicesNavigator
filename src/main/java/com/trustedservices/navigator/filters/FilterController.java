@@ -8,7 +8,9 @@ import com.trustedservices.navigator.filters.ServiceTypeFilter;
 import com.trustedservices.navigator.filters.StatusFilter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 public class FilterController {
@@ -49,9 +51,9 @@ public class FilterController {
     public boolean wouldHaveZeroServices(Filter filter, String itemToTest) {
         assert navigationMediator != null;
         boolean hasZeroServices;
-        List<String> actualWhitelist = filter.getWhitelist();
+        Set<String> actualWhitelist = filter.getWhitelist();
 
-        List<String> whitelistForTesting = new ArrayList<>(1);
+        Set<String> whitelistForTesting = new HashSet<>(1);
         whitelistForTesting.add(itemToTest);
         filter.setWhitelist(whitelistForTesting);
 

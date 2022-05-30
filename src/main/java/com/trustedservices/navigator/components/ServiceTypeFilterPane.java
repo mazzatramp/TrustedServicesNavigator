@@ -4,8 +4,7 @@ import com.trustedservices.domain.TrustedList;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ServiceTypeFilterPane extends FilterPane {
 
@@ -33,8 +32,8 @@ public class ServiceTypeFilterPane extends FilterPane {
         });
     }
 
-    public List<String> getSelected() {
-        List<String> selectedServiceTypes = new ArrayList<>(0);
+    public Set<String> getSelected() {
+        Set<String> selectedServiceTypes = new HashSet<>(0);
 
         for (CheckBox serviceType : serviceTypes.getItems()) {
             if (serviceType.isSelected()) {
@@ -46,8 +45,8 @@ public class ServiceTypeFilterPane extends FilterPane {
     }
 
     @Override
-    public List<String> getUnselected() {
-        List<String> selectedServiceTypes = new ArrayList<>(0);
+    public Set<String> getUnselected() {
+        Set<String> selectedServiceTypes = new HashSet<>(0);
 
         for (CheckBox serviceType : serviceTypes.getItems()) {
             if (!serviceType.isSelected()) {
@@ -59,7 +58,7 @@ public class ServiceTypeFilterPane extends FilterPane {
     }
 
     @Override
-    public void disable(List<String> itemsToDisable) {
+    public void disable(Collection<String> itemsToDisable) {
         serviceTypes.getItems().forEach(serviceTypeItem -> {
             boolean toDisable = itemsToDisable.contains(serviceTypeItem.getText());
             serviceTypeItem.setDisable(toDisable);

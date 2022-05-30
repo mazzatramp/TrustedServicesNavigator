@@ -8,8 +8,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.CheckBoxTreeCell;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ProviderFilterPane extends FilterPane {
 
@@ -37,8 +36,8 @@ public class ProviderFilterPane extends FilterPane {
         });
     }
 
-    public List<String> getSelected() {
-        List<String> selectedProviders = new ArrayList<>();
+    public Set<String> getSelected() {
+        Set<String> selectedProviders = new HashSet<>();
         providers.getRoot().getChildren().forEach(countryTreeItem -> {
             CheckBoxTreeItem<String> countryCheckBox = (CheckBoxTreeItem<String>) countryTreeItem;
             if (!countryCheckBox.isIndependent()) {
@@ -53,8 +52,8 @@ public class ProviderFilterPane extends FilterPane {
     }
 
     @Override
-    public List<String> getUnselected() {
-        List<String> unselected = new ArrayList<>();
+    public Set<String> getUnselected() {
+        Set<String> unselected = new HashSet<>();
         providers.getRoot().getChildren().forEach(countryTreeItem -> {
             CheckBoxTreeItem<String> countryCheckBox = (CheckBoxTreeItem<String>) countryTreeItem;
             if (!countryCheckBox.isIndependent()) {
@@ -69,7 +68,7 @@ public class ProviderFilterPane extends FilterPane {
     }
 
     @Override
-    public void disable(List<String> toDisable) {
+    public void disable(Collection<String> toDisable) {
         //
     }
 

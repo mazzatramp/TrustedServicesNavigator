@@ -3,14 +3,16 @@ package com.trustedservices.navigator.filters;
 import com.trustedservices.domain.TrustedList;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public abstract class Filter {
 
-    protected List<String> whitelist;
+    protected Set<String> whitelist;
 
     public Filter() {
-        this.whitelist = new ArrayList<>(0);
+        this.whitelist = new HashSet<>();
     }
 
     public void applyTo(TrustedList listToFilter) {
@@ -18,11 +20,11 @@ public abstract class Filter {
             filterByWhitelist(listToFilter);
     }
 
-    public void setWhitelist(List<String> whitelist) {
+    public void setWhitelist(Set<String> whitelist) {
         this.whitelist = whitelist;
     }
 
-    public List<String> getWhitelist() {
+    public Set<String> getWhitelist() {
         return whitelist;
     }
 
