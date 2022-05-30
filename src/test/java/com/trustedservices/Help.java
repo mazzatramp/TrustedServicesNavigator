@@ -2,8 +2,8 @@ package com.trustedservices;
 
 import com.trustedservices.domain.Country;
 import com.trustedservices.domain.TrustedList;
-import com.trustedservices.web.TrustedListApiBuilder;
-import com.trustedservices.web.TrustedListBuilder;
+import com.trustedservices.navigator.web.TrustedListApiBuilder;
+import com.trustedservices.navigator.web.TrustedListBuilder;
 
 import java.io.IOException;
 

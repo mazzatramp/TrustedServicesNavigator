@@ -3,8 +3,7 @@ package com.trustedservices.navigator;
 import com.trustedservices.domain.TrustedList;
 import com.trustedservices.navigator.filters.FilterController;
 import com.trustedservices.navigator.components.FilterSelectionAccordion;
-import com.trustedservices.web.TrustedListApiBuilder;
-import com.trustedservices.web.TrustedListBuilder;
+import com.trustedservices.navigator.web.TrustedListBuilder;
 
 public class NavigationMediator {
     private UserInterfaceController userInterfaceController;

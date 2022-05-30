@@ -2,6 +2,8 @@ package com.trustedservices.navigator;
 
 import com.trustedservices.navigator.filters.FilterController;
 import com.trustedservices.navigator.components.FilterSelectionAccordion;
+import com.trustedservices.navigator.web.TrustedListApiBuilder;
+import com.trustedservices.navigator.web.TrustedListBuilder;
 import com.trustedservices.web.*;
 import javafx.application.Application;
 import javafx.concurrent.Task;

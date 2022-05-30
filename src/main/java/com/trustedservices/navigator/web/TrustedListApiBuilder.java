@@ -1,4 +1,4 @@
-package com.trustedservices.web;
+package com.trustedservices.navigator.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trustedservices.domain.Country;

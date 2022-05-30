@@ -13,6 +13,6 @@ module com.tsn.trustedservicesnavigator {
     opens com.trustedservices.navigator to javafx.fxml;
     exports com.trustedservices.navigator.components;
     opens com.trustedservices.navigator.components to javafx.fxml;
-    exports com.trustedservices.web;
-    opens com.trustedservices.web to javafx.fxml;
+    exports com.trustedservices.navigator.web;
+    opens com.trustedservices.navigator.web to javafx.fxml;
 }
