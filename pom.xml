@@ -72,7 +72,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.tsn.trustedservicesnavigator/com.trustedservicesnavigator.TrustedServicesNavigatorApplication
+                                com.tsn.trustedservicesnavigator/com.trustedservices.navigator.TrustedServicesNavigatorApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
