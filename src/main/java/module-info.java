@@ -5,7 +5,6 @@ module com.tsn.trustedservicesnavigator {
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.databind;
 
-    opens com.trustedservices to javafx.fxml;
     exports com.trustedservices.domain;
     opens com.trustedservices.domain to javafx.fxml;
     exports com.trustedservices.navigator.filters;
