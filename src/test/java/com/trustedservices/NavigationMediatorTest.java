@@ -1,7 +1,4 @@
 package com.trustedservices;
-
-import com.trustedservicesnavigator.frontend.UserInterfaceController;
-import com.trustedservicesnavigator.frontend.panes.FilterSelectionAccordion;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;

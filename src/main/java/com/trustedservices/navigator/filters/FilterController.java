@@ -47,7 +47,7 @@ public class FilterController {
     }
 
 
-    public boolean wouldHaveZeroServices(Filter filter, String newWhitelistItem) {
+    public boolean wouldHaveZeroServices(Filter filter, String newWhitelistItem, TrustedList filtered) {
         assert navigationMediator != null;
 
         boolean hasZeroServices;
@@ -56,9 +56,7 @@ public class FilterController {
         List<String> testWhitelist = new ArrayList<>(realWhitelist);
         testWhitelist.add(newWhitelistItem);
         filter.setWhitelist(testWhitelist);
-
-        TrustedList filteredList = navigationMediator.getCompleteList().clone();
-        hasZeroServices = filtersHaveZeroResultsAppliedTo(filteredList);
+        hasZeroServices = filtersHaveZeroResultsAppliedTo(filtered.clone());
         filter.setWhitelist(realWhitelist);
 
         return hasZeroServices;
