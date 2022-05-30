@@ -43,10 +43,6 @@ public class NavigationMediator {
 
     }
 
-    public void setCompleteList(TrustedList completeList) {
-        this.completeList = completeList;
-    }
-
     public void buildCompleteList(TrustedListBuilder builder) {
         completeList = builder.build();
     }

@@ -46,18 +46,19 @@ public class FilterController {
         return statusFilter;
     }
 
-
-    public boolean wouldHaveZeroServices(Filter filter, String newWhitelistItem, TrustedList filtered) {
+    public boolean wouldHaveZeroServices(Filter filter, String itemToTest) {
         assert navigationMediator != null;
-
         boolean hasZeroServices;
+        List<String> actualWhitelist = filter.getWhitelist();
 
-        List<String> realWhitelist = filter.getWhitelist();
-        List<String> testWhitelist = new ArrayList<>(realWhitelist);
-        testWhitelist.add(newWhitelistItem);
-        filter.setWhitelist(testWhitelist);
-        hasZeroServices = filtersHaveZeroResultsAppliedTo(filtered.clone());
-        filter.setWhitelist(realWhitelist);
+        List<String> whitelistForTesting = new ArrayList<>(1);
+        whitelistForTesting.add(itemToTest);
+        filter.setWhitelist(whitelistForTesting);
+
+        TrustedList toFilter = navigationMediator.getCompleteList().clone();
+        hasZeroServices = filtersHaveZeroResultsAppliedTo(toFilter);
+
+        filter.setWhitelist(actualWhitelist);
 
         return hasZeroServices;
     }

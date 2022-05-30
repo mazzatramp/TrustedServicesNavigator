@@ -52,21 +52,20 @@ public class FilterSelectionAccordion extends Accordion {
         return statuses.getSelected();
     }
 
-    public void refreshFilters(Filter selected) {
+    public void refreshFilters() {
         navigationMediator.updateActiveFiltersFromUserSelection();
-        TrustedList temp= navigationMediator.getFilteredList();
-        disableItemsOf(providers, temp);
-        disableItemsOf(serviceTypes, temp);
-        disableItemsOf(statuses, temp);
+        disableItemsOf(providers);
+        disableItemsOf(serviceTypes);
+        disableItemsOf(statuses);
     }
 
-    private void disableItemsOf(FilterPane filterPane, TrustedList filtered) {
+    private void disableItemsOf(FilterPane filterPane) {
         List<String> unselectedFilterItems = filterPane.getUnselected();
         List<String> itemsToDisable = new ArrayList<>();
 
         for (String unselected : unselectedFilterItems) {
             Filter filter = filterPane.getAssociatedFilter();
-            if (navigationMediator.getFilterController().wouldHaveZeroServices(filter, unselected, filtered))
+            if (navigationMediator.getFilterController().wouldHaveZeroServices(filter, unselected))
                 itemsToDisable.add(unselected);
         }
 
