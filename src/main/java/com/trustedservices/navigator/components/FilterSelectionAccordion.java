@@ -38,6 +38,10 @@ public class FilterSelectionAccordion extends Accordion {
         statuses.fillWith(data);
     }
 
+    public void refreshFilterPanes() {
+        disableItemsOf(providers);
+        disableItemsOf(serviceTypes);
+        disableItemsOf(statuses);
     }
 
     public void refreshFilterPanesExcept(FilterPane filterPane) {
