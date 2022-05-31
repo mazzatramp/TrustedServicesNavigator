@@ -2,6 +2,7 @@ package com.trustedservices.navigator.components;
 
 import com.trustedservices.Help;
 import com.trustedservices.domain.TrustedList;
+import com.trustedservices.navigator.NavigationMediator;
 import com.trustedservices.navigator.filters.FilterController;
 import org.junit.jupiter.api.*;
 
@@ -26,7 +27,8 @@ class FilterControllerTest {
     {
         @BeforeEach
         void createAFilterController(){
-            filterController = new FilterController();
+            NavigationMediator navigationMediator = new NavigationMediator();
+            filterController = navigationMediator.getFilterController();
         }
 
         @DisplayName("and I use the method applyFiltersTo")
@@ -207,13 +209,12 @@ class FilterControllerTest {
                     @Test
                     void mettoprovidercomefiltroepoiunoservicetypediquelprovider() throws IOException {
                         TrustedList lista = Help.getWholeList();
-                        FilterController fc = new FilterController();
                         Set<String> listaProv = new HashSet<>();
                         listaProv.add("PrimeSign GmbH");
-                        fc.getProviderFilter().setWhitelist(listaProv);
-                        fc.applyFiltersTo(lista);
+                        filterController.getProviderFilter().setWhitelist(listaProv);
+                        filterController.applyFiltersTo(lista);
                         String nuovoelemento ="QCertESig";
-                        boolean hazero = fc.wouldHaveZeroServices(fc.getServiceTypeFilter(),nuovoelemento);
+                        boolean hazero = filterController.wouldHaveZeroServices(filterController.getServiceTypeFilter(),nuovoelemento);
 
                         assertEquals(false, hazero);
                         //System.out.println(lista.getCountries().get(0).getName());

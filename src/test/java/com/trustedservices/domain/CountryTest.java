@@ -82,7 +82,7 @@ class CountryTest {
                 @Test
                 void SameCountryAsArgument() {
                     //arrange
-                    Country argumentCountry = country;
+                    argumentCountry = country;
                     //act
                     boolean areCountriesTHeSame = country.equals(argumentCountry);
                     //assert
