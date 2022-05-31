@@ -44,7 +44,7 @@ public class DisplayPane extends AnchorPane {
         downloadBar.progressProperty().bind(downloadTask.progressProperty());
     }
 
-    public void fillDisplayTreeView(TrustedList dataToShow) {
+    public void fillWith(TrustedList dataToShow) {
         TreeItem<Label> root = new TreeItem<>();
         dataToShow.getCountries().forEach(country -> {
             TrustedEntityLabel countryLabel = new TrustedEntityLabel(country);

@@ -64,7 +64,7 @@ public class TrustedServicesNavigatorApplication extends Application {
             protected Void call() {
                 TrustedListBuilder apiBuilder = new TrustedListApiBuilder();
                 navigationController.buildCompleteList(apiBuilder);
-                windowController.fillFiltersAndDisplay();
+                windowController.fillDisplayAndFiltersViews();
                 return null;
             }
         };

@@ -29,6 +29,6 @@
 
     <ToolBar prefHeight="40.0" prefWidth="200.0">
         <Button text="Filter" onAction="#handleFilterClick"/>
-        <Hyperlink fx:id="resetFilters" text="Reset filters" onAction="#handleResetFiltersClick"/>
+        <Hyperlink fx:id="resetFilters" text="Reset filters" onAction="#handleResetFilters"/>
     </ToolBar>
 </VBox>

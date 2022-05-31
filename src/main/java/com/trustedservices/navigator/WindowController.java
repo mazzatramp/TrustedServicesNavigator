@@ -10,10 +10,12 @@ import javafx.scene.control.*;
 import java.util.List;
 
 public class WindowController {
+
     @FXML private DisplayPane displayPane;
     @FXML private FilterSelectionAccordion filterSelection;
     @FXML private SplitPane splitPane;
     @FXML private InfoPane infoPane;
+
     @FXML public Hyperlink resetFilters;
 
     private NavigationController navigationController;
@@ -25,21 +27,27 @@ public class WindowController {
         setInfoPaneVisible(false);
     }
 
-    public void fillFiltersAndDisplay() {
+    public void fillDisplayAndFiltersViews() {
         //runLater is needed in order to avoid issues adding a lot of nodes at once
         Platform.runLater(() -> {
-            TrustedList dataAtStartupTime = navigationController.getCompleteList();
-            displayPane.fillDisplayTreeView(dataAtStartupTime);
-            filterSelection.fillFilterPanesWith(dataAtStartupTime);
+            TrustedList completeList = navigationController.getCompleteList();
+            displayPane.fillWith(completeList);
+            filterSelection.fillFilterPanesWith(completeList);
         });
     }
 
+    @FXML
     public void handleFilterClick() {
         if (displayPane.canShowResults()) {
             navigationController.updateActiveFiltersFromUserSelection();
             TrustedList filteredList = navigationController.getFilteredList();
-            displayPane.fillDisplayTreeView(filteredList);
+            displayPane.fillWith(filteredList);
         }
+    }
+
+    @FXML
+    public void handleResetFilters() {
+        filterSelection.resetFilters();
     }
 
     public void openInfoPaneWithInfo(List<String> info) {
@@ -56,10 +64,6 @@ public class WindowController {
 
     public void bindProgressBarWith(Task<Void> task) {
         displayPane.bindProgressBarWith(task);
-    }
-
-    public void handleResetFiltersClick() {
-        filterSelection.resetFilters();
     }
 
     public FilterSelectionAccordion getFilterAccordion() {
