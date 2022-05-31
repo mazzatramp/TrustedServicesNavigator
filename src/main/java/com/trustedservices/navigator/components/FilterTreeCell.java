@@ -4,40 +4,40 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TreeCell;
-import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.CheckBoxTreeCell;
 import javafx.util.Callback;
 
 public class FilterTreeCell<T> extends CheckBoxTreeCell<T> implements ChangeListener<Boolean>
 {
-    protected SimpleBooleanProperty linkedDisabledProperty;
+    protected SimpleBooleanProperty disabledProperty;
 
     @Override
     public void updateItem(T item, boolean empty)
     {
-        super.updateItem(item, empty);
-        if (item == null)
-            return;
+        super.updateItem(item, empty); //sets item as treeItemProperty
 
-        TreeItem<T> treeItem = this.treeItemProperty().getValue();
-        if(treeItem != null) {
-            if(treeItem instanceof FilterTreeItem<T> filterTreeItem) {
-                if(linkedDisabledProperty != null) {
-                    linkedDisabledProperty.removeListener(this);
-                }
-
-                linkedDisabledProperty = filterTreeItem.disabledProperty;
-                linkedDisabledProperty.addListener(this);
-
-                this.setDisable(linkedDisabledProperty.get());
-            }
+        if (hasFilterTreeItemProperty()) {
+            if (disabledProperty == null)
+                bindDisabledProperty();
+            this.setDisable(disabledProperty.get());
         }
     }
 
+    private void bindDisabledProperty() {
+        FilterTreeItem<T> filterTreeItem = (FilterTreeItem<T>) this.treeItemProperty().getValue();
+        disabledProperty = filterTreeItem.disabledProperty;
+        disabledProperty.addListener(this);
+    }
+
+    private boolean hasFilterTreeItemProperty() {
+        return (this.treeItemProperty() != null)
+                && (this.treeItemProperty().getValue() != null)
+                && (this.treeItemProperty().getValue() instanceof FilterTreeItem<T>);
+    }
+
     @Override
-    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldVal, Boolean newVal)
-    {
+    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldVal, Boolean newVal) {
         this.setDisable(newVal);
     }
 
