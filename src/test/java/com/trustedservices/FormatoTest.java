@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayName("A nomeClasse")
 public class FormatoTest {
     //Classe nomeOggetto;
+    @Disabled
     @Nested
     @DisplayName("when null")
     class WhenNull {
