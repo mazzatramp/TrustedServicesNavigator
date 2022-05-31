@@ -3,7 +3,6 @@ package com.trustedservices.domain;
 import java.util.*;
 
 public class TrustedList implements Cloneable {
-
     private final Set<String> serviceTypes;
     private final Set<String> statuses;
 
@@ -60,13 +59,13 @@ public class TrustedList implements Cloneable {
     }
 
     @Override
-    public boolean equals(Object trustedList ) {
+    public boolean equals(Object trustedList) {
         if (this == trustedList) return true;
         if (trustedList == null || getClass() != trustedList.getClass()) return false;
         TrustedList list = (TrustedList) trustedList;
         return (this.getCountries().equals(list.getCountries())
                 && this.getServiceTypes().equals(list.getServiceTypes())
-                && this.getStatuses().equals(((list).getStatuses())));
+                && this.getStatuses().equals(list.getStatuses()));
     }
 
     @Override
