@@ -2,26 +2,20 @@ package com.trustedservices.navigator.components;
 
 import com.trustedservices.navigator.NavigationMediator;
 import com.trustedservices.domain.TrustedList;
-import com.trustedservices.navigator.filters.FilterController;
-import com.trustedservices.navigator.filters.Filter;
+import com.trustedservices.navigator.filters.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class FilterSelectionAccordion extends Accordion {
 
-    @FXML
-    private ProviderFilterPane providers;
-    @FXML
-    private StatusFilterPane statuses;
-    @FXML
-    private ServiceTypeFilterPane serviceTypes;
+    @FXML private ProviderFilterPane providers;
+    @FXML private StatusFilterPane statuses;
+    @FXML private ServiceTypeFilterPane serviceTypes;
 
     private NavigationMediator navigationMediator;
 
@@ -54,11 +48,14 @@ public class FilterSelectionAccordion extends Accordion {
         return statuses.getSelected();
     }
 
-    public void refreshFilters() {
+    public void refreshFiltersExcept(Filter filter) {
         navigationMediator.updateActiveFiltersFromUserSelection();
-        disableItemsOf(providers);
-        disableItemsOf(serviceTypes);
-        disableItemsOf(statuses);
+        if (!(filter instanceof ProviderFilter))
+            disableItemsOf(providers);
+        if (!(filter instanceof ServiceTypeFilter))
+            disableItemsOf(serviceTypes);
+        if (!(filter instanceof StatusFilter))
+            disableItemsOf(statuses);
     }
 
     private void disableItemsOf(FilterPane filterPane) {

@@ -67,7 +67,7 @@ public abstract class FilterPane extends TitledPane {
     public ChangeListener<Boolean> getSelectionListener() {
         return (value, oldValue, newValue) -> {
             FilterSelectionAccordion filterSelectionAccordion = (FilterSelectionAccordion) this.getParent();
-            filterSelectionAccordion.refreshFilters();
+            filterSelectionAccordion.refreshFiltersExcept(this.getAssociatedFilter());
         };
     }
 
