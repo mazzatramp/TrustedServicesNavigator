@@ -76,7 +76,7 @@ public class DisplayPane extends AnchorPane {
         Node node = event.getPickResult().getIntersectedNode();
         if (node instanceof Text || (node instanceof TreeCell && ((TreeCell) node).getText() != null)) {
             if (displayed.getSelectionModel().getSelectedItem().getValue() instanceof TrustedEntityLabel selected) {
-                windowController.openInfoPaneWithInfo(selected.getInformation());
+                windowController.openInfoPaneWithInfo(selected.getRefereed().getInformation());
             }
         }
     }
