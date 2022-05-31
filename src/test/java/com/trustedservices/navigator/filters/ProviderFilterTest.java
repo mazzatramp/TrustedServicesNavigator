@@ -1,40 +1,42 @@
-package com.tsn.trustedservicesnavigator;
+package com.trustedservices.navigator.filters;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-class CountryProviderFilterTest {
-
-   /* NON SO COME FARLO PERCHE NON C'E' MODO DI CREARE UNA TRUSTEDLIST A PARTIRE DA UNA MAPPA E DELLE LISTE
-   private TrustedList getATestWhitelist(){
-        List<String> serviceTypes = new ArrayList<>();
-        serviceTypes.add("QCertESig");
-        serviceTypes.add("QCertESeal");
-
-        Map<String, List<String>> mappaCountriesProviders = new LinkedHashMap<>();
-        List<String> providers = new ArrayList<>();
-        providers.add("JCC PAYMENT SYSTEMS LTD");
-        mappaCountriesProviders.put("Cyprus",providers);
-        return mappaCountriesProviders;
-    }*/
-    private TrustedList getWholeList() throws IOException {
-        TrustedList initialList = new TrustedList();
-        initialList.downloadApiData();
-        return initialList;
+//CAPIRE COME TESTARE CLASSI FIGLIE
+@DisplayName("A provider filter")
+class ProviderFilterTest {
+    ProviderFilter providerFilter;
+    @Test
+    @DisplayName("is instantiated with new Filter()")
+    void isInstantiatedWithNewProviderFilter() {
+        new ProviderFilter();
     }
+    @Nested
+    @DisplayName("when new")
+    class WhenNew
+    {
+        @BeforeEach
+        void createAFilterController(){
+            providerFilter = new ProviderFilter();
+        }
+
+        @DisplayName("and I use the method FilterByWhiteList")
+        @Nested
+        class FilterByWhiteList{
+            //ESSENDO PROTECTED NON LO POSSO PROVARE QUA
+        }
+    }
+    /*
+    //METODI FATTI PRIMA CHE COUNTRYPROVIDERFILTER DIVENTASSE PROVIDERFILTER
+
     @Test
     void applyTo_WholeListWithNoWhitelist_WholeListDoesNotChange() throws IOException {
         //arrange
-       CountryProviderFilter cpf = new CountryProviderFilter();
-       TrustedList listToFilter = getWholeList();
+       ProviderFilter cpf = new ProviderFilter();
+       TrustedList listToFilter = Help.getWholeList();
        List<Country> expectedListOfCountries = listToFilter.getCountries();
 
        //act
@@ -73,7 +75,7 @@ class CountryProviderFilterTest {
   @Test
     void applyTo_WholeListWithWhitelist_WholeListBecomesWhitelist() throws IOException {
         //arrange
-        CountryProviderFilter cpf = new CountryProviderFilter();
+        ProviderFilter cpf = new ProviderFilter();
         TrustedList listToFilter = getWholeList();
         List<Country> expectedListOfCountries = getATestWhitelist();
 
