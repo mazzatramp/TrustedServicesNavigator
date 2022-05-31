@@ -1,6 +1,5 @@
 package com.trustedservices.navigator;
 
-import com.trustedservices.navigator.filters.FilterController;
 import com.trustedservices.navigator.components.FilterSelectionAccordion;
 import com.trustedservices.navigator.web.TrustedListApiBuilder;
 import com.trustedservices.navigator.web.TrustedListBuilder;
@@ -17,7 +16,6 @@ public class TrustedServicesNavigatorApplication extends Application {
 
     private NavigationController navigationController;
     private WindowController windowController;
-    private FilterController filterController;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -28,8 +26,6 @@ public class TrustedServicesNavigatorApplication extends Application {
         filterController = new FilterController();
         windowController = fxmlLoader.getController();
 
-        linkNavigatorAndControllers();
-        setupFilterPanes();
         startApiDataDownload();
 
         stage.setTitle(TITLE);
@@ -42,15 +38,6 @@ public class TrustedServicesNavigatorApplication extends Application {
         filterSelectionAccordion.setNavigationMediator(navigationController);
         filterSelectionAccordion.linkFilterPanesWithAssociatedFilters(filterController);
     }
-
-    private void linkNavigatorAndControllers() {
-        navigationController.setWindowController(windowController);
-        windowController.setNavigationController(navigationController);
-
-        navigationController.setFilterController(filterController);
-        filterController.setNavigationController(navigationController);
-    }
-
     private void startApiDataDownload() {
         Task<Void> downloadAndDisplay = getDownloadAndDisplayDataTask();
         windowController.bindProgressBarWith(downloadAndDisplay);

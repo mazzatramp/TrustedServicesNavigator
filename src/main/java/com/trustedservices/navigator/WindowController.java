@@ -69,8 +69,4 @@ public class WindowController {
     public FilterSelectionAccordion getFilterAccordion() {
         return this.filterSelection;
     }
-
-    public void setNavigationController(NavigationController navigationController) {
-        this.navigationController = navigationController;
-    }
 }

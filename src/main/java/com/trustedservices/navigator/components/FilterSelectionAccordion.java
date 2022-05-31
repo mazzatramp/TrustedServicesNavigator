@@ -63,8 +63,6 @@ public class FilterSelectionAccordion extends Accordion {
         Set<String> itemsToDisable = new HashSet<>();
 
         for (String unselected : unselectedFilterItems) {
-            Filter filter = filterPane.getAssociatedFilter();
-            if (navigationController.getFilterController().wouldHaveZeroServices(filter, unselected))
                 itemsToDisable.add(unselected);
         }
 

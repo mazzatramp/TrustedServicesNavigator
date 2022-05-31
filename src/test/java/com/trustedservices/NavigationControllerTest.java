@@ -43,7 +43,6 @@ class NavigationControllerTest {
         @Test
         void prova(){
                 WindowController windowController = new WindowController();
-                navigationController.setWindowController(windowController);
                 //assertEquals(navigationController.getFilteredList().getCountries().getProviders, windowController.getFilterAccordion().getSelectedProviders());
             }
         }

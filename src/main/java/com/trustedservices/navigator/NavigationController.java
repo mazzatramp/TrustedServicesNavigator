@@ -1,14 +1,12 @@
 package com.trustedservices.navigator;
 
 import com.trustedservices.domain.TrustedList;
-import com.trustedservices.navigator.filters.FilterController;
 import com.trustedservices.navigator.components.FilterSelectionAccordion;
 import com.trustedservices.navigator.web.TrustedListBuilder;
 
 public class NavigationController {
 
     private WindowController windowController;
-    private FilterController filterController;
     private TrustedList completeList;
 
     public NavigationController() {
@@ -20,18 +18,12 @@ public class NavigationController {
     }
 
     public TrustedList getFilteredList() {
-        TrustedList clone = completeList.clone();
-        filterController.applyFiltersTo(clone);
-        return clone;
     }
 
     public TrustedList getCompleteList() {
         return completeList;
     }
 
-    public FilterController getFilterController() {
-        return this.filterController;
-    }
 
     public void updateActiveFiltersFromUserSelection() {
         FilterSelectionAccordion filterSelection = windowController.getFilterAccordion();
@@ -44,7 +36,5 @@ public class NavigationController {
         completeList = builder.build();
     }
 
-    public void setFilterController(FilterController filterController) {
-        this.filterController = filterController;
     }
 }
