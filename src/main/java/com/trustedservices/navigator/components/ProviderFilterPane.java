@@ -38,7 +38,6 @@ public class ProviderFilterPane extends FilterPane {
         });
     }
 
-    public Set<String> getSelected() {
     public Set<String> getSelectedItems() {
         Set<String> selectedProviders = new HashSet<>();
         providers.getRoot().getChildren().forEach(countryTreeItem -> {
