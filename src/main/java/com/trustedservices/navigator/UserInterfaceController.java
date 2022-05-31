@@ -10,16 +10,11 @@ import javafx.scene.control.*;
 import java.util.List;
 
 public class UserInterfaceController {
-    @FXML
-    private DisplayPane displayPane;
-    @FXML
-    private FilterSelectionAccordion filterSelection;
-    @FXML
-    private SplitPane splitPane;
-    @FXML
-    private InfoPane infoPane;
-    @FXML
-    public Hyperlink resetFilters;
+    @FXML private DisplayPane displayPane;
+    @FXML private FilterSelectionAccordion filterSelection;
+    @FXML private SplitPane splitPane;
+    @FXML private InfoPane infoPane;
+    @FXML public Hyperlink resetFilters;
 
     private NavigationMediator navigationMediator;
 
