@@ -17,6 +17,7 @@ public class TrustedServicesNavigatorApplication extends Application {
 
     private NavigationMediator navigationMediator;
     private UserInterfaceController userInterfaceController;
+    private FilterController filterController;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -24,10 +25,11 @@ public class TrustedServicesNavigatorApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
 
         navigationMediator = new NavigationMediator();
+        filterController = new FilterController();
         userInterfaceController = fxmlLoader.getController();
-        linkNavigatorAndController();
+        linkNavigatorAndControllers();
         setupFilterPanes();
-        downloadApiTrustedList();
+        startApiDataDownload();
 
         stage.setTitle(TITLE);
         stage.setScene(scene);
@@ -36,21 +38,20 @@ public class TrustedServicesNavigatorApplication extends Application {
 
     private void setupFilterPanes() {
         FilterSelectionAccordion filterSelectionAccordion = userInterfaceController.getFilterAccordion();
-        FilterController filterController = navigationMediator.getFilterController();
         filterSelectionAccordion.setNavigationMediator(navigationMediator);
         filterSelectionAccordion.linkFilterPanesWithAssociatedFilters(filterController);
     }
 
-    private void linkNavigatorAndController() {
+    private void linkNavigatorAndControllers() {
         navigationMediator.setUserInterfaceController(userInterfaceController);
         userInterfaceController.setNavigationMediator(navigationMediator);
+
+        navigationMediator.setFilterController(filterController);
+        filterController.setNavigationMediator(navigationMediator);
     }
 
-    private void downloadApiTrustedList() {
+    private void startApiDataDownload() {
         Task<Void> downloadingApiData = downloadAndDisplayApiData();
-
-        userInterfaceController.bindProgressBarWith(downloadingApiData);
-
         Thread th = new Thread(downloadingApiData);
         th.start();
     }
@@ -59,10 +60,11 @@ public class TrustedServicesNavigatorApplication extends Application {
         return new Task<>() {
             @Override
             protected Void call() {
-            TrustedListBuilder apiBuilder = new TrustedListApiBuilder();
-            navigationMediator.buildCompleteList(apiBuilder);
-            userInterfaceController.fillFiltersAndDisplay();
-            return null;
+                userInterfaceController.bindProgressBarWith(this);
+                TrustedListBuilder apiBuilder = new TrustedListApiBuilder();
+                navigationMediator.buildCompleteList(apiBuilder);
+                userInterfaceController.fillFiltersAndDisplay();
+                return null;
             }
         };
     }

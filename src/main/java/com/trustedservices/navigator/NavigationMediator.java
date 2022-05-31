@@ -11,8 +11,6 @@ public class NavigationMediator {
     private TrustedList completeList;
 
     public NavigationMediator() {
-        this.filterController = new FilterController();
-        filterController.setNavigationMediator(this);
         this.completeList = new TrustedList();
     }
 
@@ -22,6 +20,7 @@ public class NavigationMediator {
 
     public TrustedList getFilteredList() {
         TrustedList clone = completeList.clone();
+        this.updateActiveFiltersFromUserSelection();
         filterController.applyFiltersTo(clone);
         return clone;
     }
@@ -44,5 +43,9 @@ public class NavigationMediator {
 
     public void buildCompleteList(TrustedListBuilder builder) {
         completeList = builder.build();
+    }
+
+    public void setFilterController(FilterController filterController) {
+        this.filterController = filterController;
     }
 }
