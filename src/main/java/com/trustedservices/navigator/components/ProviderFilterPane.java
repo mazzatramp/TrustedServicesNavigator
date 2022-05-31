@@ -3,6 +3,7 @@ package com.trustedservices.navigator.components;
 import com.trustedservices.domain.Country;
 import com.trustedservices.domain.Provider;
 import com.trustedservices.domain.TrustedList;
+import com.trustedservices.navigator.filters.ProviderFilter;
 import javafx.scene.control.CheckBoxTreeItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -12,17 +13,18 @@ import java.util.*;
 
 public class ProviderFilterPane extends FilterPane {
 
-    private TreeView<String> providers;
+    private final TreeView<String> providers;
 
     public ProviderFilterPane() {
         this.setText("Country and Providers");
 
         providers = new TreeView<>();
-        providers.setRoot(new TreeItem<>("Countries Root"));
+        providers.setRoot(new TreeItem<>());
         providers.setShowRoot(false);
         providers.setCellFactory(CheckBoxTreeCell.forTreeView());
 
         setFilterView(providers);
+        this.setAssociatedFilter(new ProviderFilter());
     }
 
     @Override
@@ -37,6 +39,7 @@ public class ProviderFilterPane extends FilterPane {
     }
 
     public Set<String> getSelected() {
+    public Set<String> getSelectedItems() {
         Set<String> selectedProviders = new HashSet<>();
         providers.getRoot().getChildren().forEach(countryTreeItem -> {
             CheckBoxTreeItem<String> countryCheckBox = (CheckBoxTreeItem<String>) countryTreeItem;
@@ -52,7 +55,7 @@ public class ProviderFilterPane extends FilterPane {
     }
 
     @Override
-    public Set<String> getUnselected() {
+    public Set<String> getUnselectedItems() {
         Set<String> unselected = new HashSet<>();
         providers.getRoot().getChildren().forEach(countryTreeItem -> {
             CheckBoxTreeItem<String> countryCheckBox = (CheckBoxTreeItem<String>) countryTreeItem;

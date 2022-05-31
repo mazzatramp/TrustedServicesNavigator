@@ -52,8 +52,8 @@ public abstract class FilterPane extends TitledPane {
 
     public abstract void fillWith(TrustedList dataToShow);
 
-    public abstract Set<String> getSelected();
-    public abstract Set<String> getUnselected();
+    public abstract Set<String> getSelectedItems();
+    public abstract Set<String> getUnselectedItems();
     public abstract void disable(Collection<String> toDisable);
 
     protected void setFilterView(Control control) {
@@ -66,7 +66,8 @@ public abstract class FilterPane extends TitledPane {
     }
 
     public ChangeListener<Boolean> getSelectionListener() {
-        return (value, oldValue, newValue) -> {
+        return (value, wasSelected, isSelected) -> {
+            this.getAssociatedFilter().setWhitelist(this.getSelectedItems());
             FilterSelectionAccordion filterSelectionAccordion = (FilterSelectionAccordion) this.getParent();
             filterSelectionAccordion.refreshFiltersExcept(this.getAssociatedFilter());
         };
@@ -76,7 +77,7 @@ public abstract class FilterPane extends TitledPane {
         return associatedFilter;
     }
 
-    public void setAssociatedFilter(Filter associatedFilter) {
+    protected void setAssociatedFilter(Filter associatedFilter) {
         this.associatedFilter = associatedFilter;
     }
 }

@@ -1,6 +1,7 @@
 package com.trustedservices.navigator.components;
 
 import com.trustedservices.domain.TrustedList;
+import com.trustedservices.navigator.filters.ServiceTypeFilter;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 
@@ -14,6 +15,7 @@ public class ServiceTypeFilterPane extends FilterPane {
         serviceTypes = new ListView<>();
         this.setText("Service Types");
         this.setFilterView(serviceTypes);
+        this.setAssociatedFilter(new ServiceTypeFilter());
     }
 
     @Override
@@ -33,7 +35,7 @@ public class ServiceTypeFilterPane extends FilterPane {
         });
     }
 
-    public Set<String> getSelected() {
+    public Set<String> getSelectedItems() {
         Set<String> selectedServiceTypes = new HashSet<>(0);
 
         for (CheckBox serviceType : serviceTypes.getItems()) {
@@ -46,7 +48,7 @@ public class ServiceTypeFilterPane extends FilterPane {
     }
 
     @Override
-    public Set<String> getUnselected() {
+    public Set<String> getUnselectedItems() {
         Set<String> selectedServiceTypes = new HashSet<>(0);
 
         for (CheckBox serviceType : serviceTypes.getItems()) {

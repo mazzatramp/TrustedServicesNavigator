@@ -15,11 +15,6 @@ public abstract class Filter {
         this.whitelist = new HashSet<>();
     }
 
-    public void applyTo(TrustedList listToFilter) {
-        if (!whitelist.isEmpty())
-            filterByWhitelist(listToFilter);
-    }
-
     public void setWhitelist(Set<String> whitelist) {
         this.whitelist = whitelist;
     }
@@ -27,7 +22,28 @@ public abstract class Filter {
     public Set<String> getWhitelist() {
         return whitelist;
     }
-
     protected abstract void filterByWhitelist(TrustedList listToFilter);
+
+    public void applyTo(TrustedList listToFilter) {
+        if (!whitelist.isEmpty()) {
+            filterByWhitelist(listToFilter);
+            removeEmptyEntities(listToFilter);
+        }
+    }
+
+    private void removeEmptyEntities(TrustedList list) {
+        removeEmptyProviders(list);
+        removeEmptyCountries(list);
+    }
+
+    private void removeEmptyProviders(TrustedList list) {
+        list.getCountries().forEach(country -> {
+            country.getProviders().removeIf(provider -> provider.getServices().isEmpty());
+        });
+    }
+
+    private void removeEmptyCountries(TrustedList list) {
+        list.getCountries().removeIf(country -> country.getProviders().isEmpty());
+    }
 }
 

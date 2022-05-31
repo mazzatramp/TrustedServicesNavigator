@@ -1,6 +1,7 @@
 package com.trustedservices.navigator.components;
 
 import com.trustedservices.domain.TrustedList;
+import com.trustedservices.navigator.filters.StatusFilter;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 
@@ -14,6 +15,7 @@ public class StatusFilterPane extends FilterPane {
         this.setText("Statuses");
         statuses = new ListView<>();
         setFilterView(statuses);
+        this.setAssociatedFilter(new StatusFilter());
     }
 
     @Override
@@ -35,7 +37,7 @@ public class StatusFilterPane extends FilterPane {
         );
     }
 
-    public Set<String> getSelected() {
+    public Set<String> getSelectedItems() {
         Set<String> selectedStatuses = new HashSet<>();
 
         for (CheckBox status : statuses.getItems()) {
@@ -48,7 +50,7 @@ public class StatusFilterPane extends FilterPane {
     }
 
     @Override
-    public Set<String> getUnselected() {
+    public Set<String> getUnselectedItems() {
 
         Set<String> selectedStatuses = new HashSet<>(0);
 

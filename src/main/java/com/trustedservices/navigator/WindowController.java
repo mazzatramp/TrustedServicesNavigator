@@ -27,19 +27,23 @@ public class WindowController {
         setInfoPaneVisible(false);
     }
 
+    public void setNavigationController(NavigationController navigationController) {
+        this.navigationController = navigationController;
+    }
+
     public void fillDisplayAndFiltersViews() {
         //runLater is needed in order to avoid issues adding a lot of nodes at once
         Platform.runLater(() -> {
             TrustedList completeList = navigationController.getCompleteList();
             displayPane.fillWith(completeList);
             filterSelection.fillFilterPanesWith(completeList);
+            navigationController.getFilters().addAll(filterSelection.getAssociatedFilters());
         });
     }
 
     @FXML
     public void handleFilterClick() {
         if (displayPane.canShowResults()) {
-            navigationController.updateActiveFiltersFromUserSelection();
             TrustedList filteredList = navigationController.getFilteredList();
             displayPane.fillWith(filteredList);
         }
@@ -64,9 +68,5 @@ public class WindowController {
 
     public void bindProgressBarWith(Task<Void> task) {
         displayPane.bindProgressBarWith(task);
-    }
-
-    public FilterSelectionAccordion getFilterAccordion() {
-        return this.filterSelection;
     }
 }

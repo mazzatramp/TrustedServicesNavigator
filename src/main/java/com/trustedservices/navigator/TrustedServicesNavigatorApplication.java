@@ -1,6 +1,5 @@
 package com.trustedservices.navigator;
 
-import com.trustedservices.navigator.components.FilterSelectionAccordion;
 import com.trustedservices.navigator.web.TrustedListApiBuilder;
 import com.trustedservices.navigator.web.TrustedListBuilder;
 import javafx.application.Application;
@@ -23,8 +22,8 @@ public class TrustedServicesNavigatorApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
 
         navigationController = new NavigationController();
-        filterController = new FilterController();
         windowController = fxmlLoader.getController();
+        windowController.setNavigationController(navigationController);
 
         startApiDataDownload();
 
@@ -33,11 +32,6 @@ public class TrustedServicesNavigatorApplication extends Application {
         stage.show();
     }
 
-    private void setupFilterPanes() {
-        FilterSelectionAccordion filterSelectionAccordion = windowController.getFilterAccordion();
-        filterSelectionAccordion.setNavigationMediator(navigationController);
-        filterSelectionAccordion.linkFilterPanesWithAssociatedFilters(filterController);
-    }
     private void startApiDataDownload() {
         Task<Void> downloadAndDisplay = getDownloadAndDisplayDataTask();
         windowController.bindProgressBarWith(downloadAndDisplay);

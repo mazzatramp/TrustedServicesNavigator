@@ -1,40 +1,36 @@
 package com.trustedservices.navigator;
 
 import com.trustedservices.domain.TrustedList;
-import com.trustedservices.navigator.components.FilterSelectionAccordion;
+import com.trustedservices.navigator.filters.Filter;
+import com.trustedservices.navigator.filters.FilterList;
 import com.trustedservices.navigator.web.TrustedListBuilder;
+
+import java.util.ArrayList;
 
 public class NavigationController {
 
-    private WindowController windowController;
+    private FilterList filters;
     private TrustedList completeList;
 
     public NavigationController() {
         this.completeList = new TrustedList();
-    }
+        this.filters = new FilterList();
 
-    public void setWindowController(WindowController windowController) {
-        this.windowController = windowController;
     }
 
     public TrustedList getFilteredList() {
+        return filters.getFilteredListFrom(completeList);
     }
 
     public TrustedList getCompleteList() {
         return completeList;
     }
 
-
-    public void updateActiveFiltersFromUserSelection() {
-        FilterSelectionAccordion filterSelection = windowController.getFilterAccordion();
-        filterController.getProviderFilter().setWhitelist(filterSelection.getSelectedProviders());
-        filterController.getStatusFilter().setWhitelist(filterSelection.getSelectedStatuses());
-        filterController.getServiceTypeFilter().setWhitelist(filterSelection.getSelectedServiceTypes());
-    }
-
     public void buildCompleteList(TrustedListBuilder builder) {
         completeList = builder.build();
     }
 
+    public FilterList getFilters() {
+        return filters;
     }
 }
