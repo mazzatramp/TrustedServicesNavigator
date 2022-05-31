@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Provider implements Cloneable, Comparable<Provider>, TrustedEntity {
+public class Provider implements Cloneable, Comparable<Provider>, TrustedListEntity {
     private Country country;
 
     private int providerId;
