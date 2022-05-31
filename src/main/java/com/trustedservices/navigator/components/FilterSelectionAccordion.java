@@ -79,7 +79,6 @@ public class FilterSelectionAccordion extends Accordion {
 
     public void setNavigationMediator(NavigationMediator navigationMediator) {
         this.navigationMediator = navigationMediator;
-        linkFilterPanesWithAssociatedFilters(navigationMediator.getFilterController());
     }
 
     public void linkFilterPanesWithAssociatedFilters(FilterController filterController) {

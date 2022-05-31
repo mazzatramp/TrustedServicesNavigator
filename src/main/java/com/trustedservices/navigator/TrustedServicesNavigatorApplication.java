@@ -27,6 +27,7 @@ public class TrustedServicesNavigatorApplication extends Application {
         navigationMediator = new NavigationMediator();
         filterController = new FilterController();
         userInterfaceController = fxmlLoader.getController();
+
         linkNavigatorAndControllers();
         setupFilterPanes();
         startApiDataDownload();
@@ -51,16 +52,16 @@ public class TrustedServicesNavigatorApplication extends Application {
     }
 
     private void startApiDataDownload() {
-        Task<Void> downloadingApiData = downloadAndDisplayApiData();
-        Thread th = new Thread(downloadingApiData);
+        Task<Void> downloadAndDisplay = getDownloadAndDisplayDataTask();
+        userInterfaceController.bindProgressBarWith(downloadAndDisplay);
+        Thread th = new Thread(downloadAndDisplay);
         th.start();
     }
 
-    private Task<Void> downloadAndDisplayApiData() {
+    private Task<Void> getDownloadAndDisplayDataTask() {
         return new Task<>() {
             @Override
             protected Void call() {
-                userInterfaceController.bindProgressBarWith(this);
                 TrustedListBuilder apiBuilder = new TrustedListApiBuilder();
                 navigationMediator.buildCompleteList(apiBuilder);
                 userInterfaceController.fillFiltersAndDisplay();
