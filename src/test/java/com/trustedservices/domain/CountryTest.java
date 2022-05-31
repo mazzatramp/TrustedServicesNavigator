@@ -64,7 +64,6 @@ class CountryTest {
     @Nested
     @DisplayName("when new")
     class WhenNew {
-        //POTREMMO TOGLIERE POSSIBIITA DI AVERE COUNTRIES VUOTE
         @BeforeEach
         void createACountry() {
 
@@ -74,7 +73,6 @@ class CountryTest {
         @DisplayName("and I use the method equals(Object)")
         @Nested
         class Equals {
-            //CON QUESTO METODO DUE COUNTRIES CON LO STESSO NOME MA PROVIDERS DIVERSI SONO UGUALI
             @DisplayName("with a country as argument")
             @Nested
             class CountryAsArgument {
@@ -179,31 +177,7 @@ class CountryTest {
                 //assert
                 assertEquals(countryToBeCloned, clonedCountry);
             }
-            /* SE ABBIAMO UN COSTRUTTORE E' PIU' COMODO
-            @Test
-            void clone_EmptyCountry_ReturnsEmptyCountry() {
-                }*/
 
         }
     }
 }
-    //----------------------------------------------------------------------------
-    //HASHCODE E TOSTRING?
-    //----------------------------------------------------------------------------
-   //TOSTRING
-    //I GET E SET
-    /*
-    @Test
-    void getName_NoInputs_ReturnsName()
-{
-    //arrange
-    Country ITA = new Country("Italy","1");
-
-    //act
-    String actualName = ITA.getName();
-
-    //assert
-    assertEquals("Italy",actualName);
-}
-
-}*/
