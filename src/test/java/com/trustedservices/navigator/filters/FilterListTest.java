@@ -16,7 +16,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @DisplayName("A FilterList")
     public class FilterListTest {
+
+        //TESTO SOLO IL METODO GETFILTEREDLIST PERCHE' GLI ALTRI SONO SUPER DA UNA CLASSE CONOSCIUTISSIMA
         FilterList filterList;
+        //NUOVA COLLEZIONE CON FILTRI NULLI
+        //NUOVA COLLEZIONE CON FILTRI NOT EMPTY AND IMPOSSIBLE
         @Nested
         //IL PROBLEMA E' CHE VOLENDO CI SONO INFINITE COMBINAZIONI DI FILTRI DA METTERE NEL COSTRUTTORE
         @DisplayName("when new with collection of filters not empty and possible")
@@ -44,17 +48,32 @@ import static org.junit.jupiter.api.Assertions.*;
 
                 filterList = new FilterList(collectionOfFilters);
             }
-
             @DisplayName("and I use the method getFilteredListFrom")
             @Nested
             class getFilteredListFrom {
-                @DisplayName("with a possible , should return just the filtered services")
+                @DisplayName("with a possible list, should return just the filtered services")
                 @Test
                 void TrustedListAsArgument() throws IOException {
                     TrustedList listToFilter = Help.getWholeList();
+                    String providerExpected = "PrimeSign GmbH";
+                    String expectedServiceType ="QCertESeal";
+                    String expectedStatus = "granted";
                     TrustedList filteredList = filterList.getFilteredListFrom(listToFilter);
-                    assertEquals(filteredList, listToFilter);
+                    filteredList.getCountries().forEach(country -> {
+                        country.getProviders().forEach(provider -> {
+                            System.out.println(provider.getName());
+                            assertTrue(provider.getName().equals(providerExpected));
+                            provider.getServices().forEach(service -> {
+                                //System.out.println(service.getServiceTypes());
+                                assertTrue(service.getServiceTypes().contains(expectedServiceType));
+                                assertTrue(service.getStatus().equals(expectedStatus));
+                            });
+                        });
+                    });
                 }
+                //LISTA VUOTA
+                //LISTA CON UN PO SI UN PO NO
+                //LISTA NULLA
 
                 @Disabled
                 @DisplayName("Null TrustedList as argument, should return a list equal to the filtered one")
@@ -64,7 +83,7 @@ import static org.junit.jupiter.api.Assertions.*;
                     TrustedList filteredList = filterList.getFilteredListFrom(listToFilter);
                     assertEquals(filteredList, listToFilter);
                 }
-                //POTREI ANCHE METTER EUNA TRUSTEDLIST VUOTA MA NON E' MOLTO INTERESSANTE
+                //POTREI ANCHE METTERE UNA TRUSTEDLIST VUOTA MA NON E' MOLTO INTERESSANTE
 
 
             }
@@ -114,7 +133,9 @@ import static org.junit.jupiter.api.Assertions.*;
             @DisplayName("and I use the method getFilteredListFrom")
             @Nested
             class getFilteredListFrom{
-                @DisplayName("and I use the method getFilteredListFrom")
+                //CON LISTA VUOTA
+                //CON LISTA NULLA
+                @DisplayName("Con lista piena")
                 @Test
                 void TrustedListAsArgument(){
 
