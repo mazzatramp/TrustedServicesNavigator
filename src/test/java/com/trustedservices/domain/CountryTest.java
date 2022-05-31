@@ -13,7 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("A Country")
 class CountryTest {
     Country country;
-
+   //TESTARE COSTRUTTIRE CON ARGOMENTI
+   //TESTARE GETINFORMATION CON NAME E CODE CHE CI SONO OPPURE NO
+   //POSSO METTERE NULLI NAME E CODE? AVREBBE PIU' SENSO CHE NON SI POSSA FARE?
     @Nested
     @DisplayName("when null")
     class WhenNull {
