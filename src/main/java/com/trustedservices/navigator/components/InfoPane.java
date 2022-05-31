@@ -1,6 +1,6 @@
 package com.trustedservices.navigator.components;
 
-import com.trustedservices.navigator.UserInterfaceController;
+import com.trustedservices.navigator.WindowController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Hyperlink;
@@ -16,9 +16,10 @@ public class InfoPane extends AnchorPane {
     @FXML
     private Hyperlink close;
 
-    private UserInterfaceController userInterfaceController;
+    private WindowController windowController;
 
     public InfoPane() {
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("info-pane.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -29,7 +30,7 @@ public class InfoPane extends AnchorPane {
             throw new RuntimeException(e);
         }
 
-        close.setOnAction(actionEvent -> userInterfaceController.setInfoPaneVisible(false));
+        close.setOnAction(actionEvent -> windowController.setInfoPaneVisible(false));
     }
 
     public void setInfo(List<String> info) {
@@ -41,7 +42,7 @@ public class InfoPane extends AnchorPane {
         text.setText(printingInformation.toString());
     }
 
-    public void setUserInterfaceController(UserInterfaceController userInterfaceController) {
-        this.userInterfaceController = userInterfaceController;
+    public void setWindowController(WindowController windowController) {
+        this.windowController = windowController;
     }
 }

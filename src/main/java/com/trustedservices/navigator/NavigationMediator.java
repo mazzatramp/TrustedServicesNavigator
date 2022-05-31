@@ -6,7 +6,7 @@ import com.trustedservices.navigator.components.FilterSelectionAccordion;
 import com.trustedservices.navigator.web.TrustedListBuilder;
 
 public class NavigationMediator {
-    private UserInterfaceController userInterfaceController;
+    private WindowController windowController;
     private FilterController filterController;
     private TrustedList completeList;
 
@@ -14,8 +14,8 @@ public class NavigationMediator {
         this.completeList = new TrustedList();
     }
 
-    public void setUserInterfaceController(UserInterfaceController userInterfaceController) {
-        this.userInterfaceController = userInterfaceController;
+    public void setUserInterfaceController(WindowController windowController) {
+        this.windowController = windowController;
     }
 
     public TrustedList getFilteredList() {
@@ -34,7 +34,7 @@ public class NavigationMediator {
     }
 
     public void updateActiveFiltersFromUserSelection() {
-        FilterSelectionAccordion filterSelection = userInterfaceController.getFilterAccordion();
+        FilterSelectionAccordion filterSelection = windowController.getFilterAccordion();
         filterController.getProviderFilter().setWhitelist(filterSelection.getSelectedProviders());
         filterController.getStatusFilter().setWhitelist(filterSelection.getSelectedStatuses());
         filterController.getServiceTypeFilter().setWhitelist(filterSelection.getSelectedServiceTypes());

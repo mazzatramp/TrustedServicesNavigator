@@ -1,9 +1,7 @@
 package com.trustedservices;
 import com.trustedservices.navigator.NavigationMediator;
-import com.trustedservices.navigator.UserInterfaceController;
+import com.trustedservices.navigator.WindowController;
 import org.junit.jupiter.api.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("A NavigationMediator")
 class NavigationMediatorTest {
@@ -44,10 +42,10 @@ class NavigationMediatorTest {
         @DisplayName("and I use the method readActiveFiltersFrom")
         @Test
         void prova(){
-                UserInterfaceController userInterfaceController= new UserInterfaceController();
-                navigationMediator.setUserInterfaceController(userInterfaceController);
+                WindowController windowController = new WindowController();
+                navigationMediator.setUserInterfaceController(windowController);
                 navigationMediator.updateActiveFiltersFromUserSelection();
-                //assertEquals(navigationMediator.getFilteredList().getCountries().getProviders, userInterfaceController.getFilterAccordion().getSelectedProviders());
+                //assertEquals(navigationMediator.getFilteredList().getCountries().getProviders, windowController.getFilterAccordion().getSelectedProviders());
             }
         }
 

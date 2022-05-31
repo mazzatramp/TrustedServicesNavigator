@@ -1,7 +1,7 @@
 package com.trustedservices.navigator.components;
 
 import com.trustedservices.domain.TrustedList;
-import com.trustedservices.navigator.UserInterfaceController;
+import com.trustedservices.navigator.WindowController;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -22,7 +22,7 @@ public class DisplayPane extends AnchorPane {
     @FXML
     private ProgressBar downloadBar;
 
-    private UserInterfaceController userInterfaceController;
+    private WindowController windowController;
 
     public DisplayPane() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("display-pane.fxml"));
@@ -68,15 +68,15 @@ public class DisplayPane extends AnchorPane {
         return !downloadBar.isVisible();
     }
 
-    public void setUserInterfaceController(UserInterfaceController userInterfaceController) {
-        this.userInterfaceController = userInterfaceController;
+    public void setWindowController(WindowController windowController) {
+        this.windowController = windowController;
     }
 
     private void handleMouseClick(MouseEvent event) {
         Node node = event.getPickResult().getIntersectedNode();
         if (node instanceof Text || (node instanceof TreeCell && ((TreeCell) node).getText() != null)) {
             if (displayed.getSelectionModel().getSelectedItem().getValue() instanceof TrustedEntityLabel selected) {
-                userInterfaceController.openInfoPaneWithInfo(selected.getRefereed().getInformation());
+                windowController.openInfoPaneWithInfo(selected.getRefereed().getInformation());
             }
         }
     }

@@ -16,7 +16,7 @@ public class TrustedServicesNavigatorApplication extends Application {
     private final static String TITLE = "Trusted Services Navigator App";
 
     private NavigationMediator navigationMediator;
-    private UserInterfaceController userInterfaceController;
+    private WindowController windowController;
     private FilterController filterController;
 
     @Override
@@ -26,7 +26,7 @@ public class TrustedServicesNavigatorApplication extends Application {
 
         navigationMediator = new NavigationMediator();
         filterController = new FilterController();
-        userInterfaceController = fxmlLoader.getController();
+        windowController = fxmlLoader.getController();
 
         linkNavigatorAndControllers();
         setupFilterPanes();
@@ -38,14 +38,14 @@ public class TrustedServicesNavigatorApplication extends Application {
     }
 
     private void setupFilterPanes() {
-        FilterSelectionAccordion filterSelectionAccordion = userInterfaceController.getFilterAccordion();
+        FilterSelectionAccordion filterSelectionAccordion = windowController.getFilterAccordion();
         filterSelectionAccordion.setNavigationMediator(navigationMediator);
         filterSelectionAccordion.linkFilterPanesWithAssociatedFilters(filterController);
     }
 
     private void linkNavigatorAndControllers() {
-        navigationMediator.setUserInterfaceController(userInterfaceController);
-        userInterfaceController.setNavigationMediator(navigationMediator);
+        navigationMediator.setUserInterfaceController(windowController);
+        windowController.setNavigationMediator(navigationMediator);
 
         navigationMediator.setFilterController(filterController);
         filterController.setNavigationMediator(navigationMediator);
@@ -53,7 +53,7 @@ public class TrustedServicesNavigatorApplication extends Application {
 
     private void startApiDataDownload() {
         Task<Void> downloadAndDisplay = getDownloadAndDisplayDataTask();
-        userInterfaceController.bindProgressBarWith(downloadAndDisplay);
+        windowController.bindProgressBarWith(downloadAndDisplay);
         Thread th = new Thread(downloadAndDisplay);
         th.start();
     }
@@ -64,7 +64,7 @@ public class TrustedServicesNavigatorApplication extends Application {
             protected Void call() {
                 TrustedListBuilder apiBuilder = new TrustedListApiBuilder();
                 navigationMediator.buildCompleteList(apiBuilder);
-                userInterfaceController.fillFiltersAndDisplay();
+                windowController.fillFiltersAndDisplay();
                 return null;
             }
         };

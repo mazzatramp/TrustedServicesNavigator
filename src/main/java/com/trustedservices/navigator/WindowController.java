@@ -9,7 +9,7 @@ import javafx.scene.control.*;
 
 import java.util.List;
 
-public class UserInterfaceController {
+public class WindowController {
     @FXML private DisplayPane displayPane;
     @FXML private FilterSelectionAccordion filterSelection;
     @FXML private SplitPane splitPane;
@@ -20,8 +20,8 @@ public class UserInterfaceController {
 
     @FXML
     public void initialize() {
-        infoPane.setUserInterfaceController(this);
-        displayPane.setUserInterfaceController(this);
+        infoPane.setWindowController(this);
+        displayPane.setWindowController(this);
         setInfoPaneVisible(false);
     }
 
