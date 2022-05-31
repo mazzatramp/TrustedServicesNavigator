@@ -5,22 +5,22 @@ import com.trustedservices.navigator.filters.FilterController;
 import com.trustedservices.navigator.components.FilterSelectionAccordion;
 import com.trustedservices.navigator.web.TrustedListBuilder;
 
-public class NavigationMediator {
+public class NavigationController {
+
     private WindowController windowController;
     private FilterController filterController;
     private TrustedList completeList;
 
-    public NavigationMediator() {
+    public NavigationController() {
         this.completeList = new TrustedList();
     }
 
-    public void setUserInterfaceController(WindowController windowController) {
+    public void setWindowController(WindowController windowController) {
         this.windowController = windowController;
     }
 
     public TrustedList getFilteredList() {
         TrustedList clone = completeList.clone();
-        this.updateActiveFiltersFromUserSelection();
         filterController.applyFiltersTo(clone);
         return clone;
     }
@@ -38,7 +38,6 @@ public class NavigationMediator {
         filterController.getProviderFilter().setWhitelist(filterSelection.getSelectedProviders());
         filterController.getStatusFilter().setWhitelist(filterSelection.getSelectedStatuses());
         filterController.getServiceTypeFilter().setWhitelist(filterSelection.getSelectedServiceTypes());
-
     }
 
     public void buildCompleteList(TrustedListBuilder builder) {

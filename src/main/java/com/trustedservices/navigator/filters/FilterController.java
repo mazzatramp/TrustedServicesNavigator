@@ -1,21 +1,15 @@
 package com.trustedservices.navigator.filters;
 
 import com.trustedservices.domain.TrustedList;
-import com.trustedservices.navigator.NavigationMediator;
-import com.trustedservices.navigator.filters.Filter;
-import com.trustedservices.navigator.filters.ProviderFilter;
-import com.trustedservices.navigator.filters.ServiceTypeFilter;
-import com.trustedservices.navigator.filters.StatusFilter;
+import com.trustedservices.navigator.NavigationController;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
 public class FilterController {
     private final Filter providerFilter, serviceTypeFilter, statusFilter;
-    private NavigationMediator navigationMediator;
+    private NavigationController navigationController;
 
     public FilterController() {
         providerFilter = new ProviderFilter();
@@ -49,7 +43,7 @@ public class FilterController {
     }
 
     public boolean wouldHaveZeroServices(Filter filter, String itemToTest) {
-        assert navigationMediator != null;
+        assert navigationController != null;
         boolean hasZeroServices;
         Set<String> actualWhitelist = filter.getWhitelist();
 
@@ -57,7 +51,7 @@ public class FilterController {
         whitelistForTesting.add(itemToTest);
         filter.setWhitelist(whitelistForTesting);
 
-        TrustedList toFilter = navigationMediator.getCompleteList().clone();
+        TrustedList toFilter = navigationController.getCompleteList().clone();
         hasZeroServices = filtersHaveZeroResultsAppliedTo(toFilter);
 
         filter.setWhitelist(actualWhitelist);
@@ -87,7 +81,7 @@ public class FilterController {
         clone.getCountries().removeIf(country -> country.getProviders().isEmpty());
     }
 
-    public void setNavigationMediator(NavigationMediator navigationMediator) {
-        this.navigationMediator = navigationMediator;
+    public void setNavigationMediator(NavigationController navigationController) {
+        this.navigationController = navigationController;
     }
 }

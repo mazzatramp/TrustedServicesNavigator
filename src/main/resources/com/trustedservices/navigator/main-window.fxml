@@ -5,8 +5,8 @@
 
 <?import com.trustedservices.navigator.components.DisplayPane?>
 <?import com.trustedservices.navigator.components.FilterSelectionAccordion?>
-
 <?import com.trustedservices.navigator.components.InfoPane?>
+
 <VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.trustedservices.navigator.WindowController">
     <MenuBar>

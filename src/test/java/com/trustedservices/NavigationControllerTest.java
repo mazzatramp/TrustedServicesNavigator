@@ -1,10 +1,10 @@
 package com.trustedservices;
-import com.trustedservices.navigator.NavigationMediator;
+import com.trustedservices.navigator.NavigationController;
 import com.trustedservices.navigator.WindowController;
 import org.junit.jupiter.api.*;
 
-@DisplayName("A NavigationMediator")
-class NavigationMediatorTest {
+@DisplayName("A NavigationController")
+class NavigationControllerTest {
     @Nested
     @DisplayName("when null")
     class WhenNull {
@@ -21,12 +21,12 @@ class NavigationMediatorTest {
     }
 
     @Test
-    @DisplayName("is instantiated with new NavigationMediator()")
+    @DisplayName("is instantiated with new NavigationController()")
     void isInstantiatedWithNewClasse() {
-        new NavigationMediator();
+        new NavigationController();
     }
 
-    NavigationMediator navigationMediator;
+    NavigationController navigationController;
 
     @Nested
     @DisplayName("when new")
@@ -35,7 +35,7 @@ class NavigationMediatorTest {
         @BeforeEach
         @Test
         void createANavigationMediator() {
-            navigationMediator = new NavigationMediator();
+            navigationController = new NavigationController();
         }
 
         @Disabled
@@ -43,9 +43,8 @@ class NavigationMediatorTest {
         @Test
         void prova(){
                 WindowController windowController = new WindowController();
-                navigationMediator.setUserInterfaceController(windowController);
-                navigationMediator.updateActiveFiltersFromUserSelection();
-                //assertEquals(navigationMediator.getFilteredList().getCountries().getProviders, windowController.getFilterAccordion().getSelectedProviders());
+                navigationController.setWindowController(windowController);
+                //assertEquals(navigationController.getFilteredList().getCountries().getProviders, windowController.getFilterAccordion().getSelectedProviders());
             }
         }
 

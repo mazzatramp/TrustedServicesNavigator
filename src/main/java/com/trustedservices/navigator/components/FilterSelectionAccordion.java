@@ -1,6 +1,6 @@
 package com.trustedservices.navigator.components;
 
-import com.trustedservices.navigator.NavigationMediator;
+import com.trustedservices.navigator.NavigationController;
 import com.trustedservices.domain.TrustedList;
 import com.trustedservices.navigator.filters.*;
 import javafx.fxml.FXML;
@@ -17,7 +17,7 @@ public class FilterSelectionAccordion extends Accordion {
     @FXML private StatusFilterPane statuses;
     @FXML private ServiceTypeFilterPane serviceTypes;
 
-    private NavigationMediator navigationMediator;
+    private NavigationController navigationController;
 
     public FilterSelectionAccordion() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("filter-selection-accordion.fxml"));
@@ -64,7 +64,7 @@ public class FilterSelectionAccordion extends Accordion {
 
         for (String unselected : unselectedFilterItems) {
             Filter filter = filterPane.getAssociatedFilter();
-            if (navigationMediator.getFilterController().wouldHaveZeroServices(filter, unselected))
+            if (navigationController.getFilterController().wouldHaveZeroServices(filter, unselected))
                 itemsToDisable.add(unselected);
         }
 
@@ -77,8 +77,8 @@ public class FilterSelectionAccordion extends Accordion {
         statuses.setSelectionStatusForAll(false);
     }
 
-    public void setNavigationMediator(NavigationMediator navigationMediator) {
-        this.navigationMediator = navigationMediator;
+    public void setNavigationMediator(NavigationController navigationController) {
+        this.navigationController = navigationController;
     }
 
     public void linkFilterPanesWithAssociatedFilters(FilterController filterController) {

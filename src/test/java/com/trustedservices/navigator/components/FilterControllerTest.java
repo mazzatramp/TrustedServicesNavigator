@@ -2,7 +2,7 @@ package com.trustedservices.navigator.components;
 
 import com.trustedservices.Help;
 import com.trustedservices.domain.TrustedList;
-import com.trustedservices.navigator.NavigationMediator;
+import com.trustedservices.navigator.NavigationController;
 import com.trustedservices.navigator.filters.FilterController;
 import org.junit.jupiter.api.*;
 
@@ -27,8 +27,8 @@ class FilterControllerTest {
     {
         @BeforeEach
         void createAFilterController(){
-            NavigationMediator navigationMediator = new NavigationMediator();
-            filterController = navigationMediator.getFilterController();
+            NavigationController navigationController = new NavigationController();
+            filterController = navigationController.getFilterController();
         }
 
         @DisplayName("and I use the method applyFiltersTo")

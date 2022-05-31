@@ -15,16 +15,16 @@ import java.io.IOException;
 public class TrustedServicesNavigatorApplication extends Application {
     private final static String TITLE = "Trusted Services Navigator App";
 
-    private NavigationMediator navigationMediator;
+    private NavigationController navigationController;
     private WindowController windowController;
     private FilterController filterController;
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(TrustedServicesNavigatorApplication.class.getResource("navigation-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(TrustedServicesNavigatorApplication.class.getResource("main-window.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
 
-        navigationMediator = new NavigationMediator();
+        navigationController = new NavigationController();
         filterController = new FilterController();
         windowController = fxmlLoader.getController();
 
@@ -39,7 +39,7 @@ public class TrustedServicesNavigatorApplication extends Application {
 
     private void setupFilterPanes() {
         FilterSelectionAccordion filterSelectionAccordion = windowController.getFilterAccordion();
-        filterSelectionAccordion.setNavigationMediator(navigationMediator);
+        filterSelectionAccordion.setNavigationMediator(navigationController);
         filterSelectionAccordion.linkFilterPanesWithAssociatedFilters(filterController);
     }
 
@@ -47,8 +47,8 @@ public class TrustedServicesNavigatorApplication extends Application {
         navigationMediator.setUserInterfaceController(windowController);
         windowController.setNavigationMediator(navigationMediator);
 
-        navigationMediator.setFilterController(filterController);
-        filterController.setNavigationMediator(navigationMediator);
+        navigationController.setFilterController(filterController);
+        filterController.setNavigationMediator(navigationController);
     }
 
     private void startApiDataDownload() {
@@ -63,8 +63,8 @@ public class TrustedServicesNavigatorApplication extends Application {
             @Override
             protected Void call() {
                 TrustedListBuilder apiBuilder = new TrustedListApiBuilder();
-                navigationMediator.buildCompleteList(apiBuilder);
-                windowController.fillFiltersAndDisplay();
+                navigationController.buildCompleteList(apiBuilder);
+                windowController.fillDisplayAndFiltersViews();
                 return null;
             }
         };

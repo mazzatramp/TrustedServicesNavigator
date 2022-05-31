@@ -16,7 +16,7 @@ public class WindowController {
     @FXML private InfoPane infoPane;
     @FXML public Hyperlink resetFilters;
 
-    private NavigationMediator navigationMediator;
+    private NavigationController navigationController;
 
     @FXML
     public void initialize() {
@@ -37,14 +37,13 @@ public class WindowController {
     public void handleFilterClick() {
         if (displayPane.canShowResults()) {
             navigationMediator.updateActiveFiltersFromUserSelection();
-            TrustedList filteredList = navigationMediator.getFilteredList();
             displayPane.fillDisplayTreeView(filteredList);
+            TrustedList filteredList = navigationController.getFilteredList();
         }
     }
 
-    public void setNavigationMediator(NavigationMediator navigationMediator) {
-        this.navigationMediator = navigationMediator;
-        this.filterSelection.setNavigationMediator(navigationMediator);
+    public void handleResetFiltersClick() {
+        filterSelection.resetFilters();
     }
 
     public void openInfoPaneWithInfo(List<String> info) {
@@ -69,5 +68,9 @@ public class WindowController {
 
     public FilterSelectionAccordion getFilterAccordion() {
         return this.filterSelection;
+    }
+
+    public void setNavigationController(NavigationController navigationController) {
+        this.navigationController = navigationController;
     }
 }
