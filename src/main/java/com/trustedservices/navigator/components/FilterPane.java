@@ -15,25 +15,16 @@ import java.util.Collection;
 import java.util.Set;
 
 public abstract class FilterPane extends TitledPane {
-    @FXML
-    private AnchorPane filterView;
-    @FXML
-    private Hyperlink selectAll;
-    @FXML
-    private Hyperlink deselectAll;
+    private static final String FXML_RESOURCE_FILE_NAME = "filter-pane.fxml";
+
+    @FXML private AnchorPane filterView;
+    @FXML private Hyperlink selectAll;
+    @FXML private Hyperlink deselectAll;
 
     private Filter associatedFilter;
 
     public FilterPane() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("filter-pane.fxml"));
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-
-        try {
-            fxmlLoader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadFXMLResource();
 
         selectAll.setOnAction(actionEvent -> {
             setSelectionStatusForAll(true);
@@ -44,6 +35,17 @@ public abstract class FilterPane extends TitledPane {
             setSelectionStatusForAll(false);
             deselectAll.setVisited(false);
         });
+    }
+
+    private void loadFXMLResource() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(FXML_RESOURCE_FILE_NAME));
+            fxmlLoader.setRoot(this);
+            fxmlLoader.setController(this);
+            fxmlLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     protected abstract void setSelectionStatusForAll(boolean status);
