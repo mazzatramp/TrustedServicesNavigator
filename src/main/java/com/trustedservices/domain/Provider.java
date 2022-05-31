@@ -97,12 +97,14 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedEntity 
     public void setServices(List<Service> services) {
         this.services = services;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Provider provider = (Provider) o;
-        return Objects.equals(this.name, provider.name);
+        return Objects.equals(this.name, provider.name)
+                && Objects.equals(this.country, provider.country);
     }
 
     @Override
