@@ -44,11 +44,11 @@ public class TrustedServicesNavigatorApplication extends Application {
     }
 
     private void linkNavigatorAndControllers() {
-        navigationMediator.setUserInterfaceController(windowController);
-        windowController.setNavigationMediator(navigationMediator);
+        navigationController.setWindowController(windowController);
+        windowController.setNavigationController(navigationController);
 
         navigationController.setFilterController(filterController);
-        filterController.setNavigationMediator(navigationController);
+        filterController.setNavigationController(navigationController);
     }
 
     private void startApiDataDownload() {
@@ -64,7 +64,7 @@ public class TrustedServicesNavigatorApplication extends Application {
             protected Void call() {
                 TrustedListBuilder apiBuilder = new TrustedListApiBuilder();
                 navigationController.buildCompleteList(apiBuilder);
-                windowController.fillDisplayAndFiltersViews();
+                windowController.fillFiltersAndDisplay();
                 return null;
             }
         };

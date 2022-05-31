@@ -26,7 +26,7 @@ public class FilterController {
     }
 
     public void applyFiltersTo(TrustedList target) {
-        navigationMediator.updateActiveFiltersFromUserSelection();
+        navigationController.updateActiveFiltersFromUserSelection();
         getFilters().forEach(filter -> filter.applyTo(target));
         removeEmptyEntities(target);
         target.updateServiceTypesAndStatuses();
@@ -81,7 +81,7 @@ public class FilterController {
         clone.getCountries().removeIf(country -> country.getProviders().isEmpty());
     }
 
-    public void setNavigationMediator(NavigationController navigationController) {
+    public void setNavigationController(NavigationController navigationController) {
         this.navigationController = navigationController;
     }
 }

@@ -28,7 +28,7 @@ public class WindowController {
     public void fillFiltersAndDisplay() {
         //runLater is needed in order to avoid issues adding a lot of nodes at once
         Platform.runLater(() -> {
-            TrustedList dataAtStartupTime = navigationMediator.getCompleteList();
+            TrustedList dataAtStartupTime = navigationController.getCompleteList();
             displayPane.fillDisplayTreeView(dataAtStartupTime);
             filterSelection.fillFilterPanesWith(dataAtStartupTime);
         });
@@ -36,14 +36,10 @@ public class WindowController {
 
     public void handleFilterClick() {
         if (displayPane.canShowResults()) {
-            navigationMediator.updateActiveFiltersFromUserSelection();
-            displayPane.fillDisplayTreeView(filteredList);
+            navigationController.updateActiveFiltersFromUserSelection();
             TrustedList filteredList = navigationController.getFilteredList();
+            displayPane.fillDisplayTreeView(filteredList);
         }
-    }
-
-    public void handleResetFiltersClick() {
-        filterSelection.resetFilters();
     }
 
     public void openInfoPaneWithInfo(List<String> info) {

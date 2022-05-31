@@ -49,7 +49,7 @@ public class FilterSelectionAccordion extends Accordion {
     }
 
     public void refreshFiltersExcept(Filter filter) {
-        navigationMediator.updateActiveFiltersFromUserSelection();
+        navigationController.updateActiveFiltersFromUserSelection();
         if (!(filter instanceof ProviderFilter))
             disableItemsOf(providers);
         if (!(filter instanceof ServiceTypeFilter))
