@@ -1,17 +1,17 @@
 package com.trustedservices.navigator.components;
 
-import com.trustedservices.domain.TrustedEntity;
+import com.trustedservices.domain.TrustedListEntity;
 import javafx.scene.control.Label;
 
 public class TrustedEntityLabel extends Label {
-    private final TrustedEntity refereed;
+    private final TrustedListEntity refereed;
 
-    public TrustedEntityLabel(TrustedEntity refereed) {
+    public TrustedEntityLabel(TrustedListEntity refereed) {
         this.refereed = refereed;
         this.setText(refereed.getName());
     }
 
-    public TrustedEntity getRefereed() {
+    public TrustedListEntity getRefereed() {
         return refereed;
     }
 }

@@ -2,7 +2,7 @@ package com.trustedservices.domain;
 
 import java.util.List;
 
-public interface TrustedEntity {
+public interface TrustedListEntity {
 
     public String getName();
 

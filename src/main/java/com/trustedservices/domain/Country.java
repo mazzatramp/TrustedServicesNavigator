@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Country implements Cloneable, Comparable<Country>, TrustedEntity {
+public class Country implements Cloneable, Comparable<Country>, TrustedListEntity {
     private String name;
     private String code;
 
