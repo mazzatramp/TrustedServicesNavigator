@@ -38,8 +38,7 @@ public class TrustedListApiBuilder implements TrustedListBuilder {
     private <T> TreeSet<T> getTreeSetFromEndpoint(String endpoint, Class<T> type) {
         try {
             ObjectMapper jsonToObjectMapper = new ObjectMapper();
-            URL endpointURL = null;
-            endpointURL = new URL(endpoint);
+            URL endpointURL = new URL(endpoint);
             JavaType treeSetCollection = jsonToObjectMapper.getTypeFactory().constructCollectionType(TreeSet.class, type);
             return jsonToObjectMapper.readValue(endpointURL, treeSetCollection);
         } catch (IOException e) {
