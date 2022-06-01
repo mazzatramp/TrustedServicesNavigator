@@ -1,7 +1,6 @@
 package com.trustedservices.navigator.components;
 
 import com.trustedservices.domain.TrustedList;
-import com.trustedservices.navigator.NavigationController;
 import com.trustedservices.navigator.filters.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,9 +17,7 @@ public class FilterPanesAccordion extends Accordion {
     @FXML private StatusFilterPane statuses;
     @FXML private ServiceTypeFilterPane serviceTypes;
 
-    private NavigationController navigationController;
-
-    TrustedList tl;
+    private TrustedList completeList;
 
     public FilterPanesAccordion() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("filter-selection-accordion.fxml"));
@@ -35,16 +32,10 @@ public class FilterPanesAccordion extends Accordion {
     }
 
     public void fillFilterPanesWith(TrustedList completeList) {
-        tl = completeList;
+        this.completeList = completeList;
         providers.fillWith(completeList);
         serviceTypes.fillWith(completeList);
         statuses.fillWith(completeList);
-    }
-
-    public void refreshFilterPanes() {
-        disableItemsOf(providers);
-        disableItemsOf(serviceTypes);
-        disableItemsOf(statuses);
     }
 
     public void refreshPanesExcept(FilterPane notToRefresh) {
@@ -68,7 +59,7 @@ public class FilterPanesAccordion extends Accordion {
             filterPane.getAssociatedFilter().setWhitelist(testWhitelist);
 
             FilterList filters = new FilterList(getAssociatedFilters());
-            TrustedList filtered = filters.getFilteredListFrom(tl);
+            TrustedList filtered = filters.getFilteredListFrom(completeList);
             filterPane.getAssociatedFilter().setWhitelist(oldWhitelist);
 
             if (filtered.getCountries().isEmpty())
@@ -90,9 +81,5 @@ public class FilterPanesAccordion extends Accordion {
         filters.add(statuses.getAssociatedFilter());
         filters.add(serviceTypes.getAssociatedFilter());
         return filters;
-    }
-
-    public void setNavigationController(NavigationController navigationController) {
-        this.navigationController = navigationController;
     }
 }
