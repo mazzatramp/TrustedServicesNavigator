@@ -1,6 +1,9 @@
 package com.trustedservices.navigator.components;
 
+import com.trustedservices.domain.Country;
+import com.trustedservices.domain.Provider;
 import com.trustedservices.domain.TrustedList;
+import com.trustedservices.domain.TrustedListEntity;
 import com.trustedservices.navigator.WindowController;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
@@ -16,32 +19,45 @@ import java.io.IOException;
 
 public class DisplayPane extends AnchorPane {
 
-    @FXML
-    private TreeView<Label> displayed;
+    private static final String RESOURCE_FILE_NAME = "display-pane.fxml";
 
-    @FXML
-    private ProgressBar downloadBar;
-
-    @FXML
-    private Label noResultsLabel;
+    @FXML private TreeView<Label> displayed;
+    @FXML private Label emptyDisplayMessage;
+    @FXML private ProgressBar downloadBar;
 
     private WindowController windowController;
 
     public DisplayPane() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("display-pane.fxml"));
+        loadFXMLResource();
+        initializeEmptyDisplayMessage();
+        initializeDownloadBar();
+
+        EventHandler<MouseEvent> mouseEventEventHandler = this::handleMouseClick;
+        displayed.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEventEventHandler);
+    }
+
+    private void initializeDownloadBar() {
+        downloadBar.getParent().visibleProperty().bind(downloadBar.visibleProperty());
+    }
+
+    private void initializeEmptyDisplayMessage() {
+        emptyDisplayMessage.setText(
+                "There are no services respecting the selected filter.\n" +
+                "Please change or reset filters."
+        );
+    }
+
+    private void loadFXMLResource() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(DisplayPane.RESOURCE_FILE_NAME));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
         try {
             fxmlLoader.load();
         } catch (IOException e) {
+            System.err.println("Exception in loading fxml resource.\n" + e.getMessage());
             throw new RuntimeException(e);
         }
-
-        EventHandler<MouseEvent> mouseEventEventHandler = this::handleMouseClick;
-        displayed.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEventEventHandler);
-        noResultsLabel.setText("There are no services respecting the selected filter.\nPlease change or reset filters.");
-        noResultsLabel.setVisible(false);
     }
 
     public void bindProgressBarWith(Task<Void> downloadTask) {
@@ -50,25 +66,44 @@ public class DisplayPane extends AnchorPane {
     }
 
     public void fillWith(TrustedList dataToShow) {
-        noResultsLabel.setVisible(dataToShow.isEmpty());
+        emptyDisplayMessage.setVisible(dataToShow.isEmpty());
+        TreeItem<Label> root = getRootFrom(dataToShow);
+        displayed.setRoot(root);
+    }
 
+    private TreeItem<Label> getRootFrom(TrustedList dataToShow) {
         TreeItem<Label> root = new TreeItem<>();
         dataToShow.getCountries().forEach(country -> {
-            TrustedEntityLabel countryLabel = new TrustedEntityLabel(country);
-            TreeItem<Label> countryTreeItem = new TreeItem<>(countryLabel);
-            country.getProviders().forEach(provider -> {
-                TrustedEntityLabel providerLabel = new TrustedEntityLabel(provider);
-                TreeItem<Label> providerTreeItem = new TreeItem<>(providerLabel);
-                provider.getServices().forEach(service -> {
-                    TrustedEntityLabel serviceLabel = new TrustedEntityLabel(service);
-                    TreeItem<Label> serviceTreeItem = new TreeItem<>(serviceLabel);
-                    providerTreeItem.getChildren().add(serviceTreeItem);
-                });
-                countryTreeItem.getChildren().add(providerTreeItem);
-            });
+            TreeItem<Label> countryTreeItem = newCountryItemFrom(country);
             root.getChildren().add(countryTreeItem);
         });
-        displayed.setRoot(root);
+        return root;
+    }
+
+    private TreeItem<Label> newCountryItemFrom(Country country) {
+        TreeItem<Label> countryTreeItem = createTreeItemFrom(country);
+
+        country.getProviders().forEach(provider -> {
+            TreeItem<Label> providerTreeItem = createProviderItemFrom(provider);
+            countryTreeItem.getChildren().add(providerTreeItem);
+        });
+
+        return countryTreeItem;
+    }
+
+    private TreeItem<Label> createProviderItemFrom(Provider provider) {
+        TreeItem<Label> providerTreeItem = createTreeItemFrom(provider);
+
+        provider.getServices().forEach(service -> {
+            TreeItem<Label> serviceTreeItem = createTreeItemFrom(service);
+            providerTreeItem.getChildren().add(serviceTreeItem);
+        });
+
+        return providerTreeItem;
+    }
+
+    private TreeItem<Label> createTreeItemFrom(TrustedListEntity entity) {
+        return new TreeItem<>(new TrustedEntityLabel(entity));
     }
 
     public boolean canShowResults() {
