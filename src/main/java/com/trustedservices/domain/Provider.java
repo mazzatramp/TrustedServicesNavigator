@@ -104,7 +104,7 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
         if (o == null || getClass() != o.getClass()) return false;
         Provider provider = (Provider) o;
         return Objects.equals(this.name, provider.name)
-                && Objects.equals(this.country, provider.country);
+                && Objects.equals(this.trustmark, provider.trustmark); //Messo trustmark al posto di country
     }
 
     @Override
@@ -125,7 +125,7 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
         try {
             Provider providerClone = (Provider) super.clone();
             providerClone.setServices(new ArrayList<>());
-            providerClone.setCountry(null);
+            providerClone.setCountry(null); //messo country al posto di null nell'argomento
             this.getServices().forEach(
                     service -> {
                         Service serviceClone = service.clone();
