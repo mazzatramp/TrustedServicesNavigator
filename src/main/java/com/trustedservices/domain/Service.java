@@ -27,7 +27,7 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
         this.id = serviceId;
         this.name = name;
         this.type = type;
-        this.status = statusUrl;
+        this.status = getLastPartFromUrl(statusUrl);
         this.serviceTypes = serviceTypes;
     }
 
