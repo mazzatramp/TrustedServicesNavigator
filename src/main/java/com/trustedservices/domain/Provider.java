@@ -24,7 +24,7 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
             @JsonProperty("qServiceTypes") List<String> serviceTypes,
             @JsonProperty("services") TreeSet<Service> services
     ){
-        this.country = new Country("", countryCode);
+        this.country = new Country("placeholder", countryCode);
         this.providerId = providerId;
         this.name = name;
         this.trustmark = trustmark;
@@ -57,6 +57,7 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
     public void setProviderId(int providerId) {
         this.providerId = providerId;
     }
+
     @Override
     public String getName() {
         return name;
@@ -138,6 +139,12 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
 
     @Override
     public int compareTo(Provider provider) {
-        return this.name.compareTo(provider.name);
+        int countryComparison = this.country.compareTo(provider.country);
+        int nameComparison = this.name.compareTo(provider.name);
+
+        if (countryComparison != 0)
+            return countryComparison;
+        else
+            return nameComparison;
     }
 }
