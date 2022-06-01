@@ -125,7 +125,7 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
         try {
             Provider providerClone = (Provider) super.clone();
             providerClone.setServices(new ArrayList<>());
-            providerClone.setCountry(null);
+            providerClone.setCountry(country);
             this.getServices().forEach(
                     service -> {
                         Service serviceClone = service.clone();

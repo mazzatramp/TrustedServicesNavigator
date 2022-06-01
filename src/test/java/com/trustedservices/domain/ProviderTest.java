@@ -278,11 +278,13 @@ Provider provider;
                 @Test
                 void cloneACountryReturnsSameProvider() throws IOException {
                     //arrange
-                    Provider providerToBeCloned = Help.getCountryN(0).getProviders().get(0);
+                    Provider providerToBeCloned = Help.getCountryN(0).getProviders().get(2);
+                    providerToBeCloned.toString();
                     //act
                     Provider clonedProvider = providerToBeCloned.clone();
+                    clonedProvider.toString();
                     //assert
-                    assertEquals(providerToBeCloned, clonedProvider);
+                    assertTrue(providerToBeCloned.equals(clonedProvider));
                 }
 
             }
