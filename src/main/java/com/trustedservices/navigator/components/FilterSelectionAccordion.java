@@ -57,11 +57,11 @@ public class FilterSelectionAccordion extends Accordion {
         Set<String> unselectedFilterItems = filterPane.getUnselectedItems();
         Set<String> itemsToDisable = new HashSet<>();
 
-        for (String unselected : unselectedFilterItems) {
+        for (String unselectedFilterItem : unselectedFilterItems) {
             Set<String> oldWhitelist = filterPane.getAssociatedFilter().getWhitelist();
 
             Set<String> testWhitelist = new HashSet<>(1);
-            testWhitelist.add(unselected);
+            testWhitelist.add(unselectedFilterItem);
             filterPane.getAssociatedFilter().setWhitelist(testWhitelist);
 
             FilterList filters = new FilterList(getAssociatedFilters());
@@ -69,7 +69,7 @@ public class FilterSelectionAccordion extends Accordion {
             filterPane.getAssociatedFilter().setWhitelist(oldWhitelist);
 
             if (filtered.getCountries().isEmpty())
-                itemsToDisable.add(unselected);
+                itemsToDisable.add(unselectedFilterItem);
         }
 
         filterPane.disable(itemsToDisable);

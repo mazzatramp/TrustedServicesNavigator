@@ -62,7 +62,7 @@ public class ProviderFilterPane extends FilterPane {
                 countryCheckBox.getChildren().forEach(providerTreeItem -> {
                     CheckBoxTreeItem<String> providerCheckBox = (CheckBoxTreeItem<String>) providerTreeItem;
                     if (!providerCheckBox.isSelected())
-                        unselected.add(providerCheckBox.getValue());
+                        unselected.add(countryCheckBox.getValue() +"/"+ providerCheckBox.getValue());
                 });
             }
         });
@@ -78,7 +78,7 @@ public class ProviderFilterPane extends FilterPane {
             for (TreeItem<String> providerTreeItem : countryTreeItem.getChildren()) {
                 FilterTreeItem providerFilterItem = (FilterTreeItem) providerTreeItem;
 
-                boolean disable = itemsToDisable.contains(providerTreeItem.getValue());
+                boolean disable = itemsToDisable.contains(countryTreeItem.getValue() + "/" + providerTreeItem.getValue());
                 providerFilterItem.setDisabled(disable);
                 allVisitedProvidersDisabled &= disable;
             }
