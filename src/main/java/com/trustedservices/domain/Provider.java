@@ -2,9 +2,7 @@ package com.trustedservices.domain;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -15,7 +13,7 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
     private String name;
     private String trustmark;
     private List<String> serviceTypes;
-    private List<Service> services;
+    private Set<Service> services;
 
     @JsonCreator
     public Provider(
@@ -24,7 +22,7 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
             @JsonProperty("name") String name,
             @JsonProperty("trustmark") String trustmark,
             @JsonProperty("qServiceTypes") List<String> serviceTypes,
-            @JsonProperty("services") List<Service> services
+            @JsonProperty("services") TreeSet<Service> services
     ){
         this.country = new Country("", countryCode);
         this.providerId = providerId;
@@ -90,11 +88,11 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
         this.serviceTypes = serviceTypes;
     }
 
-    public List<Service> getServices() {
+    public Set<Service> getServices() {
         return services;
     }
 
-    public void setServices(List<Service> services) {
+    public void setServices(TreeSet<Service> services) {
         this.services = services;
     }
 
@@ -124,7 +122,7 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
     public Provider clone() {
         try {
             Provider providerClone = (Provider) super.clone();
-            providerClone.setServices(new ArrayList<>());
+            providerClone.setServices(new TreeSet<>());
             providerClone.setCountry(null);
             this.getServices().forEach(
                     service -> {

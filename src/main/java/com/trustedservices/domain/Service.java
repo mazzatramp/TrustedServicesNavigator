@@ -8,9 +8,9 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Service implements Cloneable, Comparable<Service>, TrustedListEntity {
-    private Provider provider;
 
-    private int serviceId;
+    private Provider provider;
+    private Integer id;
     private String name;
     private String type;
     private String status;
@@ -24,10 +24,10 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
             @JsonProperty("currentStatus") String statusUrl,
             @JsonProperty("qServiceTypes") List<String> serviceTypes
     ) {
-        this.serviceId = serviceId;
+        this.id = serviceId;
         this.name = name;
         this.type = type;
-        this.status = getLastPartFromUrl(statusUrl);
+        this.status = statusUrl;
         this.serviceTypes = serviceTypes;
     }
 
@@ -36,13 +36,13 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
         return splitUrl[splitUrl.length-1];
     }
 
-    public int getServiceId() {
-        return serviceId;
+    public int getId() {
+        return id;
     }
 
     @JsonSetter
-    public void setServiceId(int serviceId) {
-        this.serviceId = serviceId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
@@ -100,7 +100,7 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Service service = (Service) o;
-        return this.name.equals(service.name) && this.serviceId == service.serviceId;
+        return this.name.equals(service.name) && this.id == service.id;
     }
 
     @Override
@@ -125,6 +125,6 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
 
     @Override
     public int compareTo(Service service) {
-        return Integer.compare(this.serviceId, service.serviceId);
+        return this.name.compareTo(service.name);
     }
 }

@@ -3,15 +3,13 @@ package com.trustedservices.domain;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Country implements Cloneable, Comparable<Country>, TrustedListEntity {
     private String name;
     private String code;
 
-    private List<Provider> providers;
+    private Set<Provider> providers;
 
     @JsonCreator
     public Country(
@@ -20,7 +18,7 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
     ) {
         this.name = name;
         this.code = code;
-        providers = new ArrayList<>(0);
+        providers = new TreeSet<>();
     }
 
     @Override
@@ -48,12 +46,12 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
         this.code = code;
     }
 
-    public List <Provider> getProviders() {
+    public Set<Provider> getProviders() {
         return providers;
     }
 
-    public void setProviders(ArrayList<Provider> providers) {
-        this.providers = providers;
+    public void setProviders(List<Provider> providers) {
+        this.providers = new TreeSet<>(providers);
     }
 
     @Override
@@ -66,12 +64,12 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
 
     @Override
     public int compareTo(Country country) {
-        return this.code.compareTo(country.code);
+        return this.name.compareTo(country.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(code);
+        return Objects.hash(name);
     }
 
     @Override
@@ -86,7 +84,7 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
     public Country clone() {
         try {
             Country countryClone = (Country) super.clone();
-            countryClone.setProviders(new ArrayList<>());
+            countryClone.providers = new TreeSet<>();
             this.getProviders().forEach(
                     provider -> {
                         Provider providerClone = provider.clone();

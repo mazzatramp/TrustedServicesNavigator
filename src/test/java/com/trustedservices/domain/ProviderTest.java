@@ -1,9 +1,12 @@
 package com.trustedservices.domain;
 
+import com.sun.source.tree.Tree;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.TreeSet;
+
 import static org.junit.jupiter.api.Assertions.*;
 @Disabled
 @DisplayName("A Provider")
@@ -34,7 +37,7 @@ Provider provider;
         //O PROVARE A METTERE LISTE PIENE E LISTE VUOTE IN UN ALTRO CASO
         new Provider("IT", 49,
                 "Azienda Zero"
-                ,"VATIT-05018720283", new ArrayList<String>(), new ArrayList<Service>());
+                ,"VATIT-05018720283", new ArrayList<String>(), new TreeSet<>());
     }
     @Nested
     @DisplayName("when new")
@@ -45,7 +48,7 @@ Provider provider;
             listOfServiceTypesOfAziendaZero.add("QCertESeal");
             listOfServiceTypesOfAziendaZero.add("QCertESig");
             listOfServiceTypesOfAziendaZero.add("QTimestamp");
-            List<Service> listOfServicesOfAziendaZero= new ArrayList<Service>();
+            TreeSet<Service> listOfServicesOfAziendaZero= new TreeSet<>();
             listOfServicesOfAziendaZero.add(new Service(
                     1,
                     "OID.2.5.4.97=VATIT-05018720283, CN=Azienda Zero CA Qualificata eIDAS 1, OU=TSP, O=Azienda Zero, C=IT",

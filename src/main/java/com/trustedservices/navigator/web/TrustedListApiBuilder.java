@@ -1,35 +1,29 @@
 package com.trustedservices.navigator.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.trustedservices.domain.Country;
-import com.trustedservices.domain.Provider;
-import com.trustedservices.domain.TrustedList;
+import com.fasterxml.jackson.databind.*;
+import com.trustedservices.domain.*;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
+import java.util.TreeSet;
 
 public class TrustedListApiBuilder implements TrustedListBuilder {
     private static final String COUNTRIES_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list_no_lotl_territory";
     private static final String PROVIDERS_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list";
 
-    private List<Country> countries;
-    private List<Provider> providers;
+    private TreeSet<Country> countries;
+    private TreeSet<Provider> providers;
 
     @Override
     public TrustedList build(){
-        try {
-            downloadApiData();
-            return new TrustedList(countries);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        downloadApiData();
+        linkCountriesAndProviders();
+        return new TrustedList(countries);
     }
 
-    private void downloadApiData() throws IOException {
-        countries = buildJSONFromURL(COUNTRIES_API_ENDPOINT, Country.class);
-        providers = buildJSONFromURL(PROVIDERS_API_ENDPOINT, Provider.class);
-        linkCountriesAndProviders();
+    private void downloadApiData() {
+        countries = getTreeSetFromEndpoint(COUNTRIES_API_ENDPOINT, Country.class);
+        providers = getTreeSetFromEndpoint(PROVIDERS_API_ENDPOINT, Provider.class);
     }
 
     private void linkCountriesAndProviders() {
@@ -41,12 +35,17 @@ public class TrustedListApiBuilder implements TrustedListBuilder {
         }
     }
 
-    private <T> List<T> buildJSONFromURL(String endpoint, Class<T> type) throws IOException {
-        ObjectMapper jsonToObjectMapper = new ObjectMapper();
-        return jsonToObjectMapper.readValue(
-                new URL(endpoint),
-                jsonToObjectMapper.getTypeFactory().constructCollectionType(List.class, type)
-        );
+    private <T> TreeSet<T> getTreeSetFromEndpoint(String endpoint, Class<T> type) {
+        try {
+            ObjectMapper jsonToObjectMapper = new ObjectMapper();
+            URL endpointURL = null;
+            endpointURL = new URL(endpoint);
+            JavaType treeSetCollection = jsonToObjectMapper.getTypeFactory().constructCollectionType(TreeSet.class, type);
+            return jsonToObjectMapper.readValue(endpointURL, treeSetCollection);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     private Country getCountryFromCode(String countryCode) {

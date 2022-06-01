@@ -6,21 +6,20 @@ public class TrustedList implements Cloneable {
     private final Set<String> serviceTypes;
     private final Set<String> statuses;
 
-    private List<Country> countries;
+    private TreeSet<Country> countries;
 
     public TrustedList() {
-        this.countries = new ArrayList<>(0);
-        this.serviceTypes = new HashSet<>(0);
-        this.statuses = new HashSet<>(0);
+        this(new TreeSet<>());
     }
 
-    public TrustedList(List<Country> countries) {
-        this();
+    public TrustedList(TreeSet<Country> countries) {
         this.countries = countries;
+        this.serviceTypes = new HashSet<>(0);
+        this.statuses = new HashSet<>(0);
         this.updateServiceTypesAndStatuses();
     }
 
-    public List<Country> getCountries() {
+    public Set<Country> getCountries() {
         return countries;
     }
 
@@ -41,7 +40,7 @@ public class TrustedList implements Cloneable {
     public TrustedList clone() {
         try {
             TrustedList clone = (TrustedList) super.clone();
-            clone.countries = new ArrayList<>();
+            clone.countries = new TreeSet<>();
             this.countries.forEach(
                     country -> clone.getCountries().add(country.clone())
             );
