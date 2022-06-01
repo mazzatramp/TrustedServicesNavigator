@@ -22,7 +22,7 @@
     </MenuBar>
 
     <SplitPane fx:id="splitPane" dividerPositions="0.3" VBox.vgrow="ALWAYS">
-        <FilterPanesAccordion fx:id="filterSelection"/>
+        <FilterPanesAccordion fx:id="filterPanes"/>
         <DisplayPane fx:id="displayPane"/>
         <InfoPane fx:id="infoPane" />
     </SplitPane>
