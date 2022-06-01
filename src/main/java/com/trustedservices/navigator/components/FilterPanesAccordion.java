@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FilterSelectionAccordion extends Accordion {
+public class FilterPanesAccordion extends Accordion {
 
     @FXML private ProviderFilterPane providers;
     @FXML private StatusFilterPane statuses;
@@ -19,7 +19,7 @@ public class FilterSelectionAccordion extends Accordion {
 
     private TrustedList data;
 
-    public FilterSelectionAccordion() {
+    public FilterPanesAccordion() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("filter-selection-accordion.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
