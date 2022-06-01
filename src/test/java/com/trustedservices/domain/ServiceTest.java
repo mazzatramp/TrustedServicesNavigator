@@ -42,16 +42,16 @@ public class ServiceTest {
         @Nested
         class Equals{
             Service argumentService;
-            @DisplayName("with a provider as argument, it returns an Error")
+            @DisplayName("with a service as argument, it returns an Error")
             @Test
-            void NullEqualsProvider() throws IOException {
+            void NullEqualsService() throws IOException {
                 argumentService = Help.getWholeList().getCountries().get(0).getProviders().get(0).getServices().get(1); //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
                 //arrange
                 //assert
                 assertThrows(NullPointerException.class, () -> service.equals(argumentService));
                 //assertEquals(getWholeList(),clonedList)
             }
-            @DisplayName("with a null provider as argument, it returns error ")
+            @DisplayName("with a null service as argument, it returns error ")
             @Test
             void NullEqualsNull() {
                 argumentService = null;
@@ -103,9 +103,11 @@ public class ServiceTest {
 
                 @DisplayName("and the two services are not the same, method should return false")
                 @Test
+
+
                 void NotSameCountryAsArgument() throws IOException {
                     //arrange
-                    //DEVO METTERE UN PROVIDER VERO E PROPRIO
+                    //DEVO METTERE UN Service VERO E PROPRIO
                     argumentService = Help.getWholeList().getCountries().get(2).getProviders().get(0).getServices().get(1); //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
 
                     //act
@@ -113,7 +115,7 @@ public class ServiceTest {
                     //assert
                     assertFalse(areCountriesTHeSame);
                 }
-                @DisplayName("with a provider null as argument, method should return false")
+                @DisplayName("with a service null as argument, method should return false")
                 @Test
                 void NullAsArgument() {
                     //arrange
@@ -180,9 +182,9 @@ public class ServiceTest {
                 @Test
                 void aCountry_CompareTo_null() throws IOException {
                     //arrange
-                    Service argumentProvider = null;
+                    Service argumentService = null;
                     //act
-                    assertThrows(NullPointerException.class, () -> service.compareTo(argumentProvider));
+                    assertThrows(NullPointerException.class, () -> service.compareTo(argumentService));
 
 
                 }
@@ -205,7 +207,7 @@ public class ServiceTest {
         class Clone {
             @DisplayName("It returns the same service")
             @Test
-            void cloneACountryReturnsSameProvider() throws IOException {
+            void cloneACountryReturnsSameService() throws IOException {
                 //arrange
                 Service serviceToBeCloned = Help.getCountryN(0).getProviders().get(0).getServices().get(0);
                 //act
