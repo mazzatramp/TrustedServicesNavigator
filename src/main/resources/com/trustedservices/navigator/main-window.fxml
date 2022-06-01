@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 
 <?import com.trustedservices.navigator.components.DisplayPane?>
-<?import com.trustedservices.navigator.components.FilterPanesAccordion?>
+<?import com.trustedservices.navigator.components.FilterSelectionAccordion?>
 <?import com.trustedservices.navigator.components.InfoPane?>
 
 <VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
@@ -22,7 +22,7 @@
     </MenuBar>
 
     <SplitPane fx:id="splitPane" dividerPositions="0.3" VBox.vgrow="ALWAYS">
-        <FilterPanesAccordion fx:id="filterPanes"/>
+        <FilterSelectionAccordion fx:id="filterSelection"/>
         <DisplayPane fx:id="displayPane"/>
         <InfoPane fx:id="infoPane" />
     </SplitPane>

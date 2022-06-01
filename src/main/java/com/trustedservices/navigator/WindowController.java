@@ -12,7 +12,7 @@ import java.util.List;
 public class WindowController {
 
     @FXML private DisplayPane displayPane;
-    @FXML private FilterPanesAccordion filterPanes;
+    @FXML private FilterSelectionAccordion filterSelection;
     @FXML private SplitPane splitPane;
     @FXML private InfoPane infoPane;
 
@@ -36,8 +36,8 @@ public class WindowController {
         Platform.runLater(() -> {
             TrustedList completeList = navigationController.getCompleteList();
             displayPane.fillWith(completeList);
-            filterPanes.fillFilterPanesWith(completeList);
-            navigationController.getFilters().addAll(filterPanes.getAssociatedFilters());
+            filterSelection.fillFilterPanesWith(completeList);
+            navigationController.getFilters().addAll(filterSelection.getAssociatedFilters());
         });
     }
 
@@ -51,7 +51,7 @@ public class WindowController {
 
     @FXML
     public void handleResetFilters() {
-        filterPanes.resetFilters();
+        filterSelection.resetFilters();
     }
 
     public void openInfoPaneWithInfo(List<String> info) {

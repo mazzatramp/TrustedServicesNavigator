@@ -3,13 +3,15 @@ package com.trustedservices.domain;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Country implements Cloneable, Comparable<Country>, TrustedListEntity {
     private String name;
     private String code;
 
-    private Set<Provider> providers;
+    private List<Provider> providers;
 
     @JsonCreator
     public Country(
@@ -18,7 +20,7 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
     ) {
         this.name = name;
         this.code = code;
-        providers = new TreeSet<>();
+        providers = new ArrayList<>(0);
     }
 
     @Override
@@ -46,12 +48,12 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
         this.code = code;
     }
 
-    public Set<Provider> getProviders() {
+    public List <Provider> getProviders() {
         return providers;
     }
 
-    public void setProviders(List<Provider> providers) {
-        this.providers = new TreeSet<>(providers);
+    public void setProviders(ArrayList<Provider> providers) {
+        this.providers = providers;
     }
 
     @Override
@@ -69,7 +71,7 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(code);
     }
 
     @Override
@@ -84,7 +86,7 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
     public Country clone() {
         try {
             Country countryClone = (Country) super.clone();
-            countryClone.providers = new TreeSet<>();
+            countryClone.setProviders(new ArrayList<>());
             this.getProviders().forEach(
                     provider -> {
                         Provider providerClone = provider.clone();

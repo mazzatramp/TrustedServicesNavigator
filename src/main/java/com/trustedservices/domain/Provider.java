@@ -2,7 +2,9 @@ package com.trustedservices.domain;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -13,7 +15,7 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
     private String name;
     private String trustmark;
     private List<String> serviceTypes;
-    private Set<Service> services;
+    private List<Service> services;
 
     @JsonCreator
     public Provider(
@@ -22,9 +24,9 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
             @JsonProperty("name") String name,
             @JsonProperty("trustmark") String trustmark,
             @JsonProperty("qServiceTypes") List<String> serviceTypes,
-            @JsonProperty("services") TreeSet<Service> services
+            @JsonProperty("services") List<Service> services
     ){
-        this.country = new Country("placeholder", countryCode);
+        this.country = new Country("", countryCode);
         this.providerId = providerId;
         this.name = name;
         this.trustmark = trustmark;
@@ -48,7 +50,7 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
     }
 
     public void setCountryCode(String countryCode) {
-        this.country = new Country("placeholder", countryCode);
+        this.country = new Country("", countryCode);
     }
 
     public int getProviderId() {
@@ -57,7 +59,6 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
     public void setProviderId(int providerId) {
         this.providerId = providerId;
     }
-
     @Override
     public String getName() {
         return name;
@@ -89,11 +90,11 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
         this.serviceTypes = serviceTypes;
     }
 
-    public Set<Service> getServices() {
+    public List<Service> getServices() {
         return services;
     }
 
-    public void setServices(TreeSet<Service> services) {
+    public void setServices(List<Service> services) {
         this.services = services;
     }
 
@@ -123,7 +124,7 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
     public Provider clone() {
         try {
             Provider providerClone = (Provider) super.clone();
-            providerClone.setServices(new TreeSet<>());
+            providerClone.setServices(new ArrayList<>());
             providerClone.setCountry(null);
             this.getServices().forEach(
                     service -> {
@@ -139,12 +140,6 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
 
     @Override
     public int compareTo(Provider provider) {
-        int countryComparison = this.country.compareTo(provider.country);
-        int nameComparison = this.name.compareTo(provider.name);
-
-        if (countryComparison != 0)
-            return countryComparison;
-        else
-            return nameComparison;
+        return this.name.compareTo(provider.name);
     }
 }

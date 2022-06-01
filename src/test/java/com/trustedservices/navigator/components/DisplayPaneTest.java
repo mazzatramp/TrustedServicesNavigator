@@ -6,6 +6,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("A DisplayPane")
 public class DisplayPaneTest {
+    @Test
+    @DisplayName("is instantiated with new DisplayPane()")
+    void isInstantiatedWithNewClasse() {
+        //NON SO PERCHE NON FUNZIONI
+        new DisplayPane();
     DisplayPane displayPane;
     @Disabled
     @Nested
@@ -22,10 +27,7 @@ public class DisplayPaneTest {
         @Nested
         class nomeMetodo2{}
     }
-    @Test
-    @DisplayName("is instantiated with new DisplayPane()")
-    void isInstantiatedWithNewClasse() {
-        new DisplayPane();
+
     }
     //FILLWITH() NON DOVREI AVERE PROBLEMI A TESTARLO
 

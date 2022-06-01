@@ -8,9 +8,9 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Service implements Cloneable, Comparable<Service>, TrustedListEntity {
-
     private Provider provider;
-    private Integer id;
+
+    private int serviceId;
     private String name;
     private String type;
     private String status;
@@ -24,7 +24,7 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
             @JsonProperty("currentStatus") String statusUrl,
             @JsonProperty("qServiceTypes") List<String> serviceTypes
     ) {
-        this.id = serviceId;
+        this.serviceId = serviceId;
         this.name = name;
         this.type = type;
         this.status = getLastPartFromUrl(statusUrl);
@@ -36,13 +36,13 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
         return splitUrl[splitUrl.length-1];
     }
 
-    public int getId() {
-        return id;
+    public int getServiceId() {
+        return serviceId;
     }
 
     @JsonSetter
-    public void setId(int id) {
-        this.id = id;
+    public void setServiceId(int serviceId) {
+        this.serviceId = serviceId;
     }
 
     @Override
@@ -100,7 +100,7 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Service service = (Service) o;
-        return this.name.equals(service.name) && this.id == service.id;
+        return this.name.equals(service.name) && this.serviceId == service.serviceId;
     }
 
     @Override
@@ -125,6 +125,6 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
 
     @Override
     public int compareTo(Service service) {
-        return this.name.compareTo(service.name);
+        return Integer.compare(this.serviceId, service.serviceId);
     }
 }
