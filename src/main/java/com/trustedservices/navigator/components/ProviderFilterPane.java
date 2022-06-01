@@ -46,7 +46,7 @@ public class ProviderFilterPane extends FilterPane {
                 countryCheckBox.getChildren().forEach(providerTreeItem -> {
                     CheckBoxTreeItem<String> providerCheckBox = (CheckBoxTreeItem<String>) providerTreeItem;
                     if (providerCheckBox.isSelected())
-                        selectedProviders.add(providerCheckBox.getValue());
+                        selectedProviders.add(countryCheckBox.getValue() +"/"+ providerCheckBox.getValue());
                 });
             }
         });
