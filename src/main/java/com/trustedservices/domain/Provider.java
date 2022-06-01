@@ -48,7 +48,7 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
     }
 
     public void setCountryCode(String countryCode) {
-        this.country = new Country("", countryCode);
+        this.country = new Country("placeholder", countryCode);
     }
 
     public int getProviderId() {

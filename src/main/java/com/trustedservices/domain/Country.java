@@ -64,7 +64,7 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
 
     @Override
     public int compareTo(Country country) {
-        return this.name.compareTo(country.name);
+        return this.code.compareTo(country.code);
     }
 
     @Override
