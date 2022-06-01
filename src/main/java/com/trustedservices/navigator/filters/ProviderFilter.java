@@ -6,7 +6,7 @@ public class ProviderFilter extends Filter {
     @Override
     protected void filterByWhitelist(TrustedList listToFilter) {
         listToFilter.getCountries().forEach(country -> {
-            country.getProviders().removeIf(provider -> !whitelist.contains(provider.getName()));
+            country.getProviders().removeIf(provider -> !whitelist.contains(country.getName() + "/" +provider.getName()));
         });
     }
 }
