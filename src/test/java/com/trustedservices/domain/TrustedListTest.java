@@ -143,12 +143,12 @@ class TrustedListTest {
 
         }
     }
-    @DisplayName("when new with argument")
+    @DisplayName("when new with argument, I put all the Countries full of all the services as argument")
     @Nested
     class constructorWithArgument{
         @BeforeEach
         void createATrustedListWithArgument() throws IOException {
-            List<Country> listOfCountries = new ArrayList<>();
+            List<Country> listOfCountries;
             listOfCountries = Help.getWholeList().getCountries();
             trustedList = new TrustedList(listOfCountries);
         }
@@ -206,7 +206,7 @@ class TrustedListTest {
             listOfAllServiceTypes.add("QValQESig");
             listOfAllServiceTypes.add("QeRDS");
             listOfAllServiceTypes.add("QPresQESeal");
-            listOfAllServiceTypes.add("TimeStamp");
+            listOfAllServiceTypes.add("Timestamp");
             listOfAllServiceTypes.add("NonRegulatory");
             listOfAllServiceTypes.add("QWAC");
             listOfAllServiceTypes.add("QPresQESig");
@@ -214,13 +214,21 @@ class TrustedListTest {
             listOfAllServiceTypes.add("QCertESig");
             listOfAllServiceTypes.add("WAC");
             listOfAllServiceTypes.add("QValQESeal");
-            listOfAllServiceTypes.add("QTimeStamp");
+            listOfAllServiceTypes.add("QTimestamp");
             listOfAllServiceTypes.add("CertUndefined");
             listOfAllServiceTypes.add("GenESig");
             listOfAllServiceTypes.add("CertESig");
             trustedList.updateServiceTypesAndStatuses();
-            assertTrue(trustedList.getServiceTypes().isEmpty());
-            assertTrue(trustedList.getStatuses().isEmpty());
+            trustedList.getCountries().forEach(country -> {
+                country.getProviders().forEach(provider -> {
+                    provider.getServices().forEach(service -> {
+                        System.out.println((service.getServiceTypes()));
+                        System.out.println((service.getStatus()));
+                        assertTrue(listOfAllServiceTypes.containsAll(service.getServiceTypes()));
+                        assertTrue(listOfAllStatuses.contains(service.getStatus()));
+                    });
+                });
+            });
         }
         }
 
@@ -240,20 +248,9 @@ class TrustedListTest {
  //----------------------------------------------------------------------------
     //EQUALS
 
-/*
 
-    @Test
-    void equals_NullListWithWholeList_ReturnsIDK() throws IOException {
-        //arrange
-        TrustedList list1 = null;
-        TrustedList list2 = getWholeList();
-        //act
-        boolean haveTrustedListTheSameValues = list1.equals(list2);
-        //assert
-        assertFalse(haveTrustedListTheSameValues);
-    }*/
     /*
-    DOVREI FARLO CON STESSI VALORI MA OGGETTO DIVERSO, NON PENSO NEL CASO PRIMA FOSSE COSI
+    DOVREI FARE Equals CON STESSI VALORI MA OGGETTO DIVERSO, NON PENSO NEL CASO PRIMA FOSSE COSI
     */
 
 /*

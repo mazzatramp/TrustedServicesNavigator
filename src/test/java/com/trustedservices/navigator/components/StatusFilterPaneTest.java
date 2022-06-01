@@ -15,7 +15,8 @@ class StatusFilterPaneTest {
     @Test
     @DisplayName("is instantiated with new costruttoreOggetto")
     void isInstantiatedWithNewClasse() {
-        new StatusFilterPane(); //NON SO PERCHE NON FUNZIA
+        //StatusFilterPane statusFilterPane1=  new StatusFilterPane(); NON SO PERCHE FUNZIONA
+        new StatusFilterPane(); //NON SO PERCHE NON FUNZIONA
     }
     //FORSE SE RIESCO AD USARE CHECKBOX
     @Disabled
