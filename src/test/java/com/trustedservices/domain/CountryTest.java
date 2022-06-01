@@ -10,18 +10,18 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+//TESTARE GETINFORMATION CON NAME E CODE CHE CI SONO OPPURE NO
+//POSSO METTERE NULLI NAME E CODE? AVREBBE PIU' SENSO CHE NON SI POSSA FARE?
 @DisplayName("A Country")
 class CountryTest {
     Country country;
-   //TESTARE COSTRUTTIRE CON ARGOMENTI
-   //TESTARE GETINFORMATION CON NAME E CODE CHE CI SONO OPPURE NO
-   //POSSO METTERE NULLI NAME E CODE? AVREBBE PIU' SENSO CHE NON SI POSSA FARE?
+
     @Nested
     @DisplayName("when null")
     class WhenNull {
         @BeforeEach
         void setCountryNull() {
-
             country = null;
         }
 
@@ -41,15 +41,57 @@ class CountryTest {
             }
         }
 
-       // @DisplayName("and I use the method equals(Object)")
+        @DisplayName("and I use the method equals(Object)")
         @Nested
         class Equals{
+            Country argumentCountry;
+            @DisplayName("with a country as argument, it returns an Error")
+            @Test
+            void clone_NullCountry_returnsError() {
+                argumentCountry = new Country("Austria", "AT");
+                //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
+                //arrange
+                //assert
+                assertThrows(NullPointerException.class, () -> country.equals(argumentCountry));
+                //assertEquals(getWholeList(),clonedList)
+            }
+            @DisplayName("with a null country as argument, it returns error ")
+            @Test
+            void prova() {
+                argumentCountry = null;
+                //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
+                //arrange
+                //assert
+                assertThrows(NullPointerException.class, () -> country.equals(argumentCountry));
+                //assertEquals(getWholeList(),clonedList)
+            }
+
 
         }
        // @DisplayName("and I use the method compareTo(Country)")
         @Nested
         class CompareTo{
-
+           Country countryAsArgument;
+           @DisplayName("with a country returns an Error")
+           @Test
+           void clone_NullCountry_returnsError() {
+               countryAsArgument = new Country("Austria", "AT");
+               //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
+               //arrange
+               //assert
+               assertThrows(NullPointerException.class, () -> country.compareTo(countryAsArgument));
+               //assertEquals(getWholeList(),clonedList)
+           }
+           @DisplayName("with null returns error ")
+           @Test
+           void prova() {
+               countryAsArgument = null;
+               //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
+               //arrange
+               //assert
+               assertThrows(NullPointerException.class, () -> country.compareTo(countryAsArgument));
+               //assertEquals(getWholeList(),clonedList)
+           }
         }
 
 
@@ -59,7 +101,6 @@ class CountryTest {
     @Test
     @DisplayName("is instantiated with new Country(String,String)")
     void isInstantiatedWithNewCountry() {
-
         new Country("Italia", "IT");
     }
 
@@ -95,27 +136,23 @@ class CountryTest {
                 @Test
                 void NotSameCountryAsArgument() {
                     //arrange
-                    Country argumentCountry = new Country("Italia", "IT");
+                     argumentCountry = new Country("Italia", "IT");
+                    //act
+                    boolean areCountriesTHeSame = country.equals(argumentCountry);
+                    //assert
+                    assertFalse(areCountriesTHeSame);
+                }
+                @DisplayName("with a country null as argument, method should return false")
+                @Test
+                void NullAsArgument() {
+                    //arrange
+                     argumentCountry = null;
                     //act
                     boolean areCountriesTHeSame = country.equals(argumentCountry);
                     //assert
                     assertFalse(areCountriesTHeSame);
                 }
             }
-
-            @DisplayName("with a country null as argument, method should return false")
-            @Test
-            void NullAsArgument() {
-                //arrange
-                Country argumentCountry = null;
-                //act
-                boolean areCountriesTHeSame = country.equals(argumentCountry);
-                //assert
-                assertFalse(areCountriesTHeSame);
-            }
-            /*
-            //NULLequalsNULL devo provare anche
-            //NUllequalsWHolelist
 
             /*
             DOVREI FARLO CON STESSI VALORI MA OGGETTO DIVERSO, NON PENSO NEL CASO PRIMA FOSSE COSI
@@ -134,7 +171,7 @@ class CountryTest {
                 @Test
                 void SameCountryAsArgument() throws IOException {
                     //arrange
-                    Country argumentCountry = country;
+                    argumentCountry = country;
                     //act
                     int comparison = country.compareTo(argumentCountry);
                     int expectedreturn = 0;
@@ -148,21 +185,46 @@ class CountryTest {
                 @Test
                 void aCountry_CompareTo_BiggerCountry_ReturnNegative() throws IOException {
                     //arrange
-                    Country argumentCountry = Help.getCountryN(1);
+                    argumentCountry = Help.getCountryN(1);
                     //act
                     int comparison = country.compareTo(argumentCountry);
                     //assert
                     assertTrue(comparison < 0);
 
                 }
+                @DisplayName("and the argument country is lower, method should return a positive number")
+                @Test
+                void aCountry_CompareTo_LowerCountry_ReturnNegative() throws IOException {
+                    //arrange
+                    argumentCountry=country;
+                    country = Help.getCountryN(1);
+                    //act
+                    int comparison = country.compareTo(argumentCountry);
+                    //assert
+                    assertTrue(comparison > 0);
+
+                }
+                @DisplayName("and the argument country is null, method should return a error")
+                @Test
+                void aCountry_CompareTo_null() throws IOException {
+                    //arrange
+                    Country argumentCountry = null;
+                    //act
+                    assertThrows(NullPointerException.class, () -> country.compareTo(argumentCountry));
+
+
+                }
             }
 
             //COUNTRY MINORE
-            //NULL A SX
-            //NULL A DX
-            //NULL NULLL
+            //NULL A SX FATTO
+            //NULL A DX FATTO
+            //NULL NULLL FATTO
+
+
+            //NON SO SE FARLI QUESTI PERCHE ESISTONO SET MA NON LI USIAMO MAI
             //EMPTY A SX
-            //EMPTY A DX
+            //EMPTY A DX NON INTERESSANTE
             //EMPTY EMPTY
         }
 

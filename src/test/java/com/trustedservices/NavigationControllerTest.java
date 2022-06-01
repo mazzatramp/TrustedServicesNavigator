@@ -5,6 +5,10 @@ import org.junit.jupiter.api.*;
 
 @DisplayName("A NavigationController")
 class NavigationControllerTest {
+    //QUESTO HA SOLO METODI SEMPLICI
+
+
+
     @Nested
     @DisplayName("when null")
     class WhenNull {
