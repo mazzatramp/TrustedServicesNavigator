@@ -10,7 +10,7 @@ import javafx.util.Callback;
 
 public class FilterTreeCell<T> extends CheckBoxTreeCell<T> implements ChangeListener<Boolean>
 {
-    protected SimpleBooleanProperty disabledProperty;
+    protected SimpleBooleanProperty disabledProperty = null;
 
     @Override
     public void updateItem(T item, boolean empty)
@@ -18,14 +18,16 @@ public class FilterTreeCell<T> extends CheckBoxTreeCell<T> implements ChangeList
         super.updateItem(item, empty); //sets item as treeItemProperty
 
         if (hasFilterTreeItemProperty()) {
-            if (disabledProperty == null)
-                bindDisabledProperty();
+            bindDisabledProperty();
             this.setDisable(disabledProperty.get());
         }
     }
 
     private void bindDisabledProperty() {
         FilterTreeItem<T> filterTreeItem = (FilterTreeItem<T>) this.treeItemProperty().getValue();
+        if (disabledProperty != null) {
+            disabledProperty.removeListener(this);
+        }
         disabledProperty = filterTreeItem.disabledProperty;
         disabledProperty.addListener(this);
     }

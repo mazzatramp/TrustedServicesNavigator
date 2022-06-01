@@ -2,12 +2,11 @@ package com.trustedservices.navigator.components;
 
 import com.trustedservices.domain.TrustedList;
 import com.trustedservices.navigator.filters.Filter;
+
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Control;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
@@ -15,7 +14,7 @@ import java.util.Collection;
 import java.util.Set;
 
 public abstract class FilterPane extends TitledPane {
-    private static final String FXML_RESOURCE_FILE_NAME = "filter-pane.fxml";
+    private static final String RESOURCE_FILE_NAME = "filter-pane.fxml";
 
     @FXML private AnchorPane filterView;
     @FXML private Hyperlink selectAll;
@@ -39,7 +38,7 @@ public abstract class FilterPane extends TitledPane {
 
     private void loadFXMLResource() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(FXML_RESOURCE_FILE_NAME));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(FilterPane.RESOURCE_FILE_NAME));
             fxmlLoader.setRoot(this);
             fxmlLoader.setController(this);
             fxmlLoader.load();
