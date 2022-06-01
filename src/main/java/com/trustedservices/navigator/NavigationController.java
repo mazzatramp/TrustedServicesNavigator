@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class NavigationController {
 
-    private FilterList filters;
+    private final FilterList filters;
     private TrustedList completeList;
 
     public NavigationController() {
