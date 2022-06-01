@@ -71,4 +71,8 @@ public class TrustedList implements Cloneable {
     public int hashCode() {
         return Objects.hash(countries);
     }
+
+    public boolean isEmpty() {
+        return getCountries().isEmpty();
+    }
 }

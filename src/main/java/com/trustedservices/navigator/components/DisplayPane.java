@@ -22,6 +22,9 @@ public class DisplayPane extends AnchorPane {
     @FXML
     private ProgressBar downloadBar;
 
+    @FXML
+    private Label noResultsLabel;
+
     private WindowController windowController;
 
     public DisplayPane() {
@@ -37,6 +40,8 @@ public class DisplayPane extends AnchorPane {
 
         EventHandler<MouseEvent> mouseEventEventHandler = this::handleMouseClick;
         displayed.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEventEventHandler);
+        noResultsLabel.setText("There are no services respecting the selected filter.\nPlease change or reset filters.");
+        noResultsLabel.setVisible(false);
     }
 
     public void bindProgressBarWith(Task<Void> downloadTask) {
@@ -45,6 +50,8 @@ public class DisplayPane extends AnchorPane {
     }
 
     public void fillWith(TrustedList dataToShow) {
+        noResultsLabel.setVisible(dataToShow.isEmpty());
+
         TreeItem<Label> root = new TreeItem<>();
         dataToShow.getCountries().forEach(country -> {
             TrustedEntityLabel countryLabel = new TrustedEntityLabel(country);

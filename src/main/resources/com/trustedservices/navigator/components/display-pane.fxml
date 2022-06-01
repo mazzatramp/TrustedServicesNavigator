@@ -8,4 +8,5 @@
               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
               AnchorPane.topAnchor="0.0"/>
     <ProgressBar fx:id="downloadBar" layoutX="128.0" layoutY="278.0" prefHeight="15.0" prefWidth="300.0" />
+    <Label fx:id="noResultsLabel"/>
 </fx:root>
