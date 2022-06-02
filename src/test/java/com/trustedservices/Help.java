@@ -1,16 +1,11 @@
 package com.trustedservices;
 
 import com.trustedservices.domain.Country;
-import com.trustedservices.domain.Provider;
-import com.trustedservices.domain.Service;
 import com.trustedservices.domain.TrustedList;
-import com.trustedservices.navigator.web.TrustedDummyBuilder;
-import com.trustedservices.navigator.web.TrustedListApiBuilder;
+import com.trustedservices.navigator.web.TrustedJsonBuilder;
 import com.trustedservices.navigator.web.TrustedListBuilder;
-import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -38,7 +33,7 @@ public class Help {
     }
      */
     private static void constructWholeList() throws IOException {
-        TrustedListBuilder builder = new TrustedDummyBuilder();
+        TrustedListBuilder builder = new TrustedJsonBuilder();
         wholeList = builder.build();
     }
 
