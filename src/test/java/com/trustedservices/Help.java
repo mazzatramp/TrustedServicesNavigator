@@ -19,15 +19,16 @@ public class Help {
             Path providers = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
             builder.setCountriesJson(Files.readString(countries));
             builder.setProvidersJson(Files.readString(providers));
+
             wholeList = builder.build();
         } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage());
+            System.err.println("Error reading file\n" + e.getMessage());
             throw new RuntimeException(e);
         }
     }
 
     public static TrustedList getWholeList() {
-        if(wholeList==null) {
+        if (wholeList == null) {
             constructWholeList();
         }
         return wholeList.clone();
