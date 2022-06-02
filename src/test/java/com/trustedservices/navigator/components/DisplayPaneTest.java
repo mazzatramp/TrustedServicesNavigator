@@ -3,7 +3,7 @@ package com.trustedservices.navigator.components;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@Disabled
 @DisplayName("A DisplayPane")
 public class DisplayPaneTest {
     @Test

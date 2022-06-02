@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
         //NUOVA COLLEZIONE CON FILTRI NOT EMPTY AND IMPOSSIBLE
         @Nested
         //IL PROBLEMA E' CHE VOLENDO CI SONO INFINITE COMBINAZIONI DI FILTRI DA METTERE NEL COSTRUTTORE
-        @DisplayName("when new with collection of filters")
+        @DisplayName("when new with collection of filters") // FORSE E' LA STESSA COSA DI WHEN NEW
         class WhenNewWithFilters {
             ArrayList collectionOfFilters;
             @DisplayName("and the filters can link to a service")
@@ -77,7 +77,20 @@ import static org.junit.jupiter.api.Assertions.*;
                         });
                     }
 
-                    //LISTA CHE NON CONTIENE I SERVIZI DISPONIBILI
+                    @DisplayName("a list as argument that do not contain services possible, should return just no services")
+                    @Test
+                    void PossibleFiltersButNotPossibleTrustedListAsArgument() throws IOException {
+                        argumentTrustedList = new TrustedList();
+                        TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
+                        assertTrue(filteredList.getCountries().isEmpty());
+                        filteredList.getCountries().forEach(country -> {
+                            assertTrue(country.getProviders().isEmpty());
+                            country.getProviders().forEach(provider -> {
+                                assertTrue(provider.getServices().isEmpty()); //OPPURE BASTA VEDERE CHE L'ARRAY DI COUNTRIES E' VUOTO?
+                            });
+                        });
+                    }
+
 
                     @DisplayName("Null TrustedList as argument, should return an error")
                     @Test
@@ -95,8 +108,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
                 }
-                //LISTA VUOTA
-                //LISTA CON UN PO SI UN PO NO
+                //LISTA CHE CONTIENE SOLO ALCUNI SERVIZI?
 
 
 

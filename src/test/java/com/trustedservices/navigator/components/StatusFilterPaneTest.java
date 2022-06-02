@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Disabled
 class StatusFilterPaneTest {
     //QUI IN ALCUNI METODI MOCKANDO STATUSES POSSO FARLO ALTRI DOVE DEVO VERIFICARE CONDIZIONI STATUSES NON POSSO ARRIVARCI
     //FORSE ESISTE UN MODO INDIRETTAMENTE?
