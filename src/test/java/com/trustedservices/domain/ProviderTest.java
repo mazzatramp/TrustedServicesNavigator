@@ -19,6 +19,7 @@ Provider provider;
         void setProviderNull() {
             provider = null;
         }
+
         @DisplayName("and I use the method clone()")
         @Nested
         class Clone {
@@ -30,7 +31,7 @@ Provider provider;
                 //arrange
                 Provider providerToClone = provider;
                 //assert
-                assertThrows(NullPointerException.class, () -> providerToClone.clone());
+                assertThrows(NullPointerException.class, providerToClone::clone);
                 //assertEquals(getWholeList(),clonedList)
             }
         }
@@ -44,7 +45,9 @@ Provider provider;
             void NullEqualsProvider() {
                 argumentProvider = new Provider("IT", 49,
                         "Azienda Zero"
-                        ,"VATIT-05018720283", new ArrayList<String>(), new ArrayList<Service>());
+                        ,"VATIT-05018720283",
+                        new ArrayList<>(),
+                        new ArrayList<>());
                 //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
                 //arrange
                 //assert
