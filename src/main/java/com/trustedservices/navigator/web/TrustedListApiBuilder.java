@@ -1,61 +1,47 @@
 package com.trustedservices.navigator.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.trustedservices.domain.Country;
-import com.trustedservices.domain.Provider;
 import com.trustedservices.domain.TrustedList;
-import org.apache.commons.io.FileUtils;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
 
-public class TrustedListApiBuilder extends TrustedJsonBuilder {
+import javax.net.ssl.HttpsURLConnection;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+
+public class TrustedListApiBuilder extends TrustedListJsonBuilder {
     private static final String COUNTRIES_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list_no_lotl_territory";
     private static final String PROVIDERS_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list";
 
-   private List<Country> countries;
-    private List<Provider> providers;
-
     @Override
-    public TrustedList build(){
+    public TrustedList build() {
+        String countriesJson = getResponse(COUNTRIES_API_ENDPOINT);
+        String providersJson = getResponse(PROVIDERS_API_ENDPOINT);
+        super.setCountriesJson(countriesJson);
+        super.setProvidersJson(providersJson);
+        return super.build();
+    }
+
+    private String getResponse(String endpoint) {
         try {
-            buildApiData();
-            return new TrustedList(countries);
+            URL apiUrl = new URL(endpoint);
+            HttpsURLConnection connection = (HttpsURLConnection) apiUrl.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+
+            int responseCode = connection.getResponseCode();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder content = new StringBuilder();
+            while ((inputLine = reader.readLine()) != null) {
+                content.append(inputLine);
+            }
+            reader.close();
+            connection.disconnect();
+
+            return content.toString();
         } catch (IOException e) {
+            System.err.println("Error downloading file from " + endpoint);
             throw new RuntimeException(e);
         }
-    }
-
-    public File downloadFile (URL url, String filename) throws IOException {
-        FileUtils.copyURLToFile(url, new File(filename));
-        return new File(filename);
-    }
-    private void buildApiData() throws IOException {
-        File CountryList=downloadFile(new URL(COUNTRIES_API_ENDPOINT), "countryList");
-        File ProviderList=downloadFile(new URL(PROVIDERS_API_ENDPOINT), "providerList");
-        countries = readJson(CountryList, Country.class);
-        providers = readJson(ProviderList, Provider.class);
-        linkCountriesAndProviders();
-    }
-
-    private <T> List<T> readJson(File file, Class<T> type) throws IOException {
-        ObjectMapper jsonToObjectMapper = new ObjectMapper();
-        return jsonToObjectMapper.readValue(file, jsonToObjectMapper.getTypeFactory().constructCollectionType(List.class, type));
-    }
-    private void linkCountriesAndProviders() {
-        for (Provider provider : providers) {
-            Country providerCountry = getCountryFromCode(provider.getCountryCode());
-
-            provider.setCountry(providerCountry);
-            providerCountry.getProviders().add(provider);
-        }
-    }
-    private Country getCountryFromCode(String countryCode) {
-        for (Country country : countries) {
-            if (country.getCode().equals(countryCode))
-                return country;
-        }
-        throw new IllegalArgumentException(countryCode);
     }
 }
