@@ -16,7 +16,7 @@ public class FilterList extends ArrayList<Filter> {
 
     public FilterList(int initialCapacity) {
         super(initialCapacity);
-    }
+    } //SERVE DAVVERO QUESTO COSTRUTTORE?
 
     public TrustedList getFilteredListFrom(TrustedList list) {
         TrustedList filteredList = list.clone();
