@@ -10,9 +10,6 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
-//TESTARE GETINFORMATION CON NAME E CODE CHE CI SONO OPPURE NO
-//POSSO METTERE NULLI NAME E CODE? AVREBBE PIU' SENSO CHE NON SI POSSA FARE?
 @DisplayName("A Country")
 class CountryTest {
     Country country;
@@ -25,19 +22,14 @@ class CountryTest {
             country = null;
         }
 
-        @DisplayName("and I use the method clone()")
         @Nested
+        @DisplayName("and I use the method clone()")
         class Clone {
             @DisplayName("returns an Error")
             @Test
             void clone_NullCountry_returnsError() {
-                //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
-                //METODO CLONE SE VOGLIO CLONARE QUALCOSA DI NULL
-                //arrange
                 Country countryToClone = country;
-                //assert
-                assertThrows(NullPointerException.class, () -> countryToClone.clone());
-                //assertEquals(getWholeList(),clonedList)
+                assertThrows(NullPointerException.class, countryToClone::clone);
             }
         }
 
@@ -68,7 +60,6 @@ class CountryTest {
 
 
         }
-       // @DisplayName("and I use the method compareTo(Country)")
         @Nested
         class CompareTo{
            Country countryAsArgument;
@@ -76,26 +67,15 @@ class CountryTest {
            @Test
            void clone_NullCountry_returnsError() {
                countryAsArgument = new Country("Austria", "AT");
-               //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
-               //arrange
-               //assert
                assertThrows(NullPointerException.class, () -> country.compareTo(countryAsArgument));
-               //assertEquals(getWholeList(),clonedList)
            }
            @DisplayName("with null returns error ")
            @Test
            void prova() {
                countryAsArgument = null;
-               //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
-               //arrange
-               //assert
                assertThrows(NullPointerException.class, () -> country.compareTo(countryAsArgument));
-               //assertEquals(getWholeList(),clonedList)
            }
         }
-
-
-
     }
 
     @Test
@@ -109,7 +89,6 @@ class CountryTest {
     class WhenNew {
         @BeforeEach
         void createACountry() {
-
             country = new Country("Austria", "AT");
         }
 
@@ -194,38 +173,19 @@ class CountryTest {
                 }
                 @DisplayName("and the argument country is lower, method should return a positive number")
                 @Test
-                void aCountry_CompareTo_LowerCountry_ReturnNegative() throws IOException {
-                    //arrange
-                    argumentCountry=country;
+                void aCountry_CompareTo_LowerCountry_ReturnNegative() {
+                    argumentCountry = country;
                     country = Help.getCountryN(1);
-                    //act
                     int comparison = country.compareTo(argumentCountry);
-                    //assert
                     assertTrue(comparison > 0);
-
                 }
                 @DisplayName("and the argument country is null, method should return a error")
                 @Test
-                void aCountry_CompareTo_null() throws IOException {
-                    //arrange
+                void aCountry_CompareTo_null() {
                     Country argumentCountry = null;
-                    //act
                     assertThrows(NullPointerException.class, () -> country.compareTo(argumentCountry));
-
-
                 }
             }
-
-            //COUNTRY MINORE
-            //NULL A SX FATTO
-            //NULL A DX FATTO
-            //NULL NULLL FATTO
-
-
-            //NON SO SE FARLI QUESTI PERCHE ESISTONO SET MA NON LI USIAMO MAI
-            //EMPTY A SX
-            //EMPTY A DX NON INTERESSANTE
-            //EMPTY EMPTY
         }
 
         @DisplayName("and I use the method clone()")
@@ -233,12 +193,9 @@ class CountryTest {
         class Clone {
             @DisplayName("It returns the same country")
             @Test
-            void cloneACountryReturnsSameCountry() throws IOException {
-                //arrange
+            void cloneACountryReturnsSameCountry() {
                 Country countryToBeCloned = country;
-                //act
                 Country clonedCountry = countryToBeCloned.clone();
-                //assert
                 assertEquals(countryToBeCloned, clonedCountry);
             }
 
