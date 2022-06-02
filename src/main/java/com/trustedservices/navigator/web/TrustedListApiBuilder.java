@@ -6,6 +6,7 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.URL;
 
 public class TrustedListApiBuilder extends TrustedListJsonBuilder {
@@ -29,16 +30,21 @@ public class TrustedListApiBuilder extends TrustedListJsonBuilder {
             connection.connect();
 
             int responseCode = connection.getResponseCode();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String inputLine;
-            StringBuilder content = new StringBuilder();
-            while ((inputLine = reader.readLine()) != null) {
-                content.append(inputLine);
-            }
-            reader.close();
-            connection.disconnect();
+            
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuilder content = new StringBuilder();
+                while ((inputLine = reader.readLine()) != null) {
+                    content.append(inputLine);
+                }
+                reader.close();
+                connection.disconnect();
 
-            return content.toString();
+                return content.toString();
+            } else {
+                return "";
+            }
         } catch (IOException e) {
             System.err.println("Error downloading file from " + endpoint);
             throw new RuntimeException(e);
