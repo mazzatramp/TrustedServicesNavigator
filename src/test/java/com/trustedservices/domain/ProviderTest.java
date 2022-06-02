@@ -280,13 +280,20 @@ Provider provider;
                     //IL PROBLEMA E' O IN EQUALS O CLONE
 
                     //arrange
-                    Provider providerToBeCloned = Help.getCountryN(0).getProviders().get(0);
+                    Provider providerToBeCloned = Help.getCountryN(0).getProviders().get(2);
+                    providerToBeCloned.toString();
                     //act
                     Provider clonedProvider = providerToBeCloned.clone();
+/*
                     //boolean areeq = providerToBeCloned.equals(clonedProvider);
                     //assertTrue(areeq);
                     //assert
                     //assertEquals(providerToBeCloned, clonedProvider);
+*/
+                    clonedProvider.toString(); //SIAMO SICURI CHE FUNZIONI?
+                    //assert
+                    assertTrue(providerToBeCloned.equals(clonedProvider));
+
                 }
 
             }

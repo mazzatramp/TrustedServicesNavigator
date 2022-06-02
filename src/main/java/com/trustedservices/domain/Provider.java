@@ -125,7 +125,8 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
         try {
             Provider providerClone = (Provider) super.clone();
             providerClone.setServices(new ArrayList<>());
-            providerClone.setCountry(null); //messo country al posto di null nell'argomento
+
+            providerClone.setCountry(country); // ma non dovevamo mettere null?
             this.getServices().forEach(
                     service -> {
                         Service serviceClone = service.clone();
