@@ -8,15 +8,15 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FilterSelectionAccordionTest {
+class FilterPanesAccordionTest {
     //COSTRUTTORE
     //FORSE POSSO TESTARE MOLTI METODI MA DEVO CAPIRE SE POSSO USARE IL GET
-    FilterSelectionAccordion filterSelectionAccordion;
+    FilterPanesAccordion filterSelectionAccordion;
     @Disabled
     @Test
     @DisplayName("is instantiated with new DisplayPane()")
     void isInstantiatedWithNewClasse() {
-        new FilterSelectionAccordion();
+        new FilterPanesAccordion();
     }
 
     @Nested
@@ -55,7 +55,7 @@ class FilterSelectionAccordionTest {
     class WhenNew {
         @BeforeEach
         void setOggettoNull() {
-            filterSelectionAccordion= new FilterSelectionAccordion();
+            filterSelectionAccordion= new FilterPanesAccordion();
         }
         @DisplayName("and I use the method fillWith")
         @Nested
