@@ -28,8 +28,7 @@ class CountryTest {
             @DisplayName("returns an Error")
             @Test
             void clone_NullCountry_returnsError() {
-                Country countryToClone = country;
-                assertThrows(NullPointerException.class, countryToClone::clone);
+                assertThrows(NullPointerException.class, () -> country.clone());
             }
         }
 

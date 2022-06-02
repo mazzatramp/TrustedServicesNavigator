@@ -31,7 +31,7 @@ Provider provider;
                 //arrange
                 Provider providerToClone = provider;
                 //assert
-                assertThrows(NullPointerException.class, providerToClone::clone);
+                assertThrows(NullPointerException.class, () -> providerToClone.clone());
                 //assertEquals(getWholeList(),clonedList)
             }
         }

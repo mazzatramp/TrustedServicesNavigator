@@ -24,7 +24,7 @@ public class ServiceTest {
         @DisplayName("cloning the object should return an error.")
         @Test
         void clone_NullService_returnsError() {
-            assertThrows(NullPointerException.class, service1::clone);
+            assertThrows(NullPointerException.class, () -> service1.clone());
         }
     }
 
