@@ -15,39 +15,49 @@ public class TrustedListApiBuilder extends TrustedListJsonBuilder {
 
     @Override
     public TrustedList build() {
-        String countriesJson = getResponse(COUNTRIES_API_ENDPOINT);
-        String providersJson = getResponse(PROVIDERS_API_ENDPOINT);
+        String countriesJson = getResponseFromUrl(COUNTRIES_API_ENDPOINT);
+        String providersJson = getResponseFromUrl(PROVIDERS_API_ENDPOINT);
         super.setCountriesJson(countriesJson);
         super.setProvidersJson(providersJson);
         return super.build();
     }
 
-    private String getResponse(String endpoint) {
+    private String getResponseFromUrl(String endpoint) {
         try {
-            URL apiUrl = new URL(endpoint);
-            HttpsURLConnection connection = (HttpsURLConnection) apiUrl.openConnection();
-            connection.setRequestMethod("GET");
-            connection.connect();
-
-            int responseCode = connection.getResponseCode();
-            
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuilder content = new StringBuilder();
-                while ((inputLine = reader.readLine()) != null) {
-                    content.append(inputLine);
-                }
-                reader.close();
-                connection.disconnect();
-
-                return content.toString();
-            } else {
-                return "";
-            }
+            return getContent(endpoint);
         } catch (IOException e) {
-            System.err.println("Error downloading file from " + endpoint);
             throw new RuntimeException(e);
         }
+    }
+
+    private String getContent(String endpoint) throws IOException {
+        BufferedReader contentReader = getConnectionReader(endpoint);
+        StringBuilder content = new StringBuilder();
+
+        contentReader.lines().forEach(content::append);
+        contentReader.close();
+
+        return content.toString();
+    }
+
+    private BufferedReader getConnectionReader(String endpoint) throws IOException {
+        HttpsURLConnection connection = getHttpsURLConnection(endpoint);
+        connection.connect();
+        
+        if (connection.getResponseCode() != HttpsURLConnection.HTTP_OK) {
+            BufferedReader contentReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            connection.disconnect();
+            return contentReader;
+        }
+
+        throw new ConnectException();
+    }
+
+    private HttpsURLConnection getHttpsURLConnection(String endpoint) throws IOException {
+        URL apiUrl = new URL(endpoint);
+        HttpsURLConnection connection = (HttpsURLConnection) apiUrl.openConnection();
+        connection.setRequestMethod("GET");
+
+        return connection;
     }
 }
