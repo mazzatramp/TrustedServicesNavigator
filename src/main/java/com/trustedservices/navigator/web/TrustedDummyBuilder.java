@@ -10,10 +10,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class TrustedDummyBuilder implements TrustedListBuilder{
-
-    private static final String COUNTRIES_DUMMY_ENDPOINT= "C:\\Users\\Aless\\Documents\\GitHub\\TrustedServicesNavigator\\src\\test\\java\\com\\trustedservices\\navigator\\dummyCopyTrustedList\\countryListDummy.json";
-
-    private static final String PROVIDERS_DUMMY_ENDPOINT="C:\\Users\\Aless\\Documents\\GitHub\\TrustedServicesNavigator\\src\\test\\java\\com\\trustedservices\\navigator\\dummyCopyTrustedList\\providerListDummy.json";
+    private static final String COUNTRIES_DUMMY_ENDPOINT= "src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json";
+     private static final String PROVIDERS_DUMMY_ENDPOINT= "src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json";
 
     private List<Country> countries;
     private List<Provider> providers;
