@@ -18,13 +18,15 @@ public class FilterTreeCell<T> extends CheckBoxTreeCell<T> implements ChangeList
         super.updateItem(item, empty); //sets item as treeItemProperty
 
         if (hasFilterTreeItemProperty()) {
-            if (disabledProperty == null)
-                bindDisabledProperty();
+            bindDisabledProperty();
             this.setDisable(disabledProperty.get());
         }
     }
 
     private void bindDisabledProperty() {
+        if (disabledProperty != null)
+            disabledProperty.removeListener(this);
+        
         FilterTreeItem<T> filterTreeItem = (FilterTreeItem<T>) this.treeItemProperty().getValue();
         disabledProperty = filterTreeItem.disabledProperty;
         disabledProperty.addListener(this);

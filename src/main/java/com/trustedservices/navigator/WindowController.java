@@ -12,7 +12,7 @@ import java.util.List;
 public class WindowController {
 
     @FXML private DisplayPane displayPane;
-    @FXML private FilterSelectionAccordion filterSelection;
+    @FXML private FilterPanesAccordion filterPanes;
     @FXML private SplitPane splitPane;
     @FXML private InfoPane infoPane;
 
@@ -31,13 +31,17 @@ public class WindowController {
         this.navigationController = navigationController;
     }
 
+    public FilterPanesAccordion getFilterPanes() {
+        return filterPanes;
+    }
+
     public void fillDisplayAndFiltersViews() {
         //runLater is needed in order to avoid issues adding a lot of nodes at once
         Platform.runLater(() -> {
             TrustedList completeList = navigationController.getCompleteList();
             displayPane.fillWith(completeList);
-            filterSelection.fillFilterPanesWith(completeList);
-            navigationController.getFilters().addAll(filterSelection.getAssociatedFilters());
+            filterPanes.fillFilterPanesWith(completeList);
+            navigationController.getFilters().addAll(filterPanes.getAssociatedFilters());
         });
     }
 
@@ -51,7 +55,7 @@ public class WindowController {
 
     @FXML
     public void handleResetFilters() {
-        filterSelection.resetFilters();
+        filterPanes.resetFilters();
     }
 
     public void openInfoPaneWithInfo(List<String> info) {
