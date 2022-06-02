@@ -26,31 +26,26 @@ public class TrustedListApiBuilder extends TrustedListJsonBuilder {
         try {
             return getContent(endpoint);
         } catch (IOException e) {
+            System.err.println(e.getMessage());
             throw new RuntimeException(e);
         }
     }
 
     private String getContent(String endpoint) throws IOException {
-        BufferedReader contentReader = getConnectionReader(endpoint);
-        StringBuilder content = new StringBuilder();
+        HttpsURLConnection connection = getHttpsURLConnection(endpoint);
+        connection.connect();
 
+        if (connection.getResponseCode() != HttpsURLConnection.HTTP_OK)
+            throw new ConnectException();
+
+        BufferedReader contentReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+        StringBuilder content = new StringBuilder();
         contentReader.lines().forEach(content::append);
         contentReader.close();
 
+        connection.disconnect();
         return content.toString();
-    }
-
-    private BufferedReader getConnectionReader(String endpoint) throws IOException {
-        HttpsURLConnection connection = getHttpsURLConnection(endpoint);
-        connection.connect();
-        
-        if (connection.getResponseCode() != HttpsURLConnection.HTTP_OK) {
-            BufferedReader contentReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            connection.disconnect();
-            return contentReader;
-        }
-
-        throw new ConnectException();
     }
 
     private HttpsURLConnection getHttpsURLConnection(String endpoint) throws IOException {
