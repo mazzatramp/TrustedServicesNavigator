@@ -11,15 +11,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FilterSelectionAccordion extends Accordion {
+public class FilterPanesAccordion extends Accordion {
 
     @FXML private ProviderFilterPane providers;
     @FXML private StatusFilterPane statuses;
     @FXML private ServiceTypeFilterPane serviceTypes;
 
-    private TrustedList data;
+    private TrustedList completeList;
 
-    public FilterSelectionAccordion() {
+    public FilterPanesAccordion() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("filter-selection-accordion.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -31,25 +31,19 @@ public class FilterSelectionAccordion extends Accordion {
         }
     }
 
-    public void fillFilterPanesWith(TrustedList data) {
-        this.data = data;
-        providers.fillWith(data);
-        serviceTypes.fillWith(data);
-        statuses.fillWith(data);
+    public void fillFilterPanesWith(TrustedList completeList) {
+        this.completeList = completeList;
+        providers.fillWith(completeList);
+        serviceTypes.fillWith(completeList);
+        statuses.fillWith(completeList);
     }
 
-    public void refreshFilterPanes() {
-        disableItemsOf(providers);
-        disableItemsOf(serviceTypes);
-        disableItemsOf(statuses);
-    }
-
-    public void refreshFilterPanesExcept(FilterPane filterPane) {
-        if (!(filterPane instanceof ProviderFilterPane))
+    public void refreshPanesExcept(FilterPane notToRefresh) {
+        if (!(notToRefresh instanceof ProviderFilterPane))
             disableItemsOf(providers);
-        if (!(filterPane instanceof ServiceTypeFilterPane))
+        if (!(notToRefresh instanceof ServiceTypeFilterPane))
             disableItemsOf(serviceTypes);
-        if (!(filterPane instanceof StatusFilterPane))
+        if (!(notToRefresh instanceof StatusFilterPane))
             disableItemsOf(statuses);
     }
 
@@ -65,7 +59,7 @@ public class FilterSelectionAccordion extends Accordion {
             filterPane.getAssociatedFilter().setWhitelist(testWhitelist);
 
             FilterList filters = new FilterList(getAssociatedFilters());
-            TrustedList filtered = filters.getFilteredListFrom(data);
+            TrustedList filtered = filters.getFilteredListFrom(completeList);
             filterPane.getAssociatedFilter().setWhitelist(oldWhitelist);
 
             if (filtered.getCountries().isEmpty())

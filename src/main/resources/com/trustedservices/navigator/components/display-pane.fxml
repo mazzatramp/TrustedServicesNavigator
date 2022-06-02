@@ -5,7 +5,12 @@
 
 <fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml">
     <TreeView fx:id="displayed" layoutX="94.0" layoutY="135.0" prefHeight="533.0" prefWidth="556.0" showRoot="false"
-              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-              AnchorPane.topAnchor="0.0"/>
-    <ProgressBar fx:id="downloadBar" layoutX="128.0" layoutY="278.0" prefHeight="15.0" prefWidth="300.0" />
+              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+    <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <ProgressBar fx:id="downloadBar" prefHeight="15.0" prefWidth="300.0"/>
+    </VBox>
+    <Label fx:id="emptyDisplayMessage" visible="false" alignment="CENTER" textAlignment="CENTER"
+           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
 </fx:root>
