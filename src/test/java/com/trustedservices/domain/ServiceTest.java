@@ -92,7 +92,7 @@ public class ServiceTest {
                         "status2",
                         List.of("ServiceType1")
                 );
-                assertTrue(service1.compareTo(service2) > 0);
+                assertTrue(service1.compareTo(service2) < 0);
             }
 
             @DisplayName("and the argument service is lower, method should return a positive number")
@@ -105,13 +105,13 @@ public class ServiceTest {
                         "status2",
                         List.of("ServiceType1")
                 );
-                assertTrue(service2.compareTo(service1) < 0);
+                assertTrue(service2.compareTo(service1) > 0);
 
             }
             @DisplayName("and the argument service is null, method should return a error")
             @Test
             void aCountry_CompareTo_null() {
-                assertNotEquals(0, service1.compareTo(null));
+                assertThrows(NullPointerException.class, () -> service1.compareTo(null));
             }
         }
 
