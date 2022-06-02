@@ -4,6 +4,7 @@ import com.trustedservices.domain.Country;
 import com.trustedservices.domain.Provider;
 import com.trustedservices.domain.Service;
 import com.trustedservices.domain.TrustedList;
+import com.trustedservices.navigator.web.TrustedDummyBuilder;
 import com.trustedservices.navigator.web.TrustedListApiBuilder;
 import com.trustedservices.navigator.web.TrustedListBuilder;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ public class Help {
     }
      */
     private static void constructWholeList() throws IOException {
-        TrustedListBuilder builder = new TrustedListApiBuilder();
+        TrustedListBuilder builder = new TrustedDummyBuilder();
         wholeList = builder.build();
     }
 
