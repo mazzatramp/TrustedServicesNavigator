@@ -1,14 +1,11 @@
 package com.trustedservices.navigator.filters;
 
-import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.trustedservices.Help;
-import com.trustedservices.domain.Provider;
 import com.trustedservices.domain.TrustedList;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
