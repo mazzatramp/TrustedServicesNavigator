@@ -1,4 +1,4 @@
-/*package com.trustedservices.navigator.web;
+package com.trustedservices.navigator.web;
 
 import org.junit.jupiter.api.*;
 
@@ -44,8 +44,8 @@ class TrustedListJsonBuilderTest {
 
             Path countries = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
             Path providers = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
-            trustedJsonBuilder.setCountriesJson(Files.readString(countries));
-            trustedJsonBuilder.setProvidersJson(Files.readString(providers));
+            trustedJsonBuilder.setCountriesJsonString(Files.readString(countries));
+            trustedJsonBuilder.setProvidersJsonString(Files.readString(providers));
         }
 
         @Test
@@ -57,4 +57,3 @@ class TrustedListJsonBuilderTest {
 
 
 }
-*/

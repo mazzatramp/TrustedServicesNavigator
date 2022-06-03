@@ -38,8 +38,8 @@ public class Help {
 
         Path countries = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
         Path providers = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
-        builder.setCountriesJson(Files.readString(countries));
-        builder.setProvidersJson(Files.readString(providers));
+        builder.setCountriesJsonString(Files.readString(countries));
+        builder.setProvidersJsonString(Files.readString(providers));
         return builder;
     }
 
