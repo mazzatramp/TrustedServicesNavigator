@@ -1,60 +1,85 @@
 package com.trustedservices.navigator.web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trustedservices.domain.Country;
-import com.trustedservices.domain.Provider;
 import com.trustedservices.domain.TrustedList;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class TrustedListJsonBuilder implements TrustedListBuilder {
 
-    private List<Country> countries;
-    private List<Provider> providers;
+    private List<JsonCountry> jsonCountries;
+    private List<JsonProvider> jsonProviders;
 
-    private String countriesJson;
-    private String providersJson;
+    private Set<Country> countries;
 
-    public void setCountriesJson(String countriesJson) {
-        this.countriesJson = countriesJson;
+    private String countriesJsonString;
+    private String providersJsonString;
+
+    public TrustedListJsonBuilder() {
+        jsonCountries = new ArrayList<>();
+        jsonProviders = new ArrayList<>();
+        countries = new TreeSet<>();
     }
 
-    public void setProvidersJson(String providersJson) {
-        this.providersJson = providersJson;
+    public void setCountriesJsonString(String countriesJsonString) {
+        this.countriesJsonString = countriesJsonString;
+    }
+
+    public void setProvidersJsonString(String providersJsonString) {
+        this.providersJsonString = providersJsonString;
     }
 
     @Override
     public TrustedList build() {
-        if (countriesJson == null || providersJson == null)
+        if (!jsonStringSet())
             throw new IllegalStateException("Json strings not set");
 
         readJsonData();
+        return getFilledTrustedListFromReadData();
+    }
+
+    private TrustedList getFilledTrustedListFromReadData() {
+        countries = getCountriesFromReadData();
+        fillCountriesWithProviders();
         return new TrustedList(countries);
     }
 
-    private void readJsonData() {
-        countries = readJson(countriesJson, Country.class);
-        providers = readJson(providersJson, Provider.class);
-        linkCountriesAndProviders();
+    private boolean jsonStringSet() {
+        return countriesJsonString != null && providersJsonString != null;
     }
 
-    private <T> List<T> readJson(String json, Class<T> type) {
+    private Set<Country> getCountriesFromReadData() {
+        jsonCountries.forEach(jsonCountry -> countries.add(jsonCountry.createCountry()));
+        return countries;
+    }
+
+    private void readJsonData() {
         try {
-            ObjectMapper jsonToObjectMapper = new ObjectMapper();
-            return jsonToObjectMapper.readValue(json, jsonToObjectMapper.getTypeFactory().constructCollectionType(List.class, type));
-        } catch (IOException e) {
-            System.out.println("Error reading json.");
+            jsonCountries = readJson(countriesJsonString, JsonCountry.class);
+            jsonProviders = readJson(providersJsonString, JsonProvider.class);
+        } catch (JsonProcessingException e) {
+            System.err.println("Error Processing json: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
 
-    private void linkCountriesAndProviders() {
-        for (Provider provider : providers) {
-            Country providerCountry = getCountryFromCode(provider.getCountryCode());
+    private <T> List<T> readJson(String json, Class<T> type) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(
+                json,
+                objectMapper.getTypeFactory().constructCollectionType(List.class, type)
+        );
+    }
 
-            provider.setCountry(providerCountry);
-            providerCountry.getProviders().add(provider);
+    private void fillCountriesWithProviders() {
+        for (JsonProvider jsonProvider : jsonProviders) {
+            Country itsCountry = getCountryFromCode(jsonProvider.getCountryCode());
+            jsonProvider.createProviderInside(itsCountry);
         }
     }
 
@@ -63,6 +88,6 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
             if (country.getCode().equals(countryCode))
                 return country;
 
-        throw new IllegalArgumentException(countryCode);
+        throw new RuntimeException(countryCode);
     }
 }

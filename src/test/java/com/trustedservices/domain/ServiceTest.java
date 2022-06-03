@@ -45,9 +45,9 @@ public class ServiceTest {
             @DisplayName("with a service as argument, it returns an Error")
             @Test
             void NullEqualsService() throws IOException {
-                argumentService = Help.getWholeList().getCountries().get(0).getProviders().get(0).getServices().get(1); //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
-                //arrange
-                //assert
+                argumentService = Help.getWholeList().getCountries().stream().findFirst().get()
+                        .getProviders().stream().findFirst().get()
+                        .getServices().stream().findFirst().get();
                 assertThrows(NullPointerException.class, () -> service.equals(argumentService));
                 //assertEquals(getWholeList(),clonedList)
             }
@@ -78,7 +78,9 @@ public class ServiceTest {
         @BeforeEach
         void createAService() throws IOException {
             //VA CREATO CON IL COSTRUTTORE NON COSI
-            service = Help.getWholeList().getCountries().get(0).getProviders().get(0).getServices().get(1); //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
+            service = Help.getWholeList().getCountries().stream().findFirst().get()
+                    .getProviders().stream().findFirst().get()
+                    .getServices().stream().findFirst().get();
 
         }
 
@@ -108,7 +110,9 @@ public class ServiceTest {
                 void NotSameCountryAsArgument() throws IOException {
                     //arrange
                     //DEVO METTERE UN Service VERO E PROPRIO
-                    argumentService = Help.getWholeList().getCountries().get(2).getProviders().get(0).getServices().get(1); //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
+                    argumentService = Help.getWholeList().getCountries().stream().findFirst().get()
+                            .getProviders().stream().findFirst().get()
+                            .getServices().stream().findFirst().get();
 
                     //act
                     boolean areCountriesTHeSame = service.equals(argumentService);
@@ -159,7 +163,9 @@ public class ServiceTest {
                 void aCountry_CompareTo_BiggerCountry_ReturnNegative() throws IOException {
                     //arrange
                     //METTERNE UNO CON PIU'SENSO
-                    argumentService = Help.getCountryN(4).getProviders().get(0).getServices().get(5);
+                    argumentService = Help.getWholeList().getCountries().stream().findFirst().get()
+                            .getProviders().stream().findFirst().get()
+                            .getServices().stream().findFirst().get();
                     //act
                     int comparison = service.compareTo(argumentService);
                     //assert
@@ -171,7 +177,9 @@ public class ServiceTest {
                 void aCountry_CompareTo_LowerCountry_ReturnNegative() throws IOException {
                     //arrange
                     argumentService =service;
-                    service = Help.getCountryN(4).getProviders().get(0).getServices().get(5);
+                    argumentService = Help.getWholeList().getCountries().stream().findFirst().get()
+                            .getProviders().stream().findFirst().get()
+                            .getServices().stream().findFirst().get();
                     //act
                     int comparison = service.compareTo(argumentService);
                     //assert
@@ -209,7 +217,9 @@ public class ServiceTest {
             @Test
             void cloneACountryReturnsSameService() throws IOException {
                 //arrange
-                Service serviceToBeCloned = Help.getCountryN(0).getProviders().get(0).getServices().get(0);
+                Service serviceToBeCloned = Help.getWholeList().getCountries().stream().findFirst().get()
+                        .getProviders().stream().findFirst().get()
+                        .getServices().stream().findFirst().get();
                 //act
                 Service clonedService = serviceToBeCloned.clone();
                 //assert
