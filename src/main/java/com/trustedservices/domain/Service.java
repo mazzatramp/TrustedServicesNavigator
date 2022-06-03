@@ -1,9 +1,11 @@
 package com.trustedservices.domain;
 
 import com.fasterxml.jackson.annotation.*;
+import com.trustedservices.navigator.filters.ProviderFilter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -14,7 +16,19 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
     private String name;
     private String type;
     private String status;
-    private List<String> serviceTypes;
+    private Set<String> serviceTypes;
+
+    public Service(
+            Provider provider,
+            int serviceId,
+            String name,
+            String type,
+            String statusUrl,
+            Set<String> serviceTypes
+    ) {
+        this(serviceId, name, type, statusUrl, serviceTypes);
+        this.provider = provider;
+    }
 
     @JsonCreator
     public Service(
@@ -22,7 +36,7 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
             @JsonProperty("serviceName") String name,
             @JsonProperty("type") String type,
             @JsonProperty("currentStatus") String statusUrl,
-            @JsonProperty("qServiceTypes") List<String> serviceTypes
+            @JsonProperty("qServiceTypes") Set<String> serviceTypes
     ) {
         this.id = serviceId;
         this.name = name;
@@ -52,11 +66,7 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
 
     @Override
     public List<String> getInformation() {
-        List<String> information = new ArrayList<>(3);
-        information.add(name);
-        information.add(serviceTypes.toString());
-        information.add(status);
-        return information;
+        return List.of(name, status, serviceTypes.toString());
     }
 
     public void setName(String name) {
@@ -79,11 +89,11 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
         this.status = status;
     }
 
-    public List<String> getServiceTypes() {
+    public Set<String> getServiceTypes() {
         return serviceTypes;
     }
 
-    public void setServiceTypes(List<String> serviceTypes) {
+    public void setServiceTypes(Set<String> serviceTypes) {
         this.serviceTypes = serviceTypes;
     }
 
@@ -123,7 +133,10 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
 
     @Override
     public int compareTo(Service service) {
-        int providerComparison = this.getProvider().compareTo(service.getProvider());
+        int providerComparison = 0;
+        if (provider != null && service.provider != null)
+            providerComparison = this.getProvider().compareTo(service.getProvider());
+
         int idComparison = Integer.compare(this.getId(), service.getId());
         if (providerComparison != 0)
             return providerComparison;
