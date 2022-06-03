@@ -1,11 +1,13 @@
 package com.trustedservices.domain;
 
+import com.sun.source.tree.Tree;
 import com.trustedservices.Help;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.stream.Stream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("A Provider")
@@ -44,7 +46,7 @@ Provider provider;
             void NullEqualsProvider() {
                 argumentProvider = new Provider("IT", 49,
                         "Azienda Zero"
-                        ,"VATIT-05018720283", new ArrayList<String>(), new ArrayList<Service>());
+                        ,"VATIT-05018720283", new TreeSet<>(), new HashSet<>());
                 //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
                 //arrange
                 //assert
@@ -73,7 +75,7 @@ Provider provider;
             void NullCompareToProvider() {
                 argumentProvider = new Provider("IT", 49,
                         "Azienda Zero"
-                        ,"VATIT-05018720283", new ArrayList<String>(), new ArrayList<Service>());
+                        ,"VATIT-05018720283", new TreeSet<>(), new HashSet<>());
                 //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
                 //arrange
                 //assert
@@ -93,48 +95,56 @@ Provider provider;
         }
 
     }
+
     @Test
     @DisplayName("is instantiated with new Provider(String,Int, String,String,List,List)")
     void isInstantiatedWithNewProvider() {
         //DEVO METTERE DELLE VERE LISTE
         //O PROVARE A METTERE LISTE PIENE E LISTE VUOTE IN UN ALTRO CASO
-        List<String> listOfServiceTypesOfAziendaZero= new ArrayList<String>();
+        TreeSet<String> listOfServiceTypesOfAziendaZero= new TreeSet<String>();
         listOfServiceTypesOfAziendaZero.add("QCertESeal");
         listOfServiceTypesOfAziendaZero.add("QCertESig");
         listOfServiceTypesOfAziendaZero.add("QTimestamp");
-        List<Service> listOfServicesOfAziendaZero= new ArrayList<Service>();
+        TreeSet<Service> listOfServicesOfAziendaZero= new TreeSet<>();
+        //Azienda zero ha anche un altro servizio ma non lo metto adesso
+        provider = new Provider("IT", 49,
+                "Azienda Zero"
+                ,"VATIT-05018720283",
+                listOfServiceTypesOfAziendaZero,
+                listOfServicesOfAziendaZero);
+
         listOfServicesOfAziendaZero.add(new Service(
+                provider,
                 1,
                 "OID.2.5.4.97=VATIT-05018720283, CN=Azienda Zero CA Qualificata eIDAS 1, OU=TSP, O=Azienda Zero, C=IT",
                 "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
                 "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/withdrawn",
                 listOfServiceTypesOfAziendaZero));
-        //Azienda zero ha anche un altro servizio ma non lo metto adesso
-        provider = new Provider("IT", 49,
-                "Azienda Zero"
-                ,"VATIT-05018720283",  listOfServiceTypesOfAziendaZero,  listOfServicesOfAziendaZero );
     }
+
     @Nested
     @DisplayName("when new")
     class WhenNew{
 
         @BeforeEach
         void createAProvider() {
-            List<String> listOfServiceTypesOfAziendaZero= new ArrayList<String>();
+            Set<String> listOfServiceTypesOfAziendaZero= new TreeSet<>();
             listOfServiceTypesOfAziendaZero.add("QCertESeal");
             listOfServiceTypesOfAziendaZero.add("QCertESig");
             listOfServiceTypesOfAziendaZero.add("QTimestamp");
-            List<Service> listOfServicesOfAziendaZero= new ArrayList<Service>();
+            Set<Service> listOfServicesOfAziendaZero= new TreeSet<>();
+            //Azienda zero ha anche un altro servizio ma non lo metto adesso
+            provider = new Provider("IT", 49,
+                    "Azienda Zero"
+                    ,"VATIT-05018720283",  listOfServiceTypesOfAziendaZero,  listOfServicesOfAziendaZero );
+
             listOfServicesOfAziendaZero.add(new Service(
+                    provider,
                     1,
                     "OID.2.5.4.97=VATIT-05018720283, CN=Azienda Zero CA Qualificata eIDAS 1, OU=TSP, O=Azienda Zero, C=IT",
                     "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
                     "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/withdrawn",
                     listOfServiceTypesOfAziendaZero));
-            //Azienda zero ha anche un altro servizio ma non lo metto adesso
-            provider = new Provider("IT", 49,
-                    "Azienda Zero"
-                    ,"VATIT-05018720283",  listOfServiceTypesOfAziendaZero,  listOfServicesOfAziendaZero );
         }
 
 
@@ -163,11 +173,11 @@ Provider provider;
                     void NotSameCountryAsArgument() {
                         //arrange
                         //DEVO METTERE UN PROVIDER VERO E PROPRIO
-                        List<String> listOfServiceTypesOfAziendaZero= new ArrayList<String>();
+                        Set<String> listOfServiceTypesOfAziendaZero= new TreeSet<>();
                         listOfServiceTypesOfAziendaZero.add("QCertESeal");
                         listOfServiceTypesOfAziendaZero.add("QCertESig");
                         listOfServiceTypesOfAziendaZero.add("QTimestamp");
-                        List<Service> listOfServicesOfAziendaZero= new ArrayList<Service>();
+                        Set<Service> listOfServicesOfAziendaZero= new TreeSet<>();
                         listOfServicesOfAziendaZero.add(new Service(
                                 2,
                                 "OID.2.5.4.97=VATIT-05018720283, CN=Azienda Zero CA Qualificata eIDAS 1, OU=TSP, O=Azienda Zero, C=IT",
@@ -228,7 +238,7 @@ Provider provider;
                     void aCountry_CompareTo_BiggerCountry_ReturnNegative() throws IOException {
                         //arrange
                         //METTERNE UNO CON PIU'SENSO
-                        argumentProvider = Help.getCountryN(1).getProviders().get(1);
+                        argumentProvider = Help.getCountryN(1).getProviders().stream().findAny().get();
                         //act
                         int comparison = provider.compareTo(argumentProvider);
                         //assert
@@ -240,7 +250,7 @@ Provider provider;
                     void aCountry_CompareTo_LowerCountry_ReturnNegative() throws IOException {
                         //arrange
                         argumentProvider =provider;
-                        provider = Help.getCountryN(1).getProviders().get(1);
+                        provider = Help.getCountryN(1).getProviders().stream().findAny().get();
                         //act
                         int comparison = provider.compareTo(argumentProvider);
                         //assert
@@ -278,13 +288,11 @@ Provider provider;
                 @Test
                 void cloneACountryReturnsSameProvider() throws IOException {
                     //arrange
-                    Provider providerToBeCloned = Help.getCountryN(0).getProviders().get(2);
-                    providerToBeCloned.toString();
+                    Provider providerToBeCloned = Help.getCountryN(0).getProviders().stream().findAny().get();
                     //act
                     Provider clonedProvider = providerToBeCloned.clone();
-                    clonedProvider.toString();
                     //assert
-                    assertTrue(providerToBeCloned.equals(clonedProvider));
+                    assertEquals(providerToBeCloned, clonedProvider);
                 }
 
             }
@@ -301,13 +309,13 @@ Provider provider;
             //preparazione
             Provider providerToTest=provider;
 
-            List<String> listIWantToSetToAziendaZero = new ArrayList<String>();
+            Set<String> listIWantToSetToAziendaZero = new TreeSet<>();
             listIWantToSetToAziendaZero.add("QCertESeal");
             listIWantToSetToAziendaZero.add("QCertESig");
             listIWantToSetToAziendaZero.add("QTimestamp");
             listIWantToSetToAziendaZero.add("QWAC");
 
-            List<String> listThatShouldBeEqualToServiceTypesOfAziendaZero= new ArrayList<>();
+            Set<String> listThatShouldBeEqualToServiceTypesOfAziendaZero= new TreeSet<>();
             listThatShouldBeEqualToServiceTypesOfAziendaZero.add("QCertESeal");
             listThatShouldBeEqualToServiceTypesOfAziendaZero.add("QCertESig");
             listThatShouldBeEqualToServiceTypesOfAziendaZero.add("QTimestamp");
@@ -317,8 +325,10 @@ Provider provider;
             providerToTest.setServiceTypes(listIWantToSetToAziendaZero);
 
             //test
-            assertLinesMatch(listThatShouldBeEqualToServiceTypesOfAziendaZero,
-                    providerToTest.getServiceTypes());
+            assertLinesMatch(
+                    listThatShouldBeEqualToServiceTypesOfAziendaZero.stream().toList(),
+                    providerToTest.getServiceTypes().stream().toList()
+            );
         }
     }
 

@@ -35,6 +35,6 @@ public class Help {
     }
 
     public static Country getCountryN(int indexOfTheCountry) {
-        return wholeList.getCountries().get(indexOfTheCountry);
+        return wholeList.getCountries().stream().toList().get(indexOfTheCountry);
     }
 }
