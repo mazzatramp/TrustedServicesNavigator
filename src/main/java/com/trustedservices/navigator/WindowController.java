@@ -31,10 +31,6 @@ public class WindowController {
         this.navigationController = navigationController;
     }
 
-    public FilterPanesAccordion getFilterPanes() {
-        return filterPanes;
-    }
-
     public void fillDisplayAndFiltersViews() {
         //runLater is needed in order to avoid issues adding a lot of nodes at once
         Platform.runLater(() -> {

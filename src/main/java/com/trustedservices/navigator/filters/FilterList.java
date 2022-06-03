@@ -14,10 +14,6 @@ public class FilterList extends ArrayList<Filter> {
         super(c);
     }
 
-    public FilterList(int initialCapacity) {
-        super(initialCapacity);
-    }
-
     public TrustedList getFilteredListFrom(TrustedList list) {
         TrustedList filteredList = list.clone();
         this.forEach(filter -> filter.applyTo(filteredList));
