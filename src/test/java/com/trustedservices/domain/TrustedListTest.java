@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
 
@@ -151,7 +153,7 @@ class TrustedListTest {
     class constructorWithArgument{
         @BeforeEach
         void createATrustedListWithArgument() throws IOException {
-            List<Country> listOfCountries;
+            Set<Country> listOfCountries;
             listOfCountries = Help.getWholeList().getCountries();
             trustedList = new TrustedList(listOfCountries);
         }
