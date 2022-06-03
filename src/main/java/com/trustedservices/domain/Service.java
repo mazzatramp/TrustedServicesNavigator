@@ -10,7 +10,7 @@ import java.util.List;
 public class Service implements Cloneable, Comparable<Service>, TrustedListEntity {
     private Provider provider;
 
-    private int serviceId;
+    private int id;
     private String name;
     private String type;
     private String status;
@@ -24,7 +24,7 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
             @JsonProperty("currentStatus") String statusUrl,
             @JsonProperty("qServiceTypes") List<String> serviceTypes
     ) {
-        this.serviceId = serviceId;
+        this.id = serviceId;
         this.name = name;
         this.type = type;
         this.status = getLastPartFromUrl(statusUrl);
@@ -36,13 +36,13 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
         return splitUrl[splitUrl.length-1];
     }
 
-    public int getServiceId() {
-        return serviceId;
+    public int getId() {
+        return id;
     }
 
     @JsonSetter
-    public void setServiceId(int serviceId) {
-        this.serviceId = serviceId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
@@ -100,7 +100,7 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Service service = (Service) o;
-        return this.name.equals(service.name) && this.serviceId == service.serviceId;
+        return this.name.equals(service.name) && this.id == service.id;
     }
 
     @Override
@@ -115,9 +115,7 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
     @Override
     public Service clone() {
         try {
-            Service clone = (Service) super.clone();
-            clone.setProvider(null);
-            return clone;
+            return (Service) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
@@ -125,6 +123,11 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
 
     @Override
     public int compareTo(Service service) {
-        return Integer.compare(this.serviceId, service.serviceId);
+        int providerComparison = this.getProvider().compareTo(service.getProvider());
+        int idComparison = Integer.compare(this.getId(), service.getId());
+        if (providerComparison != 0)
+            return providerComparison;
+        else
+            return idComparison;
     }
 }

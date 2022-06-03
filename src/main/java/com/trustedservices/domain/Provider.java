@@ -2,9 +2,7 @@ package com.trustedservices.domain;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -14,8 +12,8 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
     private int providerId;
     private String name;
     private String trustmark;
-    private List<String> serviceTypes;
-    private List<Service> services;
+    private Set<String> serviceTypes;
+    private Set<Service> services;
 
     @JsonCreator
     public Provider(
@@ -23,8 +21,8 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
             @JsonProperty("tspId") int providerId,
             @JsonProperty("name") String name,
             @JsonProperty("trustmark") String trustmark,
-            @JsonProperty("qServiceTypes") List<String> serviceTypes,
-            @JsonProperty("services") List<Service> services
+            @JsonProperty("qServiceTypes") Set<String> serviceTypes,
+            @JsonProperty("services") Set<Service> services
     ){
         this.country = new Country("", countryCode);
         this.providerId = providerId;
@@ -82,19 +80,19 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
         this.trustmark = trustmark;
     }
 
-    public List<String> getServiceTypes() {
+    public Set<String> getServiceTypes() {
         return serviceTypes;
     }
 
-    public void setServiceTypes(List<String> serviceTypes) {
+    public void setServiceTypes(Set<String> serviceTypes) {
         this.serviceTypes = serviceTypes;
     }
 
-    public List<Service> getServices() {
+    public Set<Service> getServices() {
         return services;
     }
 
-    public void setServices(List<Service> services) {
+    public void setServices(Set<Service> services) {
         this.services = services;
     }
 
@@ -124,7 +122,7 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
     public Provider clone() {
         try {
             Provider providerClone = (Provider) super.clone();
-            providerClone.setServices(new ArrayList<>());
+            providerClone.setServices(new TreeSet<>());
             providerClone.setCountry(country);
             this.getServices().forEach(
                     service -> {

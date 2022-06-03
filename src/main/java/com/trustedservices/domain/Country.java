@@ -3,15 +3,13 @@ package com.trustedservices.domain;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Country implements Cloneable, Comparable<Country>, TrustedListEntity {
     private String name;
     private String code;
 
-    private List<Provider> providers;
+    private Set<Provider> providers;
 
     @JsonCreator
     public Country(
@@ -20,7 +18,7 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
     ) {
         this.name = name;
         this.code = code;
-        providers = new ArrayList<>(0);
+        providers = new TreeSet<>();
     }
 
     @Override
@@ -30,10 +28,7 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
 
     @Override
     public List<String> getInformation() {
-        List<String> information = new ArrayList<>(2);
-        information.add(name);
-        information.add(code);
-        return information;
+        return List.of(name, code);
     }
 
     public void setName(String name) {
@@ -48,11 +43,11 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
         this.code = code;
     }
 
-    public List <Provider> getProviders() {
+    public Set<Provider> getProviders() {
         return providers;
     }
 
-    public void setProviders(ArrayList<Provider> providers) {
+    public void setProviders(Set<Provider> providers) {
         this.providers = providers;
     }
 
@@ -86,7 +81,7 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
     public Country clone() {
         try {
             Country countryClone = (Country) super.clone();
-            countryClone.setProviders(new ArrayList<>());
+            countryClone.setProviders(new TreeSet<>());
             this.getProviders().forEach(
                     provider -> {
                         Provider providerClone = provider.clone();

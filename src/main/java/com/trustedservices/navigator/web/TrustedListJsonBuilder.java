@@ -7,11 +7,13 @@ import com.trustedservices.domain.TrustedList;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class TrustedListJsonBuilder implements TrustedListBuilder {
 
-    private List<Country> countries;
-    private List<Provider> providers;
+    private Set<Country> countries;
+    private Set<Provider> providers;
 
     private String countriesJson;
     private String providersJson;
@@ -39,10 +41,10 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
         linkCountriesAndProviders();
     }
 
-    private <T> List<T> readJson(String json, Class<T> type) {
+    private <T> TreeSet<T> readJson(String json, Class<T> type) {
         try {
             ObjectMapper jsonToObjectMapper = new ObjectMapper();
-            return jsonToObjectMapper.readValue(json, jsonToObjectMapper.getTypeFactory().constructCollectionType(List.class, type));
+            return jsonToObjectMapper.readValue(json, jsonToObjectMapper.getTypeFactory().constructCollectionType(TreeSet.class, type));
         } catch (IOException e) {
             System.out.println("Error reading json.");
             throw new RuntimeException(e);
