@@ -42,9 +42,14 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
     private <T> List<T> readJson(String json, Class<T> type) {
         try {
             ObjectMapper jsonToObjectMapper = new ObjectMapper();
-            return jsonToObjectMapper.readValue(json, jsonToObjectMapper.getTypeFactory().constructCollectionType(List.class, type));
+            return jsonToObjectMapper.readValue(
+                    json,
+                    jsonToObjectMapper.getTypeFactory().constructCollectionType(List.class, type)
+            );
         } catch (IOException e) {
-            System.out.println("Error reading json.");
+            System.err.println("Error reading Json: "
+                    + json.replace(" ", "").replace("\n", " ").substring(0, 100)
+                    + "...");
             throw new RuntimeException(e);
         }
     }
