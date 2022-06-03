@@ -42,8 +42,8 @@ public class DisplayPane extends AnchorPane {
 
     private void initializeEmptyDisplayMessage() {
         emptyDisplayMessage.setText(
-                "There are no services respecting the selected filter.\n" +
-                "Please change or reset filters."
+            "There are no services respecting the selected filter.\n" +
+            "Please change or reset filters."
         );
     }
 
