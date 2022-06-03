@@ -7,7 +7,10 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.TreeSet;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -74,7 +77,7 @@ class TrustedListTest {
     @Test
     @DisplayName("is instantiated with new TrustedList(List<Country>)")
     void isInstantiatedWithNewTrustedList_ListOfCountriesAsArgument() {
-        new TrustedList(new ArrayList<Country>());
+        new TrustedList(new TreeSet<>());
     }
 
     @Nested

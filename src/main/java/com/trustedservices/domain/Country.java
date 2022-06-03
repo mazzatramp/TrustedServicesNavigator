@@ -2,25 +2,24 @@ package com.trustedservices.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Country implements Cloneable, Comparable<Country>, TrustedListEntity {
-    private String name;
-    private String code;
+    private final String name;
+    private final String code;
 
-    private List<Provider> providers;
+    private final Set<Provider> providers;
 
-    @JsonCreator
-    public Country(
-            @JsonProperty("countryName") String name,
-            @JsonProperty("countryCode") String code
-    ) {
+    public Country(String name, String code) {
         this.name = name;
         this.code = code;
-        providers = new ArrayList<>(0);
+        this.providers = new TreeSet<>();
+    }
+
+    public Country() {
+        this("","");
     }
 
     @Override
@@ -30,30 +29,15 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
 
     @Override
     public List<String> getInformation() {
-        List<String> information = new ArrayList<>(2);
-        information.add(name);
-        information.add(code);
-        return information;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return List.of(name, code);
     }
 
     public String getCode() {
         return code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public List <Provider> getProviders() {
+    public Set<Provider> getProviders() {
         return providers;
-    }
-
-    public void setProviders(ArrayList<Provider> providers) {
-        this.providers = providers;
     }
 
     @Override
@@ -84,18 +68,12 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
 
     @Override
     public Country clone() {
-        try {
-            Country countryClone = (Country) super.clone();
-            countryClone.setProviders(new ArrayList<>());
-            this.getProviders().forEach(
-                    provider -> {
-                        Provider providerClone = provider.clone();
-                        providerClone.setCountry(countryClone);
-                        countryClone.getProviders().add(providerClone);
-                    });
-            return countryClone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+        Country countryClone = new Country(name, code);
+        this.getProviders().forEach(provider -> {
+            Provider providerClone = provider.clone();
+            providerClone.setCountry(countryClone);
+            countryClone.getProviders().add(providerClone);
+        });
+        return countryClone;
     }
 }

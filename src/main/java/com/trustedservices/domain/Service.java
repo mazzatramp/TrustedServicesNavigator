@@ -1,48 +1,37 @@
 package com.trustedservices.domain;
 
-import com.fasterxml.jackson.annotation.*;
-
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Service implements Cloneable, Comparable<Service>, TrustedListEntity {
+    private final int id;
+    private final String name;
+    private final String type;
+    private final String status;
+    private final Set<String> serviceTypes;
+
     private Provider provider;
 
-    private int serviceId;
-    private String name;
-    private String type;
-    private String status;
-    private List<String> serviceTypes;
-
-    @JsonCreator
-    public Service(
-            @JsonProperty("serviceId") int serviceId,
-            @JsonProperty("serviceName") String name,
-            @JsonProperty("type") String type,
-            @JsonProperty("currentStatus") String statusUrl,
-            @JsonProperty("qServiceTypes") List<String> serviceTypes
-    ) {
-        this.serviceId = serviceId;
+    public Service(Provider provider, int serviceId, String name, String type, String status, Set<String> serviceTypes) {
+        this.provider = provider;
+        this.id = serviceId;
         this.name = name;
         this.type = type;
-        this.status = getLastPartFromUrl(statusUrl);
+        this.status = status;
         this.serviceTypes = serviceTypes;
     }
 
-    private String getLastPartFromUrl(String statusUrl) {
-        String[] splitUrl = statusUrl.split("/");
-        return splitUrl[splitUrl.length-1];
+    public Service(int serviceId, String name, String type, String status, Set<String> serviceTypes) {
+        this(new Provider(), serviceId, name, type, status, serviceTypes);
     }
 
-    public int getServiceId() {
-        return serviceId;
+    public Service() {
+        this(new Provider(), 0, "", "", "", new HashSet<>());
     }
 
-    @JsonSetter
-    public void setServiceId(int serviceId) {
-        this.serviceId = serviceId;
+    public int getId() {
+        return id;
     }
 
     @Override
@@ -52,39 +41,19 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
 
     @Override
     public List<String> getInformation() {
-        List<String> information = new ArrayList<>(3);
-        information.add(name);
-        information.add(serviceTypes.toString());
-        information.add(status);
-        return information;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return List.of(name, status, serviceTypes.toString());
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public List<String> getServiceTypes() {
+    public Set<String> getServiceTypes() {
         return serviceTypes;
-    }
-
-    public void setServiceTypes(List<String> serviceTypes) {
-        this.serviceTypes = serviceTypes;
     }
 
     public Provider getProvider() {
@@ -99,32 +68,36 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Service service = (Service) o;
-        return this.name.equals(service.name) && this.serviceId == service.serviceId;
+        Service that = (Service) o;
+        return this.id == that.id && this.provider.equals(that.provider);
     }
 
     @Override
     public String toString() {
         return "Service{" +
-                "name='" + name + '\'' +
+                "tspId=" + provider.getProviderId() +
+                ", serviceI=" + id +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
                 ", status='" + status + '\'' +
-                ", serviceTypes='" + serviceTypes + '\'' +
+                ", serviceTypes=" + serviceTypes +
                 '}';
     }
 
     @Override
     public Service clone() {
         try {
-            Service clone = (Service) super.clone();
-            clone.setProvider(null);
-            return clone;
+            return (Service) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
     }
 
     @Override
-    public int compareTo(Service service) {
-        return Integer.compare(this.serviceId, service.serviceId);
+    public int compareTo(Service that) {
+        int idComparison = Integer.compare(this.id, that.id);
+        if (idComparison == 0)
+            return this.provider.compareTo(that.provider);
+        return idComparison;
     }
 }

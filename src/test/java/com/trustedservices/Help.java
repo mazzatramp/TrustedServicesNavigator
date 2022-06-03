@@ -14,7 +14,16 @@ public class Help {
 
     private static void constructWholeList() {
         try {
+/*
             TrustedListJsonBuilder builder = setupFileBuilder();
+*/
+            TrustedListJsonBuilder builder = new TrustedListJsonBuilder();
+
+            Path countries = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
+            Path providers = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
+            builder.setCountriesJsonString(Files.readString(countries));
+            builder.setProvidersJsonString(Files.readString(providers));
+
 
             wholeList = builder.build();
         } catch (IOException e) {
@@ -42,6 +51,6 @@ public class Help {
     }
 
     public static Country getCountryN(int indexOfTheCountry) {
-        return wholeList.getCountries().get(indexOfTheCountry);
+        return wholeList.getCountries().stream().toList().get(indexOfTheCountry);
     }
 }

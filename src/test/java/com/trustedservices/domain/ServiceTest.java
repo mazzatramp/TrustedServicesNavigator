@@ -13,26 +13,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ServiceTest {
     Service service1;
 
-    @Nested
-    @DisplayName("when null")
-    class WhenNull {
-        @BeforeEach
-        void setServiceNull() {
-            service1 = null;
-        }
 
-        @DisplayName("cloning the object should return an error.")
-        @Test
-        void clone_NullService_returnsError() {
-            assertThrows(NullPointerException.class, () -> service1.clone());
-        }
-    }
 
     @Nested
     @DisplayName("when new")
     class WhenNew{
 
         @BeforeEach
+
         void createAService() {
             service1 = new Service(
                     0,
@@ -42,15 +30,58 @@ public class ServiceTest {
                     List.of("ServiceType1", "ServiceType2")
             );
         }
+            /* void createAService() throws IOException {
+            //VA CREATO CON IL COSTRUTTORE NON COSI
+            service = Help.getWholeList().getCountries().stream().findFirst().get()
+                    .getProviders().stream().findFirst().get()
+                    .getServices().stream().findFirst().get();
+
+
+        }*/
 
         @DisplayName("and I use the method equals(Object)")
         @Nested
         class Equals {
 
-            @DisplayName("and the two services are the same, method should return true")
-            @Test
-            void SameCountryAsArgument() {
-                assertEquals(service1, service1);
+
+                @DisplayName("and the two services are the same, method should return true")
+                @Test
+                void SameCountryAsArgument() {
+                    //arrange
+                    argumentService = service;
+                    //act
+                    boolean areCountriesTHeSame = service.equals(argumentService);
+                    //assert
+                    assertTrue(areCountriesTHeSame);
+                }
+
+                @DisplayName("and the two services are not the same, method should return false")
+                @Test
+
+
+                void NotSameCountryAsArgument() throws IOException {
+                    //arrange
+                    //DEVO METTERE UN Service VERO E PROPRIO
+                    argumentService = Help.getWholeList().getCountries().stream().findFirst().get()
+                            .getProviders().stream().findFirst().get()
+                            .getServices().stream().findFirst().get();
+
+                    //act
+                    boolean areCountriesTHeSame = service.equals(argumentService);
+                    //assert
+                    assertFalse(areCountriesTHeSame);
+                }
+                @DisplayName("with a service null as argument, method should return false")
+                @Test
+                void NullAsArgument() {
+                    //arrange
+                    argumentService = null;
+                    //act
+                    boolean areCountriesTHeSame = service.equals(argumentService);
+                    //assert
+                    assertFalse(areCountriesTHeSame);
+                }
+
             }
 
             @DisplayName("and the two services are not the same, method should return false")
@@ -76,10 +107,65 @@ public class ServiceTest {
         @DisplayName("and I use the method compareTo(Service)")
         @Nested
         class CompareTo {
-            @DisplayName("and the two services are the same, method should return 0")
-            @Test
-            void SameCountryAsArgument() {
-                assertEquals(0, service1.compareTo(service1));
+
+            @DisplayName("with a service as argument")
+            @Nested
+            class CountryAsArgument {
+                Service argumentService;
+
+                @DisplayName("and the two services are the same, method should return 0")
+                @Test
+                void SameCountryAsArgument() throws IOException {
+                    //arrange
+                    argumentService = service;
+                    //act
+                    int comparison = service.compareTo(argumentService);
+                    int expectedreturn = 0;
+                    //assert
+                    assertEquals(expectedreturn, comparison);
+                }
+
+                //COUNTRY MAGGIORE
+                //DEVO METTERE ANCHE DIFFERENZA O BASTA POS E NEG?
+                @DisplayName("and the argument service is greater, method should return a negative number")
+                @Test
+                void aCountry_CompareTo_BiggerCountry_ReturnNegative() throws IOException {
+                    //arrange
+                    //METTERNE UNO CON PIU'SENSO
+                    argumentService = Help.getWholeList().getCountries().stream().findFirst().get()
+                            .getProviders().stream().findFirst().get()
+                            .getServices().stream().findFirst().get();
+                    //act
+                    int comparison = service.compareTo(argumentService);
+                    //assert
+                    assertTrue(comparison < 0);
+
+                }
+                @DisplayName("and the argument service is lower, method should return a positive number")
+                @Test
+                void aCountry_CompareTo_LowerCountry_ReturnNegative() throws IOException {
+                    //arrange
+                    argumentService =service;
+                    argumentService = Help.getWholeList().getCountries().stream().findFirst().get()
+                            .getProviders().stream().findFirst().get()
+                            .getServices().stream().findFirst().get();
+                    //act
+                    int comparison = service.compareTo(argumentService);
+                    //assert
+                    assertTrue(comparison > 0);
+
+                }
+                @DisplayName("and the argument service is null, method should return a error")
+                @Test
+                void aCountry_CompareTo_null() throws IOException {
+                    //arrange
+                    Service argumentService = null;
+                    //act
+                    assertThrows(NullPointerException.class, () -> service.compareTo(argumentService));
+
+
+                }
+
             }
 
             @DisplayName("and the argument service is greater, method should return a negative number")
@@ -120,11 +206,20 @@ public class ServiceTest {
         class Clone {
             @DisplayName("It returns the same service")
             @Test
+/*
             void cloneACountryReturnsSameService() {
                 Service serviceToBeCloned = Help.getCountryN(0).getProviders().get(0).getServices().get(0);
+*/
+            void cloneACountryReturnsSameService() throws IOException {
+                //arrange
+                Service serviceToBeCloned = Help.getWholeList().getCountries().stream().findFirst().get()
+                        .getProviders().stream().findFirst().get()
+                        .getServices().stream().findFirst().get();
+                //act
+
                 Service clonedService = serviceToBeCloned.clone();
                 assertEquals(serviceToBeCloned, clonedService);
             }
         }
     }
-}
+
