@@ -14,40 +14,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 //COPIA E INCOLLA DA PROVIDERFILTERLIST
 
-@DisplayName("A nomeClasse")
+@DisplayName("A ServiceTypeFilter")
 class ServiceTypeFilterTest {
     ServiceTypeFilter serviceTypeFilter;
-
-    @Nested
-    @DisplayName("when null")
-    class WhenNull {
-        @BeforeEach
-        void setTrustedListNull() {
-            serviceTypeFilter = null;
-        }
-
-        @DisplayName("and I use the method ApplyTo")
-        @Nested
-        class ApplyTo {
-            TrustedList argumentTrustedList;
-
-            @Test
-            void withListAsArgument() throws IOException {
-                argumentTrustedList = Help.getWholeList();
-                assertThrows(NullPointerException.class, () -> serviceTypeFilter.applyTo(argumentTrustedList));
-            }
-
-            @Test
-            void withNullListAsArgument() {
-                argumentTrustedList = null;
-                assertThrows(NullPointerException.class, () -> serviceTypeFilter.applyTo(argumentTrustedList));
-            }
-        }
-
-    }
-
     @Test
-    @DisplayName("is instantiated with new ServiceTypeFIlter()")
+    @DisplayName("is instantiated with new ServiceTypeFilter()")
     void isInstantiatedWithNewServiceTypeFilter() {
         new ServiceTypeFilter();
     }
@@ -60,11 +31,11 @@ class ServiceTypeFilterTest {
             serviceTypeFilter = new ServiceTypeFilter();
         }
 
-        @DisplayName("and use the method ApplyTo")
+        @DisplayName("and I use the method ApplyTo")
         @Nested
         class ApplyTo {
             TrustedList argumentTrustedList;
-
+            @DisplayName("with a list as argument, should return the same list")
             @Test
             void withListAsArgument() throws IOException {
                 argumentTrustedList = Help.getWholeList();
@@ -73,7 +44,7 @@ class ServiceTypeFilterTest {
                 assertEquals(expectedFilteredList, argumentTrustedList);
 
             }
-
+            @DisplayName("with a null list as argument, should return a null list")
             @Test
             void withNullListAsArgument() {
                 argumentTrustedList = null;
@@ -93,11 +64,11 @@ class ServiceTypeFilterTest {
                 serviceTypeFilter.setWhitelist(setServiceType);
             }
 
-            @DisplayName("and use the method ApplyTo")
+            @DisplayName("and I use the method ApplyTo")
             @Nested
             class ApplyTo {
                 TrustedList argumentTrustedList;
-
+                @DisplayName("with a list with compatible elements with the filters as argument, should return a list with only those elements")
                 @Test
                 void withListAsArgument() throws IOException {
                     argumentTrustedList = Help.getWholeList();
@@ -115,14 +86,14 @@ class ServiceTypeFilterTest {
                     });
 
                 }
-
+                @DisplayName("with a list with only incompatible elements with the filters as argument, should return a list with no elements")
                 @Test
                 void withNotPossibleListAsArgument() throws IOException {
                     argumentTrustedList = new TrustedList();
                     serviceTypeFilter.applyTo(argumentTrustedList);
                     assertTrue(argumentTrustedList.getCountries().isEmpty());
                 }
-
+                @DisplayName("with a null list, should return NullPointerException")
                 @Test
                 void withNullListAsArgument() {
                     argumentTrustedList = null;

@@ -18,30 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("A StatusFilter")
 class StatusFilterTest {
     StatusFilter statusFilter;
-    @Nested
-    @DisplayName("when null")
-    class WhenNull {
-        @BeforeEach
-        void setTrustedListNull() {
-            statusFilter = null;
-        }
-        @DisplayName("and I use the method ApplyTo")
-        @Nested
-        class ApplyTo{
-            TrustedList argumentTrustedList;
-            @Test
-            void withListAsArgument() throws IOException {
-                argumentTrustedList = Help.getWholeList();
-                assertThrows(NullPointerException.class, () -> statusFilter.applyTo(argumentTrustedList));
-            }
-            @Test
-            void withNullListAsArgument(){
-                argumentTrustedList = null;
-                assertThrows(NullPointerException.class, () -> statusFilter.applyTo(argumentTrustedList));
-            }
-        }
 
-    }
     @Test
     @DisplayName("is instantiated with new StatusFIlter()")
     void isInstantiatedWithNewStatus() {
@@ -55,10 +32,11 @@ class StatusFilterTest {
         void createAFilterController(){
             statusFilter = new StatusFilter();
         }
-        @DisplayName("and use the method ApplyTo")
+        @DisplayName("and I use the method ApplyTo")
         @Nested
         class ApplyTo{
             TrustedList argumentTrustedList;
+            @DisplayName("with a list as argument, should return the same list")
             @Test
             void withListAsArgument() throws IOException {
                 argumentTrustedList = Help.getWholeList();
@@ -67,6 +45,7 @@ class StatusFilterTest {
                 assertEquals(expectedFilteredList,argumentTrustedList);
 
             }
+            @DisplayName("with a null list as argument, should return a null list")
             @Test
             void withNullListAsArgument(){
                 argumentTrustedList = null;
@@ -84,10 +63,11 @@ class StatusFilterTest {
                 setStatus.add("granted");
                 statusFilter.setWhitelist(setStatus);
             }
-            @DisplayName("and use the method ApplyTo")
+            @DisplayName("and I use the method ApplyTo")
             @Nested
             class ApplyTo{
                 TrustedList argumentTrustedList;
+                @DisplayName("with a list with compatible elements with the filters as argument, should return a list with only those elements")
                 @Test
                 void withListAsArgument() throws IOException {
                     argumentTrustedList = Help.getWholeList();
@@ -101,12 +81,14 @@ class StatusFilterTest {
                     });
 
                 }
+                @DisplayName("with a list with only incompatible elements with the filters as argument, should return a list with no elements")
                 @Test
                 void withNotPossibleListAsArgument() throws IOException {
                     argumentTrustedList = new TrustedList();
                     statusFilter.applyTo(argumentTrustedList);
                     assertTrue(argumentTrustedList.getCountries().isEmpty());
                 }
+                @DisplayName("with a null list, should return NullPointerException")
                 @Test
                 void withNullListAsArgument(){
                     argumentTrustedList = null;
@@ -116,72 +98,6 @@ class StatusFilterTest {
             }
 
         }
-        /* IN TEORIA TUTTE LE COMBUNAZIONI DI FILTRI SONO POSSIBILI
-        @DisplayName("and I set a not possible whitelist filters")
-        @Nested
-        class setNotPossibleFilters{
-            @DisplayName("and I use the method ApplyTo")
-            @Nested
-            class ApplyTo{
-                //ESSENDO PROTECTED NON LO POSSO PROVARE QUA
-            }
-        }
-        */
-
 
     }
-    /*
-    //METODI FATTI PRIMA CHE COUNTRYPROVIDERFILTER DIVENTASSE PROVIDERFILTER
-
-    @Test
-    void applyTo_WholeListWithNoWhitelist_WholeListDoesNotChange() throws IOException {
-        //arrange
-       ProviderFilter cpf = new ProviderFilter();
-       TrustedList listToFilter = Help.getWholeList();
-       List<Country> expectedListOfCountries = listToFilter.getCountries();
-
-       //act
-        cpf.applyTo(listToFilter);
-
-        //assert
-        //test che combacino i paesi e i providers
-        AtomicInteger i= new AtomicInteger();
-        AtomicInteger l= new AtomicInteger();
-        listToFilter.getCountries().forEach(country -> {
-            if (!( country.getName().equals(expectedListOfCountries.get(i.get()).getName())))
-            {
-                fail("I paesi non combaciano");
-            }
-            System.out.println("\n actual " +  i.get() + " "+ country.getName());
-            System.out.println("\n expected "  +  i.get() + " " + expectedListOfCountries.get(i.get()).getName());
-            l.getAndSet(0);
-              country.getProviders().forEach(provider -> {
-                if (!(provider.getName().equals
-                        (expectedListOfCountries.get(i.get()).getProviders().get(l.get()).getName())))
-                {
-                    fail("i providers non combaciano")
-                    ;}
-                  System.out.println("\n actual " +  i.get() + " " + l.get() +" " + provider.getName());
-                  System.out.println("\n expected "+  i.get() + " " + l.get() +" "  +
-                          expectedListOfCountries.get(i.get()).getProviders().get(l.get()).getName());
-                l.getAndIncrement();
-            });
-            i.getAndIncrement();
-        });
-    }
-
-  /*  NON POSSO FARLO PERCHE' NON POSSO CREARE UNA TRUSTED LIST CON I VALORI CHE VOGLIO IO
-  AL MASSIMO DOVREI CREARE DELLE MAPPE E DEI SET DISTINTI CHE HANNO AL LORO INTERNO COUNTRIES
-  PROVIDERS SERVICE TYPES STATUSES
-  @Test
-    void applyTo_WholeListWithWhitelist_WholeListBecomesWhitelist() throws IOException {
-        //arrange
-        ProviderFilter cpf = new ProviderFilter();
-        TrustedList listToFilter = getWholeList();
-        List<Country> expectedListOfCountries = getATestWhitelist();
-
-        //act
-
-    }*/
-
 }
