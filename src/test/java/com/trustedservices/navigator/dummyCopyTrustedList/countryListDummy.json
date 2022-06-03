@@ -1,0 +1,130 @@
+[
+  {
+    "countryCode": "AT",
+    "countryName": "Austria"
+  },
+  {
+    "countryCode": "BE",
+    "countryName": "Belgium"
+  },
+  {
+    "countryCode": "BG",
+    "countryName": "Bulgaria"
+  },
+  {
+    "countryCode": "CY",
+    "countryName": "Cyprus"
+  },
+  {
+    "countryCode": "CZ",
+    "countryName": "Czech Republic"
+  },
+  {
+    "countryCode": "DE",
+    "countryName": "Germany"
+  },
+  {
+    "countryCode": "DK",
+    "countryName": "Denmark"
+  },
+  {
+    "countryCode": "EE",
+    "countryName": "Estonia"
+  },
+  {
+    "countryCode": "EL",
+    "countryName": "Greece"
+  },
+  {
+    "countryCode": "ES",
+    "countryName": "Spain"
+  },
+  {
+    "countryCode": "EU",
+    "countryName": "European Union"
+  },
+  {
+    "countryCode": "FI",
+    "countryName": "Finland"
+  },
+  {
+    "countryCode": "FR",
+    "countryName": "France"
+  },
+  {
+    "countryCode": "HR",
+    "countryName": "Croatia"
+  },
+  {
+    "countryCode": "HU",
+    "countryName": "Hungary"
+  },
+  {
+    "countryCode": "IE",
+    "countryName": "Ireland"
+  },
+  {
+    "countryCode": "IS",
+    "countryName": "Iceland"
+  },
+  {
+    "countryCode": "IT",
+    "countryName": "Italy"
+  },
+  {
+    "countryCode": "LI",
+    "countryName": "Liechtenstein"
+  },
+  {
+    "countryCode": "LT",
+    "countryName": "Lithuania"
+  },
+  {
+    "countryCode": "LU",
+    "countryName": "Luxembourg"
+  },
+  {
+    "countryCode": "LV",
+    "countryName": "Latvia"
+  },
+  {
+    "countryCode": "MT",
+    "countryName": "Malta"
+  },
+  {
+    "countryCode": "NL",
+    "countryName": "Netherlands"
+  },
+  {
+    "countryCode": "NO",
+    "countryName": "Norway"
+  },
+  {
+    "countryCode": "PL",
+    "countryName": "Poland"
+  },
+  {
+    "countryCode": "PT",
+    "countryName": "Portugal"
+  },
+  {
+    "countryCode": "RO",
+    "countryName": "Romania"
+  },
+  {
+    "countryCode": "SE",
+    "countryName": "Sweden"
+  },
+  {
+    "countryCode": "SI",
+    "countryName": "Slovenia"
+  },
+  {
+    "countryCode": "SK",
+    "countryName": "Slovakia"
+  },
+  {
+    "countryCode": "UK",
+    "countryName": "United Kingdom"
+  }
+]
