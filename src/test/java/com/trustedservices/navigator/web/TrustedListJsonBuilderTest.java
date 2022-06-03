@@ -1,4 +1,4 @@
-package com.trustedservices.navigator.web;
+/*package com.trustedservices.navigator.web;
 
 import org.junit.jupiter.api.*;
 
@@ -57,3 +57,4 @@ class TrustedListJsonBuilderTest {
 
 
 }
+*/
