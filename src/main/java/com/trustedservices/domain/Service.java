@@ -10,53 +10,29 @@ import java.util.Set;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Service implements Cloneable, Comparable<Service>, TrustedListEntity {
+    private final int id;
+    private final String name;
+    private final String type;
+    private final String status;
+    private final Set<String> serviceTypes;
+
     private Provider provider;
 
-    private int id;
-    private String name;
-    private String type;
-    private String status;
-    private Set<String> serviceTypes;
-
-    public Service(
-            Provider provider,
-            int serviceId,
-            String name,
-            String type,
-            String statusUrl,
-            Set<String> serviceTypes
-    ) {
-        this(serviceId, name, type, statusUrl, serviceTypes);
+    public Service(Provider provider, int serviceId, String name, String type, String status, Set<String> serviceTypes) {
         this.provider = provider;
-    }
-
-    @JsonCreator
-    public Service(
-            @JsonProperty("serviceId") int serviceId,
-            @JsonProperty("serviceName") String name,
-            @JsonProperty("type") String type,
-            @JsonProperty("currentStatus") String statusUrl,
-            @JsonProperty("qServiceTypes") Set<String> serviceTypes
-    ) {
         this.id = serviceId;
         this.name = name;
         this.type = type;
-        this.status = getLastPartFromUrl(statusUrl);
+        this.status = status;
         this.serviceTypes = serviceTypes;
     }
 
-    private String getLastPartFromUrl(String statusUrl) {
-        String[] splitUrl = statusUrl.split("/");
-        return splitUrl[splitUrl.length-1];
+    public Service(int serviceId, String name, String type, String status, Set<String> serviceTypes) {
+        this(null, serviceId, name, type, status, serviceTypes);
     }
 
     public int getId() {
         return id;
-    }
-
-    @JsonSetter
-    public void setId(int id) {
-        this.id = id;
     }
 
     @Override
@@ -69,32 +45,16 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
         return List.of(name, status, serviceTypes.toString());
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getType() {
         return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public Set<String> getServiceTypes() {
         return serviceTypes;
-    }
-
-    public void setServiceTypes(Set<String> serviceTypes) {
-        this.serviceTypes = serviceTypes;
     }
 
     public Provider getProvider() {

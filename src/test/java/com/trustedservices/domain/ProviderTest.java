@@ -14,288 +14,155 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ProviderTest {
 Provider provider;
-    @Nested
-    @DisplayName("when null")
-    class WhenNull {
-        @BeforeEach
-        void setProviderNull() {
-            provider = null;
-        }
-        @DisplayName("and I use the method clone()")
-        @Nested
-        class Clone {
-            @DisplayName("returns an Error")
-            @Test
-            void clone_NullProvider_returnsError() {
-                //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
-                //METODO CLONE SE VOGLIO CLONARE QUALCOSA DI NULL
-                //arrange
-                Provider providerToClone = provider;
-                //assert
-                assertThrows(NullPointerException.class, () -> providerToClone.clone());
-                //assertEquals(getWholeList(),clonedList)
-            }
-        }
-
-        @DisplayName("and I use the method equals(Object)")
-        @Nested
-        class Equals{
-            Provider argumentProvider;
-            @DisplayName("with a provider as argument, it returns an Error")
-            @Test
-            void NullEqualsProvider() {
-                argumentProvider = new Provider("IT", 49,
-                        "Azienda Zero"
-                        ,"VATIT-05018720283", new TreeSet<>(), new HashSet<>());
-                //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
-                //arrange
-                //assert
-                assertThrows(NullPointerException.class, () -> provider.equals(argumentProvider));
-                //assertEquals(getWholeList(),clonedList)
-            }
-            @DisplayName("with a null provider as argument, it returns error ")
-            @Test
-            void NullEqualsNull() {
-                argumentProvider = null;
-                //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
-                //arrange
-                //assert
-                assertThrows(NullPointerException.class, () -> provider.equals(argumentProvider));
-                //assertEquals(getWholeList(),clonedList)
-            }
-
-
-        }
-        @DisplayName("and I use the method compareTo(Country)")
-        @Nested
-        class CompareTo{
-            Provider argumentProvider;
-            @DisplayName("with a provider as argument, it returns an Error")
-            @Test
-            void NullCompareToProvider() {
-                argumentProvider = new Provider("IT", 49,
-                        "Azienda Zero"
-                        ,"VATIT-05018720283", new TreeSet<>(), new HashSet<>());
-                //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
-                //arrange
-                //assert
-                assertThrows(NullPointerException.class, () -> provider.compareTo(argumentProvider));
-                //assertEquals(getWholeList(),clonedList)
-            }
-            @DisplayName("with a null provider as argument, it returns error ")
-            @Test
-            void NullCompareToNull() {
-                argumentProvider = null;
-                //SAREBBE DA METTERE UN ERRORE PIU SPECIFICO NEL
-                //arrange
-                //assert
-                assertThrows(NullPointerException.class, () -> provider.compareTo(argumentProvider));
-                //assertEquals(getWholeList(),clonedList)
-            }
-        }
-
-    }
 
     @Test
     @DisplayName("is instantiated with new Provider(String,Int, String,String,List,List)")
     void isInstantiatedWithNewProvider() {
-        //DEVO METTERE DELLE VERE LISTE
-        //O PROVARE A METTERE LISTE PIENE E LISTE VUOTE IN UN ALTRO CASO
-        TreeSet<String> listOfServiceTypesOfAziendaZero= new TreeSet<String>();
-        listOfServiceTypesOfAziendaZero.add("QCertESeal");
-        listOfServiceTypesOfAziendaZero.add("QCertESig");
-        listOfServiceTypesOfAziendaZero.add("QTimestamp");
-        TreeSet<Service> listOfServicesOfAziendaZero= new TreeSet<>();
-        //Azienda zero ha anche un altro servizio ma non lo metto adesso
-        provider = new Provider("IT", 49,
-                "Azienda Zero"
-                ,"VATIT-05018720283",
-                listOfServiceTypesOfAziendaZero,
-                listOfServicesOfAziendaZero);
+        TreeSet<String> providerServiceTypes = new TreeSet<>(
+                List.of("QCertESeal", "QCertESig", "QTimestamp")
+        );
 
-        listOfServicesOfAziendaZero.add(new Service(
-                provider,
-                1,
-                "OID.2.5.4.97=VATIT-05018720283, CN=Azienda Zero CA Qualificata eIDAS 1, OU=TSP, O=Azienda Zero, C=IT",
-                "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-                "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/withdrawn",
-                listOfServiceTypesOfAziendaZero));
+        TreeSet<Service> providerServices = new TreeSet<>();
+
+        provider = new Provider(0, "TestProvider", "TTT-000-X01", providerServiceTypes, providerServices);
+
+        providerServices.add(new Service(1, "Service 1", "QC", "granted", providerServiceTypes));
+        providerServices.forEach(service -> service.setProvider(provider));
     }
 
     @Nested
     @DisplayName("when new")
     class WhenNew{
 
-        @BeforeEach
-        void createAProvider() {
-            Set<String> listOfServiceTypesOfAziendaZero= new TreeSet<>();
-            listOfServiceTypesOfAziendaZero.add("QCertESeal");
-            listOfServiceTypesOfAziendaZero.add("QCertESig");
-            listOfServiceTypesOfAziendaZero.add("QTimestamp");
-            Set<Service> listOfServicesOfAziendaZero= new TreeSet<>();
-            //Azienda zero ha anche un altro servizio ma non lo metto adesso
-            provider = new Provider("IT", 49,
-                    "Azienda Zero"
-                    ,"VATIT-05018720283",  listOfServiceTypesOfAziendaZero,  listOfServicesOfAziendaZero );
+        @DisplayName("and I use the method equals(Object)")
+        @Nested
+        class Equals {
+            @DisplayName("with a provider as argument")
+            @Nested
+            class CountryAsArgument {
+                Provider argumentProvider;
 
-            listOfServicesOfAziendaZero.add(new Service(
-                    provider,
-                    1,
-                    "OID.2.5.4.97=VATIT-05018720283, CN=Azienda Zero CA Qualificata eIDAS 1, OU=TSP, O=Azienda Zero, C=IT",
-                    "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-                    "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/withdrawn",
-                    listOfServiceTypesOfAziendaZero));
+                @DisplayName("and the two providers are the same, method should return true")
+                @Test
+                void SameCountryAsArgument() {
+                    TreeSet<String> providerServiceTypes = new TreeSet<>(
+                            List.of("QCertESeal", "QCertESig", "QTimestamp")
+                    );
+
+                    TreeSet<Service> providerServices = new TreeSet<>();
+                    provider = new Provider(0, "TestProvider", "TTT-000-X01", providerServiceTypes, providerServices);
+                    argumentProvider = new Provider(0, "TestProvider", "TTT-000-X01",
+                            (TreeSet) providerServiceTypes.clone(), (TreeSet)providerServices.clone());
+
+                    assertEquals(provider, argumentProvider);
+                }
+
+                @DisplayName("and the two providers are not the same, method should return false")
+                @Test
+                void NotSameCountryAsArgument() {
+                    TreeSet<String> providerServiceTypes = new TreeSet<>(
+                            List.of("QCertESeal", "QCertESig", "QTimestamp")
+                    );
+
+                    TreeSet<Service> providerServices = new TreeSet<>();
+                    provider = new Provider(0, "TestProvider", "TTT-000-X01", providerServiceTypes, providerServices);
+                    argumentProvider = new Provider(1, "TestProvider2", "TTT-000-X02",
+                            (TreeSet) providerServiceTypes.clone(), (TreeSet)providerServices.clone());
+
+                    assertNotEquals(provider, argumentProvider);
+                }
+            }
+
+        /*
+        DOVREI FARLO CON STESSI VALORI MA OGGETTO DIVERSO, NON PENSO NEL CASO PRIMA FOSSE COSI
+        */
         }
 
-
-
-            @DisplayName("and I use the method equals(Object)")
+        @DisplayName("and I use the method compareTo(Provider)")
+        @Nested
+        class CompareTo {
+            @DisplayName("with a provider as argument")
             @Nested
-            class Equals {
-                @DisplayName("with a provider as argument")
-                @Nested
-                class CountryAsArgument {
-                    Provider argumentProvider;
+            class CountryAsArgument {
+                Provider argumentProvider;
 
-                    @DisplayName("and the two providers are the same, method should return true")
-                    @Test
-                    void SameCountryAsArgument() {
-                        //arrange
-                        argumentProvider = provider;
-                        //act
-                        boolean areCountriesTHeSame = provider.equals(argumentProvider);
-                        //assert
-                        assertTrue(areCountriesTHeSame);
-                    }
-
-                    @DisplayName("and the two providers are not the same, method should return false")
-                    @Test
-                    void NotSameCountryAsArgument() {
-                        //arrange
-                        //DEVO METTERE UN PROVIDER VERO E PROPRIO
-                        Set<String> listOfServiceTypesOfAziendaZero= new TreeSet<>();
-                        listOfServiceTypesOfAziendaZero.add("QCertESeal");
-                        listOfServiceTypesOfAziendaZero.add("QCertESig");
-                        listOfServiceTypesOfAziendaZero.add("QTimestamp");
-                        Set<Service> listOfServicesOfAziendaZero= new TreeSet<>();
-                        listOfServicesOfAziendaZero.add(new Service(
-                                2,
-                                "OID.2.5.4.97=VATIT-05018720283, CN=Azienda Zero CA Qualificata eIDAS 1, OU=TSP, O=Azienda Zero, C=IT",
-                                "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
-                                "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/withdrawn",
-                                listOfServiceTypesOfAziendaZero));
-                        //Azienda zero ha anche un altro servizio ma non lo metto adesso
-                        provider = new Provider("IT", 49,
-                                "Azienda Zero"
-                                ,"VATIT-05018720283",  listOfServiceTypesOfAziendaZero,  listOfServicesOfAziendaZero );
-
-                        //act
-                        boolean areCountriesTHeSame = provider.equals(argumentProvider);
-                        //assert
-                        assertFalse(areCountriesTHeSame);
-                    }
-                    @DisplayName("with a provider null as argument, method should return false")
-                    @Test
-                    void NullAsArgument() {
-                        //arrange
-                        argumentProvider = null;
-                        //act
-                        boolean areCountriesTHeSame = provider.equals(argumentProvider);
-                        //assert
-                        assertFalse(areCountriesTHeSame);
-                    }
-                }
-
-            /*
-            DOVREI FARLO CON STESSI VALORI MA OGGETTO DIVERSO, NON PENSO NEL CASO PRIMA FOSSE COSI
-            */
-            }
-
-            @DisplayName("and I use the method compareTo(Provider)")
-            @Nested
-            class CompareTo {
-                @DisplayName("with a provider as argument")
-                @Nested
-                class CountryAsArgument {
-                    Provider argumentProvider;
-
-                    @DisplayName("and the two providers are the same, method should return 0")
-                    @Test
-                    void SameCountryAsArgument() throws IOException {
-                        //arrange
-                        argumentProvider = provider;
-                        //act
-                        int comparison = provider.compareTo(argumentProvider);
-                        int expectedreturn = 0;
-                        //assert
-                        assertEquals(expectedreturn, comparison);
-                    }
-
-                    //COUNTRY MAGGIORE
-                    //DEVO METTERE ANCHE DIFFERENZA O BASTA POS E NEG?
-                    @DisplayName("and the argument provider is greater, method should return a negative number")
-                    @Test
-                    void aCountry_CompareTo_BiggerCountry_ReturnNegative() throws IOException {
-                        //arrange
-                        //METTERNE UNO CON PIU'SENSO
-                        argumentProvider = Help.getCountryN(1).getProviders().stream().findAny().get();
-                        //act
-                        int comparison = provider.compareTo(argumentProvider);
-                        //assert
-                        assertTrue(comparison < 0);
-
-                    }
-                    @DisplayName("and the argument provider is lower, method should return a positive number")
-                    @Test
-                    void aCountry_CompareTo_LowerCountry_ReturnNegative() throws IOException {
-                        //arrange
-                        argumentProvider =provider;
-                        provider = Help.getCountryN(1).getProviders().stream().findAny().get();
-                        //act
-                        int comparison = provider.compareTo(argumentProvider);
-                        //assert
-                        assertTrue(comparison > 0);
-
-                    }
-                    @DisplayName("and the argument provider is null, method should return a error")
-                    @Test
-                    void aCountry_CompareTo_null() throws IOException {
-                        //arrange
-                        Provider argumentProvider = null;
-                        //act
-                        assertThrows(NullPointerException.class, () -> provider.compareTo(argumentProvider));
-
-
-                    }
-                }
-
-                //COUNTRY MINORE
-                //NULL A SX FATTO
-                //NULL A DX FATTO
-                //NULL NULLL FATTO
-
-
-                //NON SO SE FARLI QUESTI PERCHE ESISTONO SET MA NON LI USIAMO MAI
-                //EMPTY A SX
-                //EMPTY A DX NON INTERESSANTE
-                //EMPTY EMPTY
-            }
-
-            @DisplayName("and I use the method clone()")
-            @Nested
-            class Clone {
-                @DisplayName("It returns the same provider")
+                @DisplayName("and the two providers are the same, method should return 0")
                 @Test
-                void cloneACountryReturnsSameProvider() throws IOException {
+                void SameCountryAsArgument() throws IOException {
                     //arrange
-                    Provider providerToBeCloned = Help.getCountryN(0).getProviders().stream().findAny().get();
+                    argumentProvider = provider;
                     //act
-                    Provider clonedProvider = providerToBeCloned.clone();
+                    int comparison = provider.compareTo(argumentProvider);
+                    int expectedreturn = 0;
                     //assert
-                    assertEquals(providerToBeCloned, clonedProvider);
+                    assertEquals(expectedreturn, comparison);
                 }
 
+                //COUNTRY MAGGIORE
+                //DEVO METTERE ANCHE DIFFERENZA O BASTA POS E NEG?
+                @DisplayName("and the argument provider is greater, method should return a negative number")
+                @Test
+                void aCountry_CompareTo_BiggerCountry_ReturnNegative() {
+                    //arrange
+                    //METTERNE UNO CON PIU'SENSO
+                    argumentProvider = Help.getCountryN(1).getProviders().stream().findAny().get();
+                    //act
+                    int comparison = provider.compareTo(argumentProvider);
+                    //assert
+                    assertTrue(comparison < 0);
+
+                }
+                @DisplayName("and the argument provider is lower, method should return a positive number")
+                @Test
+                void aCountry_CompareTo_LowerCountry_ReturnNegative() {
+                    //arrange
+                    argumentProvider =provider;
+                    provider = Help.getCountryN(1).getProviders().stream().findAny().get();
+                    //act
+                    int comparison = provider.compareTo(argumentProvider);
+                    //assert
+                    assertTrue(comparison > 0);
+
+                }
+                @DisplayName("and the argument provider is null, method should return a error")
+                @Test
+                void aCountry_CompareTo_null() {
+                    //arrange
+                    Provider argumentProvider = null;
+                    //act
+                    assertThrows(NullPointerException.class, () -> provider.compareTo(argumentProvider));
+
+
+                }
             }
+
+            //COUNTRY MINORE
+            //NULL A SX FATTO
+            //NULL A DX FATTO
+            //NULL NULLL FATTO
+
+
+            //NON SO SE FARLI QUESTI PERCHE ESISTONO SET MA NON LI USIAMO MAI
+            //EMPTY A SX
+            //EMPTY A DX NON INTERESSANTE
+            //EMPTY EMPTY
+        }
+
+        @DisplayName("and I use the method clone()")
+        @Nested
+        class Clone {
+            @DisplayName("It returns the same provider")
+            @Test
+            void cloneACountryReturnsSameProvider() throws IOException {
+                //arrange
+                Provider providerToBeCloned = Help.getCountryN(0).getProviders().stream().findAny().get();
+                //act
+                Provider clonedProvider = providerToBeCloned.clone();
+                //assert
+                assertEquals(providerToBeCloned, clonedProvider);
+            }
+
+        }
 
         //DECIDERE SE TESTARE GET E SET
         //EQUALS
@@ -304,6 +171,7 @@ Provider provider;
         //CLONE
         //COMPARETO
         @Test
+        @Disabled
         void doesSetServiceTypesWork()
         {
             //preparazione
@@ -320,9 +188,6 @@ Provider provider;
             listThatShouldBeEqualToServiceTypesOfAziendaZero.add("QCertESig");
             listThatShouldBeEqualToServiceTypesOfAziendaZero.add("QTimestamp");
             listThatShouldBeEqualToServiceTypesOfAziendaZero.add("QWAC");
-
-            //metodo che voglio testare
-            providerToTest.setServiceTypes(listIWantToSetToAziendaZero);
 
             //test
             assertLinesMatch(

@@ -17,8 +17,8 @@ public class TrustedListApiBuilder extends TrustedListJsonBuilder {
     public TrustedList build() {
         String countriesJson = getResponseFromUrl(COUNTRIES_API_ENDPOINT);
         String providersJson = getResponseFromUrl(PROVIDERS_API_ENDPOINT);
-        super.setCountriesJson(countriesJson);
-        super.setProvidersJson(providersJson);
+        super.setCountriesJsonString(countriesJson);
+        super.setProvidersJsonString(providersJson);
         return super.build();
     }
 
