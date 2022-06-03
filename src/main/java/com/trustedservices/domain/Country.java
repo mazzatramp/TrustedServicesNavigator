@@ -15,7 +15,11 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
     public Country(String name, String code) {
         this.name = name;
         this.code = code;
-        providers = new TreeSet<>();
+        this.providers = new TreeSet<>();
+    }
+
+    public Country() {
+        this("","");
     }
 
     @Override

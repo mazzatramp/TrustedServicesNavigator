@@ -1,14 +1,9 @@
 package com.trustedservices.domain;
 
-import com.fasterxml.jackson.annotation.*;
-import com.trustedservices.navigator.filters.ProviderFilter;
-
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Service implements Cloneable, Comparable<Service>, TrustedListEntity {
     private final int id;
     private final String name;
@@ -28,7 +23,11 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
     }
 
     public Service(int serviceId, String name, String type, String status, Set<String> serviceTypes) {
-        this(null, serviceId, name, type, status, serviceTypes);
+        this(new Provider(), serviceId, name, type, status, serviceTypes);
+    }
+
+    public Service() {
+        this(new Provider(), 0, "", "", "", new HashSet<>());
     }
 
     public int getId() {
@@ -69,16 +68,19 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Service service = (Service) o;
-        return this.name.equals(service.name) && this.id == service.id;
+        Service that = (Service) o;
+        return this.id == that.id && this.provider.equals(that.provider);
     }
 
     @Override
     public String toString() {
         return "Service{" +
-                "name='" + name + '\'' +
+                "tspId=" + provider.getProviderId() +
+                ", serviceI=" + id +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
                 ", status='" + status + '\'' +
-                ", serviceTypes='" + serviceTypes + '\'' +
+                ", serviceTypes=" + serviceTypes +
                 '}';
     }
 
@@ -92,15 +94,10 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
     }
 
     @Override
-    public int compareTo(Service service) {
-        int providerComparison = 0;
-        if (provider != null && service.provider != null)
-            providerComparison = this.getProvider().compareTo(service.getProvider());
-
-        int idComparison = Integer.compare(this.getId(), service.getId());
-        if (providerComparison != 0)
-            return providerComparison;
-        else
-            return idComparison;
+    public int compareTo(Service that) {
+        int idComparison = Integer.compare(this.id, that.id);
+        if (idComparison == 0)
+            return this.provider.compareTo(that.provider);
+        return idComparison;
     }
 }

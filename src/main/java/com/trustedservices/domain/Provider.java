@@ -21,6 +21,12 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
         this.trustmark = trustmark;
         this.serviceTypes = serviceTypes;
         this.services = services;
+
+        this.country = new Country();
+    }
+
+    public Provider() {
+        this(0, "", "", new HashSet<>(), new TreeSet<>());
     }
 
     public Country getCountry() {
@@ -80,8 +86,12 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
     @Override
     public String toString() {
         return "Provider{" +
-                "name='" + name + '\'' +
+                "providerId=" + providerId +
+                ", name='" + name + '\'' +
                 ", trustmark='" + trustmark + '\'' +
+                ", serviceTypes=" + serviceTypes +
+                ", countryCode=" + country.getCode() +
+                ", services=" + services +
                 '}';
     }
 
