@@ -16,17 +16,13 @@ public class JsonProvider {
     private List<String> serviceTypes;
     private List<JsonService> jsonServices;
 
-    public void createProviderInside(Country country) {
-        HashSet<String> serviceTypesHashSet = new HashSet<>(serviceTypes);
-        TreeSet<Service> services = new TreeSet<>();
-
-        jsonServices.forEach(jsonService -> services.add(jsonService.createService()));
-
-        Provider provider = new Provider(providerId, name, trustmark, serviceTypesHashSet, services);
-
-        country.getProviders().add(provider);
-        provider.setCountry(country);
-        services.forEach(service -> service.setProvider(provider));
+    public Provider createProvider() {
+        Provider createdProvider = new Provider(providerId, name, trustmark);
+        createdProvider.getServiceTypes().addAll(serviceTypes);
+        this.jsonServices.forEach(jsonService -> {
+            createdProvider.getServices().add(jsonService.createService());
+        });
+        return createdProvider;
     }
 
     @JsonCreator

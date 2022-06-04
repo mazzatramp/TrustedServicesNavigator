@@ -17,7 +17,9 @@ public class JsonService {
     private List<String> serviceTypes;
 
     public Service createService() {
-        return new Service(serviceId, serviceName, type, getLastPartFromUrl(statusAsUrl), new HashSet<>(serviceTypes));
+        Service created = new Service(serviceId, serviceName, type, getLastPartFromUrl(statusAsUrl));
+        created.getServiceTypes().addAll(serviceTypes);
+        return created;
     }
 
     private String getLastPartFromUrl(String statusUrl) {
