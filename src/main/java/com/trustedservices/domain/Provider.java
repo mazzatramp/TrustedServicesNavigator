@@ -27,6 +27,10 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
         this(0, "", "", new HashSet<>(), new TreeSet<>());
     }
 
+    public Provider(int providerId, String name, String trustmark) {
+        this(providerId, name, trustmark, new HashSet<>(), new TreeSet<>());
+    }
+
     public Country getCountry() {
         return country;
     }
