@@ -20,7 +20,9 @@ public class JsonProvider {
         Provider createdProvider = new Provider(providerId, name, trustmark);
         createdProvider.getServiceTypes().addAll(serviceTypes);
         this.jsonServices.forEach(jsonService -> {
-            createdProvider.getServices().add(jsonService.createService());
+            Service createdService = jsonService.createService();
+            createdService.setProvider(createdProvider);
+            createdProvider.getServices().add(createdService);
         });
         return createdProvider;
     }
