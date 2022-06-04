@@ -23,7 +23,7 @@ public class ProviderFilterPane extends FilterPane {
     }
 
     @Override
-    public void setSelectionStatusForAll(boolean selectionStatus) {
+    public void setAllCheckBoxStatus(boolean selectionStatus) {
         providers.getRoot().getChildren().forEach(country-> {
             CheckBoxTreeItem<String> checkBoxCountry = (CheckBoxTreeItem<String>) country;
             checkBoxCountry.getChildren().forEach(provider -> {
@@ -100,7 +100,7 @@ public class ProviderFilterPane extends FilterPane {
 
     private FilterTreeItem<String> createProviderCheckBox(Provider provider) {
         FilterTreeItem<String> providerTreeItem = new FilterTreeItem<>(provider.getName());
-        providerTreeItem.selectedProperty().addListener(super.getSelectionListener());
+        providerTreeItem.selectedProperty().addListener(super.handleFilterChange(providerTreeItem.getValue()));
         return providerTreeItem;
     }
 

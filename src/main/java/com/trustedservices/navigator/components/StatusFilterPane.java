@@ -19,7 +19,7 @@ public class StatusFilterPane extends FilterPane {
     }
 
     @Override
-    protected void setSelectionStatusForAll(boolean selectionStatus) {
+    protected void setAllCheckBoxStatus(boolean selectionStatus) {
         statuses.getItems().forEach(checkBox -> {
             checkBox.setSelected(selectionStatus);
         });
@@ -29,7 +29,7 @@ public class StatusFilterPane extends FilterPane {
     public void fillWith(TrustedList dataToShow) {
         dataToShow.getStatuses().forEach(status -> {
             CheckBox box = new CheckBox(status);
-            box.selectedProperty().addListener(super.getSelectionListener());
+            box.selectedProperty().addListener(super.handleFilterChange(box.getText()));
             statuses.getItems().add(box);
         });
     }
@@ -46,7 +46,6 @@ public class StatusFilterPane extends FilterPane {
 
     @Override
     public Set<String> getUnselectedItems() {
-
         Set<String> selectedStatuses = new HashSet<>(0);
 
         for (CheckBox status : statuses.getItems())

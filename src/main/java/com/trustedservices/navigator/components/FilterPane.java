@@ -3,13 +3,12 @@ package com.trustedservices.navigator.components;
 import com.trustedservices.domain.TrustedList;
 import com.trustedservices.navigator.filters.Filter;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Control;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 
@@ -23,15 +22,12 @@ public abstract class FilterPane extends TitledPane {
     @FXML private AnchorPane filterView;
     @FXML private Hyperlink selectAll;
     @FXML private Hyperlink deselectAll;
-    @FXML private ProgressIndicator progressIndicator;
 
     private Filter associatedFilter;
+    private boolean selectingAll;
 
     public FilterPane() {
         loadFXMLResource();
-
-        selectAll.setOnAction(actionEvent -> setAllCheckBoxStatus(true));
-        deselectAll.setOnAction(actionEvent -> setAllCheckBoxStatus(false));
     }
 
     private void loadFXMLResource() {
@@ -45,13 +41,52 @@ public abstract class FilterPane extends TitledPane {
         }
     }
 
-    protected abstract void setSelectionStatusForAll(boolean status);
+    @FXML
+    public void initialize() {
+        setHyperlinksAsAlwaysActive();
+        setHyperlinksOnAction();
+    }
+
+    private void setHyperlinksOnAction() {
+        selectAll.setOnAction(actionEvent -> selectAllFilters(true));
+        deselectAll.setOnAction(actionEvent -> selectAllFilters(false));
+    }
+
+    private void setHyperlinksAsAlwaysActive() {
+        selectAll.visitedProperty().bind(new SimpleBooleanProperty(false));
+        deselectAll.visitedProperty().bind(new SimpleBooleanProperty(false));
+    }
 
     public abstract void fillWith(TrustedList dataToShow);
-
     public abstract Set<String> getSelectedItems();
     public abstract Set<String> getUnselectedItems();
     public abstract void disable(Collection<String> toDisable);
+    protected abstract void setAllCheckBoxStatus(boolean status);
+
+    public ChangeListener<Boolean> handleFilterChange(String filterChanged) {
+        return (value, wasSelected, isSelected) -> {
+            if (!selectingAll) {
+                if (isSelected)
+                    associatedFilter.getWhitelist().add(filterChanged);
+                else
+                    associatedFilter.getWhitelist().remove(filterChanged);
+                refreshOtherPanes();
+            }
+        };
+    }
+
+    public void selectAllFilters(boolean checkStatus) {
+        selectingAll = true;
+        setAllCheckBoxStatus(checkStatus);
+        selectingAll = false;
+        associatedFilter.setWhitelist(this.getSelectedItems());
+        refreshOtherPanes();
+    }
+
+    private void refreshOtherPanes() {
+        FilterPanesAccordion filterPanes = (FilterPanesAccordion) this.getParent();
+        filterPanes.refreshPanesExcept(this);
+    }
 
     protected void setFilterView(Control control) {
         AnchorPane.setTopAnchor(control, 0.0);
@@ -61,14 +96,6 @@ public abstract class FilterPane extends TitledPane {
         filterView.getChildren().add(control);
     }
 
-    public ChangeListener<Boolean> getSelectionListener() {
-        return (value, wasSelected, isSelected) -> {
-            this.getAssociatedFilter().setWhitelist(this.getSelectedItems());
-            FilterPanesAccordion filterPanes = (FilterPanesAccordion) this.getParent();
-            filterPanes.refreshPanesExcept(this);
-        };
-    }
-
     public Filter getAssociatedFilter() {
         return associatedFilter;
     }
@@ -76,28 +103,4 @@ public abstract class FilterPane extends TitledPane {
     protected void setAssociatedFilter(Filter associatedFilter) {
         this.associatedFilter = associatedFilter;
     }
-
-    private void setAllCheckBoxStatus(boolean checkStatus) {
-        selectAll.setVisited(false);
-        deselectAll.setVisited(false);
-
-        if (progressIndicator.isVisible())
-            return;
-
-        Thread settingThread = new Thread(new Task<Void>() {
-            @Override
-            protected Void call() {
-                filterView.setDisable(true);
-                progressIndicator.setVisible(true);
-
-                setSelectionStatusForAll(checkStatus);
-
-                filterView.setDisable(false);
-                progressIndicator.setVisible(false);
-                return null;
-            }
-        });
-        settingThread.start();
-    }
-
 }

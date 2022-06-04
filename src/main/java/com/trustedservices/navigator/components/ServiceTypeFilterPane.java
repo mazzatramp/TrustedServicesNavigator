@@ -19,7 +19,7 @@ public class ServiceTypeFilterPane extends FilterPane {
     }
 
     @Override
-    protected void setSelectionStatusForAll(boolean selectionStatus) {
+    protected void setAllCheckBoxStatus(boolean selectionStatus) {
         serviceTypes.getItems().forEach(checkBox -> {
             checkBox.setSelected(selectionStatus);
         });
@@ -29,7 +29,7 @@ public class ServiceTypeFilterPane extends FilterPane {
     public void fillWith(TrustedList dataToShow) {
         dataToShow.getServiceTypes().forEach(serviceType -> {
             CheckBox box = new CheckBox(serviceType);
-            box.selectedProperty().addListener(super.getSelectionListener());
+            box.selectedProperty().addListener(super.handleFilterChange(box.getText()));
             serviceTypes.getItems().add(box);
         });
     }

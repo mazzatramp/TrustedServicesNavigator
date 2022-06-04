@@ -70,9 +70,9 @@ public class FilterPanesAccordion extends Accordion {
     }
 
     public void resetFilters() {
-        providers.setSelectionStatusForAll(false);
-        serviceTypes.setSelectionStatusForAll(false);
-        statuses.setSelectionStatusForAll(false);
+        providers.selectAllFilters(false);
+        serviceTypes.selectAllFilters(false);
+        statuses.selectAllFilters(false);
     }
 
     public ArrayList<Filter> getAssociatedFilters() {
