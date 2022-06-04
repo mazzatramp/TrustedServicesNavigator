@@ -18,36 +18,7 @@ public class DisplayPaneTest {
         new DisplayPane();
     }
 
-    @Nested
-    @DisplayName("when null")
-    class WhenNull {
-        @BeforeEach
-        void setOggettoNull() {
-         displayPane= null;
-        }
-        @DisplayName("and I use the method fillWith")
-        @Nested
-        class fillWith{
-            TrustedList argumentTrustedList;
-            @Test
-            @DisplayName("with a TrustedListasArgument")
-            void met() throws IOException {
-                argumentTrustedList= Help.getWholeList();
-                assertThrows(NullPointerException.class, () -> displayPane.fillWith(argumentTrustedList));
 
-            }
-            @Test
-            @DisplayName("with a null TrustedList as Argument")
-            void metodo(){
-                argumentTrustedList= null;
-                assertThrows(NullPointerException.class, () -> displayPane.fillWith(argumentTrustedList));
-            }
-
-        }
-        @DisplayName("and I use the method ...")
-        @Nested
-        class nomeMetodo2{}
-    }
     @Disabled
     @Nested
     @DisplayName("when new")

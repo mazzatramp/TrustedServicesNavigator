@@ -20,7 +20,7 @@ class StatusFilterTest {
     StatusFilter statusFilter;
 
     @Test
-    @DisplayName("is instantiated with new StatusFIlter()")
+    @DisplayName("is instantiated with new StatusFilter()")
     void isInstantiatedWithNewStatus() {
         new StatusFilter();
     }

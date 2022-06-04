@@ -178,10 +178,8 @@ Provider provider;
             //EMPTY EMPTY
         }
 
-        @DisplayName("and I use the method clone()")
-        @Nested
-        class Clone {
-            @DisplayName("It returns the same provider")
+        @DisplayName("and I use the method clone, it returns the same provider")
+
             @Test
             void cloneAProviderReturnsSameProvider() throws IOException {
                 //arrange
@@ -190,7 +188,7 @@ Provider provider;
                 Provider clonedProvider = providerToBeCloned.clone();
                 //assert
                 assertEquals(providerToBeCloned, clonedProvider);
-            }
+
 
         }
 

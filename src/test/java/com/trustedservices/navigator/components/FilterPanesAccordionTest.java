@@ -19,36 +19,7 @@ class FilterPanesAccordionTest {
         new FilterPanesAccordion();
     }
 
-    @Nested
-    @DisplayName("when null")
-    class WhenNull {
-        @BeforeEach
-        void setOggettoNull() {
-            filterSelectionAccordion= null;
-        }
-        @DisplayName("and I use the method fillWith")
-        @Nested
-        class fillFilterPanesWith{
-            TrustedList argumentTrustedList;
-            @Test
-            @DisplayName("with a TrustedListasArgument")
-            void met() throws IOException {
-                argumentTrustedList= Help.getWholeList();
-                assertThrows(NullPointerException.class, () -> filterSelectionAccordion.fillFilterPanesWith(argumentTrustedList));
 
-            }
-            @Test
-            @DisplayName("with a null TrustedList as Argument")
-            void metodo(){
-                argumentTrustedList= null;
-                assertThrows(NullPointerException.class, () -> filterSelectionAccordion.fillFilterPanesWith(argumentTrustedList));
-            }
-
-        }
-        @DisplayName("and I use the method ...")
-        @Nested
-        class nomeMetodo2{}
-    }
     @Disabled
     @Nested
     @DisplayName("when new")

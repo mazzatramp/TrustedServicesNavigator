@@ -98,19 +98,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
                     }
 
-
-
-
-
-
-
                 }
-                //LISTA CHE CONTIENE SOLO ALCUNI SERVIZI?
-
-
-
-                //POTREI ANCHE METTERE UNA TRUSTEDLIST VUOTA MA NON E' MOLTO INTERESSANTE
-
 
             }
             @DisplayName("and the filters do not link to any service")
@@ -243,36 +231,5 @@ import static org.junit.jupiter.api.Assertions.*;
             new FilterList( new ArrayList<>() );
         } //E'UN ERRORE METTERE COSI' COME ARGOMENTO?
         //C'E' ANCHE UN ALTRO COSTRUTTORE IN VERITA'
-        @Nested
-        @DisplayName("when null")
-        class WhenNull {
-            @BeforeEach
-            void setOggettoNull() {
-                filterList = null;
-            }
-            //SICCOME FILTERLIST E' UN ARRAY POTREI PROVARE A FA REFILTERLIST.GET(NUMERO) E VEDERE COSA FA
-            @DisplayName("and I use the method getFilteredListFrom(TrustedList)")
-            @Nested
-            class NullGetFilteredList{
-                TrustedList argumentTrustedList;
-                @DisplayName("with a TrustedList as argument should return error")
-                @Test
-                void trustedListAsArgument() throws IOException {
-                    argumentTrustedList=Help.getWholeList();
-                    //assert
-                    assertThrows(NullPointerException.class, () -> filterList.getFilteredListFrom(argumentTrustedList));
-                }
-                @DisplayName("with a null TrustedList as argument should return error")
-                @Test
-                void cloneNullTrustedList() {
-                    argumentTrustedList=null;
-                    //assert
-                    assertThrows(NullPointerException.class, () -> filterList.getFilteredListFrom(argumentTrustedList));
-                }
-            }
-        }
-
-
-
 
 }

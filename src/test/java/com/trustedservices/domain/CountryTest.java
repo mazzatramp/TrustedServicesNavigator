@@ -129,10 +129,8 @@ class CountryTest {
             }
 
 
-        @DisplayName("and I use the method clone()")
-        @Nested
-        class Clone {
-            @DisplayName("It returns the same country")
+        @DisplayName("and I use the method clone, it returns the same country")
+
             @Test
             void cloneACountryReturnsSameCountry() {
                 Country countryToBeCloned = country;
@@ -140,7 +138,7 @@ class CountryTest {
                 Country clonedCountry = countryToBeCloned.clone();
 
                 assertEquals(countryToBeCloned, clonedCountry);
-            }
+
         }
     }
 }
