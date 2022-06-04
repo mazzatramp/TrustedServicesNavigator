@@ -1,21 +1,17 @@
 package com.trustedservices.navigator;
 
 import com.trustedservices.domain.TrustedList;
-import com.trustedservices.navigator.filters.Filter;
 import com.trustedservices.navigator.filters.FilterList;
 import com.trustedservices.navigator.web.TrustedListBuilder;
 
-import java.util.ArrayList;
-
 public class NavigationController {
 
-    private FilterList filters;
+    private final FilterList filters;
     private TrustedList completeList;
 
     public NavigationController() {
         this.completeList = new TrustedList();
         this.filters = new FilterList();
-
     }
 
     public TrustedList getFilteredList() {

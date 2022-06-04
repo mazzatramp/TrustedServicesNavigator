@@ -10,8 +10,8 @@ public class TrustedList implements Cloneable {
 
     public TrustedList() {
         this.countries = new TreeSet<>();
-        this.serviceTypes = new HashSet<>(0);
-        this.statuses = new HashSet<>(0);
+        this.serviceTypes = new TreeSet<>();
+        this.statuses = new TreeSet<>();
     }
 
     public TrustedList(Set<Country> countries) {

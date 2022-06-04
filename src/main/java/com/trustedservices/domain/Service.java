@@ -10,7 +10,6 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
     private final String type;
     private final String status;
     private final Set<String> serviceTypes;
-
     private Provider provider;
 
     public Service(Provider provider, int serviceId, String name, String type, String status, Set<String> serviceTypes) {
@@ -22,12 +21,8 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
         this.serviceTypes = serviceTypes;
     }
 
-    public Service(int serviceId, String name, String type, String status, Set<String> serviceTypes) {
-        this(new Provider(), serviceId, name, type, status, serviceTypes);
-    }
-
-    public Service() {
-        this(new Provider(), 0, "", "", "", new HashSet<>());
+    public Service(Provider provider, int serviceId, String name, String type, String status) {
+        this(provider, serviceId, name, type, status, new HashSet<>());
     }
 
     public int getId() {
@@ -41,7 +36,7 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
 
     @Override
     public List<String> getInformation() {
-        return List.of(name, status, serviceTypes.toString());
+        return List.of(provider.getName(), name, status, serviceTypes.toString());
     }
 
     public String getType() {
@@ -58,10 +53,6 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
 
     public Provider getProvider() {
         return provider;
-    }
-
-    public void setProvider(Provider provider) {
-        this.provider = provider;
     }
 
     @Override
@@ -99,5 +90,9 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
         if (idComparison == 0)
             return this.provider.compareTo(that.provider);
         return idComparison;
+    }
+
+    void setProvider(Provider provider) {
+        this.provider = provider;
     }
 }

@@ -2,13 +2,9 @@ package com.trustedservices.navigator.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.trustedservices.domain.Country;
-import com.trustedservices.domain.TrustedList;
+import com.trustedservices.domain.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class TrustedListJsonBuilder implements TrustedListBuilder {
 
@@ -37,7 +33,7 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
     @Override
     public TrustedList build() {
         if (!jsonStringSet())
-            throw new IllegalStateException("Json strings not set");
+            throw new IllegalStateException("Json strings not set.");
 
         readJsonData();
         return getFilledTrustedListFromReadData();
@@ -79,7 +75,7 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
     private void fillCountriesWithProviders() {
         for (JsonProvider jsonProvider : jsonProviders) {
             Country itsCountry = getCountryFromCode(jsonProvider.getCountryCode());
-            jsonProvider.createProviderInside(itsCountry);
+            jsonProvider.createProviderIn(itsCountry);
         }
     }
 
@@ -88,6 +84,6 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
             if (country.getCode().equals(countryCode))
                 return country;
 
-        throw new RuntimeException(countryCode);
+        throw new RuntimeException("Can't find " + countryCode + " from the countries");
     }
 }

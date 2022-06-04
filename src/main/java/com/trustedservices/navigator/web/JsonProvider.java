@@ -2,13 +2,9 @@ package com.trustedservices.navigator.web;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.trustedservices.domain.Country;
-import com.trustedservices.domain.Provider;
-import com.trustedservices.domain.Service;
+import com.trustedservices.domain.*;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.TreeSet;
 
 public class JsonProvider {
     private int providerId;
@@ -18,17 +14,11 @@ public class JsonProvider {
     private List<String> serviceTypes;
     private List<JsonService> jsonServices;
 
-    public void createProviderInside(Country country) {
-        HashSet<String> serviceTypesHashSet = new HashSet<>(serviceTypes);
-        TreeSet<Service> services = new TreeSet<>();
-
-        jsonServices.forEach(jsonService -> services.add(jsonService.createService()));
-
-        Provider provider = new Provider(providerId, name, trustmark, serviceTypesHashSet, services);
-
-        country.getProviders().add(provider);
-        provider.setCountry(country);
-        services.forEach(service -> service.setProvider(provider));
+    public void createProviderIn(Country country) {
+        Provider createdProvider = new Provider(country, providerId, name, trustmark);
+        createdProvider.getServiceTypes().addAll(serviceTypes);
+        this.jsonServices.forEach(jsonService -> jsonService.createServiceIn(createdProvider));
+        country.getProviders().add(createdProvider);
     }
 
     @JsonCreator
@@ -51,7 +41,6 @@ public class JsonProvider {
     public int getProviderId() {
         return providerId;
     }
-
     public void setProviderId(int providerId) {
         this.providerId = providerId;
     }
@@ -59,7 +48,6 @@ public class JsonProvider {
     public String getCountryCode() {
         return countryCode;
     }
-
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
     }
@@ -67,7 +55,6 @@ public class JsonProvider {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -75,7 +62,6 @@ public class JsonProvider {
     public String getTrustmark() {
         return trustmark;
     }
-
     public void setTrustmark(String trustmark) {
         this.trustmark = trustmark;
     }
@@ -83,7 +69,6 @@ public class JsonProvider {
     public List<String> getServiceTypes() {
         return serviceTypes;
     }
-
     public void setServiceTypes(List<String> serviceTypes) {
         this.serviceTypes = serviceTypes;
     }
@@ -91,7 +76,6 @@ public class JsonProvider {
     public List<JsonService> getJsonServices() {
         return jsonServices;
     }
-
     public void setJsonServices(List<JsonService> jsonServices) {
         this.jsonServices = jsonServices;
     }
