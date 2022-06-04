@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.trustedservices.domain.*;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.TreeSet;
 
 public class JsonProvider {
     private int providerId;
@@ -16,15 +14,11 @@ public class JsonProvider {
     private List<String> serviceTypes;
     private List<JsonService> jsonServices;
 
-    public Provider createProvider() {
-        Provider createdProvider = new Provider(providerId, name, trustmark);
+    public void createProviderIn(Country country) {
+        Provider createdProvider = new Provider(country, providerId, name, trustmark);
         createdProvider.getServiceTypes().addAll(serviceTypes);
-        this.jsonServices.forEach(jsonService -> {
-            Service createdService = jsonService.createService();
-            createdService.setProvider(createdProvider);
-            createdProvider.getServices().add(createdService);
-        });
-        return createdProvider;
+        this.jsonServices.forEach(jsonService -> jsonService.createServiceIn(createdProvider));
+        country.getProviders().add(createdProvider);
     }
 
     @JsonCreator

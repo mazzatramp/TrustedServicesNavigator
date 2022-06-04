@@ -74,11 +74,8 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
 
     private void fillCountriesWithProviders() {
         for (JsonProvider jsonProvider : jsonProviders) {
-            Provider createdProvider = jsonProvider.createProvider();
             Country itsCountry = getCountryFromCode(jsonProvider.getCountryCode());
-
-            createdProvider.setCountry(itsCountry);
-            itsCountry.getProviders().add(createdProvider);
+            jsonProvider.createProviderIn(itsCountry);
         }
     }
 

@@ -52,6 +52,7 @@ public class WindowController {
     @FXML
     public void handleResetFilters() {
         filterPanes.resetFilters();
+        handleFilterClick();
     }
 
     public void openInfoPaneWithInfo(List<String> info) {

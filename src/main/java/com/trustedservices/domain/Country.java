@@ -5,17 +5,12 @@ import java.util.*;
 public class Country implements Cloneable, Comparable<Country>, TrustedListEntity {
     private final String name;
     private final String code;
-
     private final Set<Provider> providers;
 
     public Country(String name, String code) {
         this.name = name;
         this.code = code;
         this.providers = new TreeSet<>();
-    }
-
-    public Country() {
-        this("","");
     }
 
     @Override
@@ -65,11 +60,13 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
     @Override
     public Country clone() {
         Country countryClone = new Country(name, code);
+
         this.getProviders().forEach(provider -> {
             Provider providerClone = provider.clone();
             providerClone.setCountry(countryClone);
             countryClone.getProviders().add(providerClone);
         });
+
         return countryClone;
     }
 }

@@ -2,6 +2,7 @@ package com.trustedservices.navigator.web;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.trustedservices.domain.Provider;
 import com.trustedservices.domain.Service;
 
 import java.util.List;
@@ -16,10 +17,10 @@ public class JsonService {
     private String tob;
     private List<String> serviceTypes;
 
-    public Service createService() {
-        Service created = new Service(serviceId, serviceName, type, getLastPartFromUrl(statusAsUrl));
-        created.getServiceTypes().addAll(serviceTypes);
-        return created;
+    public void createServiceIn(Provider provider) {
+        Service createdService = new Service(provider, serviceId, serviceName, type, getLastPartFromUrl(statusAsUrl));
+        createdService.getServiceTypes().addAll(serviceTypes);
+        provider.getServices().add(createdService);
     }
 
     private String getLastPartFromUrl(String statusUrl) {
