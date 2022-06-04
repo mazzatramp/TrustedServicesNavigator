@@ -31,10 +31,6 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
         this(providerId, name, trustmark, new HashSet<>(), new TreeSet<>());
     }
 
-    public Country getCountry() {
-        return country;
-    }
-
     public String getCountryCode() {
         return country.getCode();
     }
@@ -69,6 +65,10 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
 
     public void setCountry(Country country) {
         this.country = country;
+    }
+
+    public Country getCountry() {
+        return country;
     }
 
     @Override
