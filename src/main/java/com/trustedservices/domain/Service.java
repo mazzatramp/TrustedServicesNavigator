@@ -13,8 +13,8 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
 
     private Provider provider;
 
-    public Service(Provider provider, int serviceId, String name, String type, String status, Set<String> serviceTypes) {
-        this.provider = provider;
+    public Service(int serviceId, String name, String type, String status, Set<String> serviceTypes) {
+        this.provider = new Provider();
         this.id = serviceId;
         this.name = name;
         this.type = type;
@@ -22,12 +22,12 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
         this.serviceTypes = serviceTypes;
     }
 
-    public Service(int serviceId, String name, String type, String status, Set<String> serviceTypes) {
-        this(new Provider(), serviceId, name, type, status, serviceTypes);
+    public Service(int serviceId, String name, String type, String status) {
+        this(serviceId, name, type, status, new HashSet<>());
     }
 
     public Service() {
-        this(new Provider(), 0, "", "", "", new HashSet<>());
+        this(0, "", "", "");
     }
 
     public int getId() {
