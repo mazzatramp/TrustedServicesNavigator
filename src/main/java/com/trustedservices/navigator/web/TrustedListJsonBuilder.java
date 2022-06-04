@@ -33,7 +33,7 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
     @Override
     public TrustedList build() {
         if (!jsonStringSet())
-            throw new IllegalStateException("Json strings not set");
+            throw new IllegalStateException("Json strings not set.");
 
         readJsonData();
         return getFilledTrustedListFromReadData();
@@ -84,6 +84,6 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
             if (country.getCode().equals(countryCode))
                 return country;
 
-        throw new RuntimeException(countryCode);
+        throw new RuntimeException("Can't find " + countryCode + " from the countries");
     }
 }

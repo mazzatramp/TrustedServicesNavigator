@@ -6,13 +6,12 @@ import com.trustedservices.navigator.web.TrustedListBuilder;
 
 public class NavigationController {
 
-    private FilterList filters;
+    private final FilterList filters;
     private TrustedList completeList;
 
     public NavigationController() {
         this.completeList = new TrustedList();
         this.filters = new FilterList();
-
     }
 
     public TrustedList getFilteredList() {

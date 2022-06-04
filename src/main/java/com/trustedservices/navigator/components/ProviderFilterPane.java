@@ -5,7 +5,6 @@ import com.trustedservices.navigator.filters.ProviderFilter;
 import javafx.scene.control.*;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ProviderFilterPane extends FilterPane {
 

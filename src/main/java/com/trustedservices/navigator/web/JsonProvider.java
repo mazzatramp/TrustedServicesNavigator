@@ -49,7 +49,6 @@ public class JsonProvider {
     public int getProviderId() {
         return providerId;
     }
-
     public void setProviderId(int providerId) {
         this.providerId = providerId;
     }
@@ -57,7 +56,6 @@ public class JsonProvider {
     public String getCountryCode() {
         return countryCode;
     }
-
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
     }
@@ -65,7 +63,6 @@ public class JsonProvider {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -73,7 +70,6 @@ public class JsonProvider {
     public String getTrustmark() {
         return trustmark;
     }
-
     public void setTrustmark(String trustmark) {
         this.trustmark = trustmark;
     }
@@ -81,7 +77,6 @@ public class JsonProvider {
     public List<String> getServiceTypes() {
         return serviceTypes;
     }
-
     public void setServiceTypes(List<String> serviceTypes) {
         this.serviceTypes = serviceTypes;
     }
@@ -89,7 +84,6 @@ public class JsonProvider {
     public List<JsonService> getJsonServices() {
         return jsonServices;
     }
-
     public void setJsonServices(List<JsonService> jsonServices) {
         this.jsonServices = jsonServices;
     }

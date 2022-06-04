@@ -24,8 +24,6 @@ public class JsonCountry {
     public String getName() {
         return name;
     }
-
-    @JsonSetter
     public void setName(String name) {
         this.name = name;
     }
@@ -33,8 +31,6 @@ public class JsonCountry {
     public String getCode() {
         return code;
     }
-
-    @JsonSetter
     public void setCode(String code) {
         this.code = code;
     }

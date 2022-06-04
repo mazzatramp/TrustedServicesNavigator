@@ -2,6 +2,7 @@ package com.trustedservices.navigator.components;
 
 import com.trustedservices.domain.TrustedList;
 import com.trustedservices.navigator.filters.Filter;
+
 import javafx.beans.value.ChangeListener;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;

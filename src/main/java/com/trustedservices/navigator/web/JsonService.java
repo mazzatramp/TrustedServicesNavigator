@@ -49,7 +49,6 @@ public class JsonService {
     public int getServiceId() {
         return serviceId;
     }
-
     public void setServiceId(int serviceId) {
         this.serviceId = serviceId;
     }
@@ -57,7 +56,6 @@ public class JsonService {
     public String getServiceName() {
         return serviceName;
     }
-
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
@@ -65,7 +63,6 @@ public class JsonService {
     public String getType() {
         return type;
     }
-
     public void setType(String type) {
         this.type = type;
     }
@@ -73,7 +70,6 @@ public class JsonService {
     public String getStatusAsUrl() {
         return statusAsUrl;
     }
-
     public void setStatusAsUrl(String statusAsUrl) {
         this.statusAsUrl = statusAsUrl;
     }
@@ -81,7 +77,6 @@ public class JsonService {
     public List<String> getServiceTypes() {
         return serviceTypes;
     }
-
     public void setServiceTypes(List<String> serviceTypes) {
         this.serviceTypes = serviceTypes;
     }
@@ -89,7 +84,6 @@ public class JsonService {
     public int getTspId() {
         return tspId;
     }
-
     public void setTspId(int tspId) {
         this.tspId = tspId;
     }
@@ -97,7 +91,6 @@ public class JsonService {
     public String getCountryCode() {
         return countryCode;
     }
-
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
     }
@@ -105,7 +98,6 @@ public class JsonService {
     public String getTob() {
         return tob;
     }
-
     public void setTob(String tob) {
         this.tob = tob;
     }
