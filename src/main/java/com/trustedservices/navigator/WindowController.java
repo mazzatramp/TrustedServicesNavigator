@@ -1,6 +1,6 @@
 package com.trustedservices.navigator;
 
-import com.trustedservices.domain.*;
+import com.trustedservices.domain.TrustedList;
 import com.trustedservices.navigator.components.*;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -31,10 +31,6 @@ public class WindowController {
         this.navigationController = navigationController;
     }
 
-    public FilterPanesAccordion getFilterPanes() {
-        return filterPanes;
-    }
-
     public void fillDisplayAndFiltersViews() {
         //runLater is needed in order to avoid issues adding a lot of nodes at once
         Platform.runLater(() -> {
@@ -56,6 +52,7 @@ public class WindowController {
     @FXML
     public void handleResetFilters() {
         filterPanes.resetFilters();
+        handleFilterClick();
     }
 
     public void openInfoPaneWithInfo(List<String> info) {

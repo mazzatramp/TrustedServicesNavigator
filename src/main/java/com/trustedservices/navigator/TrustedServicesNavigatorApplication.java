@@ -43,10 +43,10 @@ public class TrustedServicesNavigatorApplication extends Application {
         return new Task<>() {
             @Override
             protected Void call() {
-                TrustedListBuilder apiBuilder = new TrustedListApiBuilder();
-                navigationController.buildCompleteList(apiBuilder);
-                windowController.fillDisplayAndFiltersViews();
-                return null;
+            TrustedListBuilder apiBuilder = new TrustedListApiBuilder();
+            navigationController.buildCompleteList(apiBuilder);
+            windowController.fillDisplayAndFiltersViews();
+            return null;
             }
         };
     }

@@ -9,7 +9,7 @@ import java.util.*;
 
 public class StatusFilterPane extends FilterPane {
 
-    private ListView<CheckBox> statuses;
+    private final ListView<CheckBox> statuses;
 
     public StatusFilterPane() {
         this.setText("Statuses");
@@ -21,30 +21,25 @@ public class StatusFilterPane extends FilterPane {
     @Override
     protected void setSelectionStatusForAll(boolean selectionStatus) {
         statuses.getItems().forEach(checkBox -> {
-            if (!checkBox.isDisabled())
-                checkBox.setSelected(selectionStatus);
+            checkBox.setSelected(selectionStatus);
         });
     }
 
     @Override
     public void fillWith(TrustedList dataToShow) {
-        dataToShow.getStatuses().stream().sorted().forEach(
-                status -> {
-                    CheckBox box = new CheckBox(status);
-                    box.selectedProperty().addListener(super.getSelectionListener());
-                    statuses.getItems().add(box);
-                }
-        );
+        dataToShow.getStatuses().forEach(status -> {
+            CheckBox box = new CheckBox(status);
+            box.selectedProperty().addListener(super.getSelectionListener());
+            statuses.getItems().add(box);
+        });
     }
 
     public Set<String> getSelectedItems() {
         Set<String> selectedStatuses = new HashSet<>();
 
-        for (CheckBox status : statuses.getItems()) {
-            if (!status.isDisabled() && status.isSelected()) {
+        for (CheckBox status : statuses.getItems())
+            if (!status.isDisabled() && status.isSelected())
                 selectedStatuses.add(status.getText());
-            }
-        }
 
         return selectedStatuses;
     }
@@ -54,11 +49,9 @@ public class StatusFilterPane extends FilterPane {
 
         Set<String> selectedStatuses = new HashSet<>(0);
 
-        for (CheckBox status : statuses.getItems()) {
-            if (!status.isSelected()) {
+        for (CheckBox status : statuses.getItems())
+            if (!status.isSelected())
                 selectedStatuses.add(status.getText());
-            }
-        }
 
         return selectedStatuses;
     }

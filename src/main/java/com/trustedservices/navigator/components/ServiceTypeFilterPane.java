@@ -21,8 +21,7 @@ public class ServiceTypeFilterPane extends FilterPane {
     @Override
     protected void setSelectionStatusForAll(boolean selectionStatus) {
         serviceTypes.getItems().forEach(checkBox -> {
-            if (!checkBox.isDisabled())
-                checkBox.setSelected(selectionStatus);
+            checkBox.setSelected(selectionStatus);
         });
     }
 
@@ -38,11 +37,9 @@ public class ServiceTypeFilterPane extends FilterPane {
     public Set<String> getSelectedItems() {
         Set<String> selectedServiceTypes = new HashSet<>(0);
 
-        for (CheckBox serviceType : serviceTypes.getItems()) {
-            if (serviceType.isSelected()) {
+        for (CheckBox serviceType : serviceTypes.getItems())
+            if (serviceType.isSelected())
                 selectedServiceTypes.add(serviceType.getText());
-            }
-        }
 
         return selectedServiceTypes;
     }
@@ -51,11 +48,9 @@ public class ServiceTypeFilterPane extends FilterPane {
     public Set<String> getUnselectedItems() {
         Set<String> selectedServiceTypes = new HashSet<>(0);
 
-        for (CheckBox serviceType : serviceTypes.getItems()) {
-            if (!serviceType.isSelected()) {
+        for (CheckBox serviceType : serviceTypes.getItems())
+            if (!serviceType.isSelected())
                 selectedServiceTypes.add(serviceType.getText());
-            }
-        }
 
         return selectedServiceTypes;
     }

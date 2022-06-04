@@ -2,9 +2,9 @@ package com.trustedservices.navigator.web;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.trustedservices.domain.Provider;
 import com.trustedservices.domain.Service;
 
-import java.util.HashSet;
 import java.util.List;
 
 public class JsonService {
@@ -17,8 +17,10 @@ public class JsonService {
     private String tob;
     private List<String> serviceTypes;
 
-    public Service createService() {
-        return new Service(serviceId, serviceName, type, getLastPartFromUrl(statusAsUrl), new HashSet<>(serviceTypes));
+    public void createServiceIn(Provider provider) {
+        Service createdService = new Service(provider, serviceId, serviceName, type, getLastPartFromUrl(statusAsUrl));
+        createdService.getServiceTypes().addAll(serviceTypes);
+        provider.getServices().add(createdService);
     }
 
     private String getLastPartFromUrl(String statusUrl) {
@@ -50,7 +52,6 @@ public class JsonService {
     public int getServiceId() {
         return serviceId;
     }
-
     public void setServiceId(int serviceId) {
         this.serviceId = serviceId;
     }
@@ -58,7 +59,6 @@ public class JsonService {
     public String getServiceName() {
         return serviceName;
     }
-
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
@@ -66,7 +66,6 @@ public class JsonService {
     public String getType() {
         return type;
     }
-
     public void setType(String type) {
         this.type = type;
     }
@@ -74,7 +73,6 @@ public class JsonService {
     public String getStatusAsUrl() {
         return statusAsUrl;
     }
-
     public void setStatusAsUrl(String statusAsUrl) {
         this.statusAsUrl = statusAsUrl;
     }
@@ -82,7 +80,6 @@ public class JsonService {
     public List<String> getServiceTypes() {
         return serviceTypes;
     }
-
     public void setServiceTypes(List<String> serviceTypes) {
         this.serviceTypes = serviceTypes;
     }
@@ -90,7 +87,6 @@ public class JsonService {
     public int getTspId() {
         return tspId;
     }
-
     public void setTspId(int tspId) {
         this.tspId = tspId;
     }
@@ -98,7 +94,6 @@ public class JsonService {
     public String getCountryCode() {
         return countryCode;
     }
-
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
     }
@@ -106,7 +101,6 @@ public class JsonService {
     public String getTob() {
         return tob;
     }
-
     public void setTob(String tob) {
         this.tob = tob;
     }

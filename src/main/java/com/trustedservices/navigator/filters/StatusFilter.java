@@ -6,7 +6,9 @@ public class StatusFilter extends Filter {
     @Override
     public void filterByWhitelist (TrustedList listToFilter) {
         listToFilter.getCountries().forEach(country -> {
-            country.getProviders().forEach(provider -> provider.getServices().removeIf(service -> !whitelist.contains(service.getStatus())));
+            country.getProviders().forEach(provider ->
+                    provider.getServices().removeIf(service -> !whitelist.contains(service.getStatus()))
+            );
         });
     }
 }

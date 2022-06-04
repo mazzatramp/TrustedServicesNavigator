@@ -1,9 +1,6 @@
 package com.trustedservices.navigator.components;
 
-import com.trustedservices.domain.Country;
-import com.trustedservices.domain.Provider;
-import com.trustedservices.domain.TrustedList;
-import com.trustedservices.domain.TrustedListEntity;
+import com.trustedservices.domain.*;
 import com.trustedservices.navigator.WindowController;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
@@ -42,8 +39,8 @@ public class DisplayPane extends AnchorPane {
 
     private void initializeEmptyDisplayMessage() {
         emptyDisplayMessage.setText(
-                "There are no services respecting the selected filter.\n" +
-                "Please change or reset filters."
+            "There are no services respecting the selected filter.\n" +
+            "Please change or reset filters."
         );
     }
 

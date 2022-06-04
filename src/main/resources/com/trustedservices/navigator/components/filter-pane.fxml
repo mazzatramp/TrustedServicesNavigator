@@ -4,11 +4,14 @@
 <?import javafx.scene.layout.*?>
 
 <fx:root type="javafx.scene.control.TitledPane" xmlns:fx="http://javafx.com/fxml">
-    <VBox>
-        <AnchorPane fx:id="filterView" VBox.vgrow="ALWAYS"/>
-        <HBox>
-            <Hyperlink fx:id="selectAll" text="Select all"/>
-            <Hyperlink fx:id="deselectAll" text="Deselect all"/>
-        </HBox>
-    </VBox>
+    <StackPane>
+        <VBox>
+            <AnchorPane fx:id="filterView" VBox.vgrow="ALWAYS"/>
+            <HBox>
+                <Hyperlink fx:id="selectAll" text="Select all"/>
+                <Hyperlink fx:id="deselectAll" text="Deselect all"/>
+            </HBox>
+        </VBox>
+        <ProgressIndicator fx:id="progressIndicator" visible="false"/>
+    </StackPane>
 </fx:root>
