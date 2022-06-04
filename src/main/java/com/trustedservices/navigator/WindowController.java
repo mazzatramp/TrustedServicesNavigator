@@ -1,6 +1,6 @@
 package com.trustedservices.navigator;
 
-import com.trustedservices.domain.*;
+import com.trustedservices.domain.TrustedList;
 import com.trustedservices.navigator.components.*;
 import javafx.application.Platform;
 import javafx.concurrent.Task;

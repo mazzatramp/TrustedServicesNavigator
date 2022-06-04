@@ -1,12 +1,8 @@
 package com.trustedservices.navigator.components;
 
-import com.trustedservices.domain.Country;
-import com.trustedservices.domain.Provider;
-import com.trustedservices.domain.TrustedList;
+import com.trustedservices.domain.*;
 import com.trustedservices.navigator.filters.ProviderFilter;
-import javafx.scene.control.CheckBoxTreeItem;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;

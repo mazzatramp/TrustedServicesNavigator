@@ -2,9 +2,7 @@ package com.trustedservices.navigator.web;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.trustedservices.domain.Country;
-import com.trustedservices.domain.Provider;
-import com.trustedservices.domain.Service;
+import com.trustedservices.domain.*;
 
 import java.util.HashSet;
 import java.util.List;

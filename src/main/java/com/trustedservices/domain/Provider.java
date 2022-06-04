@@ -1,7 +1,5 @@
 package com.trustedservices.domain;
 
-import com.fasterxml.jackson.annotation.*;
-
 import java.util.*;
 
 public class Provider implements Cloneable, Comparable<Provider>, TrustedListEntity {

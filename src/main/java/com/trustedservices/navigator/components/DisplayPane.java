@@ -1,9 +1,6 @@
 package com.trustedservices.navigator.components;
 
-import com.trustedservices.domain.Country;
-import com.trustedservices.domain.Provider;
-import com.trustedservices.domain.TrustedList;
-import com.trustedservices.domain.TrustedListEntity;
+import com.trustedservices.domain.*;
 import com.trustedservices.navigator.WindowController;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;

@@ -1,11 +1,8 @@
 package com.trustedservices.navigator;
 
 import com.trustedservices.domain.TrustedList;
-import com.trustedservices.navigator.filters.Filter;
 import com.trustedservices.navigator.filters.FilterList;
 import com.trustedservices.navigator.web.TrustedListBuilder;
-
-import java.util.ArrayList;
 
 public class NavigationController {
 

@@ -2,13 +2,9 @@ package com.trustedservices.navigator.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.trustedservices.domain.Country;
-import com.trustedservices.domain.TrustedList;
+import com.trustedservices.domain.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class TrustedListJsonBuilder implements TrustedListBuilder {
 
