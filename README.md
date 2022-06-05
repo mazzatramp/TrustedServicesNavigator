@@ -43,7 +43,7 @@ Make sure to have the latest JDK installed, that your PATH includes a valid refe
 ---
 <a name="thirdparties"></a>
 ### Third parties
-Third parties libraries used: [jackson](https://github.com/FasterXML/jackson), to parse json strings; javafx for the GUI.
+Third parties libraries used: [jackson](https://github.com/FasterXML/jackson), to parse json strings; javafx for the GUI. Junit for unit testing
 
 ---
 <a name="licence"></a>
