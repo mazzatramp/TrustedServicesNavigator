@@ -3,19 +3,15 @@ package com.trustedservices.navigator;
 import com.trustedservices.domain.TrustedList;
 import com.trustedservices.navigator.components.*;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
-import java.util.List;
 
 public class WindowController {
 
     @FXML private DisplayPane displayPane;
     @FXML private FilterPanesAccordion filterPanes;
-    @FXML private SplitPane splitPane;
+    @FXML private SplitPane displayAndInfoPanes;
     @FXML private InfoPane infoPane;
 
     @FXML public Hyperlink resetFilters;
@@ -64,9 +60,9 @@ public class WindowController {
     private void initializeInfoPane() {
         infoPane.visibleProperty().addListener((value, wasVisible, isVisible) -> {
             if (isVisible)
-                splitPane.getItems().add(infoPane);
+                displayAndInfoPanes.getItems().add(infoPane);
             else
-                splitPane.getItems().remove(infoPane);
+                displayAndInfoPanes.getItems().remove(infoPane);
         });
         infoPane.setVisible(false);
     }

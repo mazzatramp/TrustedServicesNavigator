@@ -10,9 +10,7 @@
     </padding>
     <StackPane AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0"
                AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0">
-        <Label fx:id="information"
-               StackPane.alignment="TOP_LEFT"/>
-        <Hyperlink fx:id="closeButton" text="Close"
-                StackPane.alignment="TOP_RIGHT"/>
+        <Label fx:id="information" StackPane.alignment="TOP_LEFT"/>
+        <Hyperlink fx:id="closeButton" text="Close" StackPane.alignment="TOP_RIGHT"/>
     </StackPane>
 </fx:root>

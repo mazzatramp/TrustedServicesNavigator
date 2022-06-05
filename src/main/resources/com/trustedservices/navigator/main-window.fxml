@@ -12,7 +12,7 @@
 
     <SplitPane VBox.vgrow="ALWAYS">
         <FilterPanesAccordion fx:id="filterPanes" minWidth="170" maxWidth="250"/>
-        <SplitPane fx:id="splitPane" orientation="VERTICAL" >
+        <SplitPane fx:id="displayAndInfoPanes" orientation="VERTICAL" >
             <DisplayPane fx:id="displayPane" minWidth="300"/>
             <InfoPane fx:id="infoPane" maxHeight="125"/>
         </SplitPane>
