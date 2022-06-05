@@ -3,34 +3,45 @@ package com.trustedservices.navigator.filters;
 import com.trustedservices.Help;
 import com.trustedservices.domain.TrustedList;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-    @DisplayName("A FilterList")
-    public class FilterListTest {
+@DisplayName("I create a FilterList")
+public class FilterListTest {
 
-        //TESTO SOLO IL METODO GETFILTEREDLIST PERCHE' GLI ALTRI SONO SUPER DA UNA CLASSE CONOSCIUTISSIMA
-        FilterList filterList;
-        //NUOVA COLLEZIONE CON FILTRI NULLI
-        //NUOVA COLLEZIONE CON FILTRI NOT EMPTY AND IMPOSSIBLE
+    FilterList filterList;
+
+    //NUOVA COLLEZIONE CON FILTRI NULLI
+    //NUOVA COLLEZIONE CON FILTRI NOT EMPTY AND IMPOSSIBLE
+    @Nested
+    //IL PROBLEMA E' CHE VOLENDO CI SONO INFINITE COMBINAZIONI DI FILTRI DA METTERE NEL COSTRUTTORE
+    @DisplayName("when new with collection of filters")
+    class WhenNewWithFilters {
+
+        private void createFilterList(List<Filter> filters) {
+            filterList = new FilterList(filters);
+        }
+
+        @DisplayName("and the filters can link to a service")
         @Nested
-        //IL PROBLEMA E' CHE VOLENDO CI SONO INFINITE COMBINAZIONI DI FILTRI DA METTERE NEL COSTRUTTORE
-        @DisplayName("when new with collection of filters") // FORSE E' LA STESSA COSA DI WHEN NEW
-        class WhenNewWithFilters {
-            ArrayList collectionOfFilters;
-            @DisplayName("and the filters can link to a service")
+        class PossibleFilter {
+
+            @DisplayName("and I use the method getFilteredListFrom")
             @Nested
-            class PossibleFilter {
-                @BeforeEach
-                void createAFilterList() throws IOException {
-                    collectionOfFilters = new ArrayList<>();
+            class getFilteredListFrom {
+                private static Stream<Arguments> getFilters() {
+                    List<Filter> collectionOfFilters = new ArrayList<>();
                     Set<String> providerSet = new HashSet<>();
-                    providerSet.add("PrimeSign GmbH");
+                    providerSet.add("Austria/PrimeSign GmbH");
                     ProviderFilter filterProvider = new ProviderFilter();
                     filterProvider.setWhitelist(providerSet);
                     Set<String> serviceTypeSet = new HashSet<>();
@@ -45,68 +56,118 @@ import static org.junit.jupiter.api.Assertions.*;
                     collectionOfFilters.add(filterServiceType);
                     collectionOfFilters.add(filterStatus);
 
-                    filterList = new FilterList(collectionOfFilters);
+                    //mi da problemi
+                    List<Filter> collectionOfFilters2 = new ArrayList<>();
+                    ProviderFilter filterProvider2 = new ProviderFilter();
+                    ServiceTypeFilter filterServiceType2 = new ServiceTypeFilter();
+                    StatusFilter filterStatus2 = new StatusFilter();
+                    collectionOfFilters2.add(filterProvider2);
+                    collectionOfFilters2.add(filterServiceType2);
+                    collectionOfFilters2.add(filterStatus2);
+
+                    List<Filter> collectionOfFilters3 = new ArrayList<>();
+                    Set<String> providerSet3 = new HashSet<>();
+                    providerSet3.add("Italy/Azienda Zero");
+                    ProviderFilter filterProvider3 = new ProviderFilter();
+                    filterProvider3.setWhitelist(providerSet3);
+                    Set<String> serviceTypeSet3 = new HashSet<>();
+                    serviceTypeSet3.add("QCertESeal");
+                    ServiceTypeFilter filterServiceType3 = new ServiceTypeFilter();
+                    filterServiceType3.setWhitelist(serviceTypeSet3);
+                    Set<String> statusSet3 = new HashSet<>();
+                    statusSet3.add("withdrawn");
+                    StatusFilter filterStatus3 = new StatusFilter();
+                    filterStatus3.setWhitelist(statusSet);
+                    collectionOfFilters3.add(filterProvider);
+                    collectionOfFilters3.add(filterServiceType);
+                    collectionOfFilters3.add(filterStatus);
+                    return Stream.of(
+                            Arguments.of(collectionOfFilters),
+                            //Arguments.of(collectionOfFilters2),
+                            Arguments.of(collectionOfFilters3)
+                    );
                 }
 
-                @DisplayName("and I use the method getFilteredListFrom")
-                @Nested
-                class getFilteredListFrom {
-                    TrustedList argumentTrustedList; //HA SENSO RIPETERE OGNI VOLTA ARGUMENTTRUSTEDLIST?
+                TrustedList argumentTrustedList; //HA SENSO RIPETERE OGNI VOLTA ARGUMENTTRUSTEDLIST?
 
-                    @DisplayName("a list as argument that contain services possible, should return just the filtered services")
-                    @Test
-                    void PossibleFiltersTrustedListAsArgument() throws IOException {
-                        argumentTrustedList = Help.getWholeList();
-                        String providerExpected = "PrimeSign GmbH";
-                        String expectedServiceType = "QCertESeal";
-                        String expectedStatus = "granted";
-                        TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
-                        filteredList.getCountries().forEach(country -> {
-                            country.getProviders().forEach(provider -> {
-                                System.out.println(provider.getName());
-                                assertTrue(provider.getName().equals(providerExpected));
-                                provider.getServices().forEach(service -> {
-                                    //System.out.println(service.getServiceTypes());
-                                    assertTrue(service.getServiceTypes().contains(expectedServiceType));
-                                    assertTrue(service.getStatus().equals(expectedStatus));
-                                });
+                @DisplayName("a list as argument that contain services possible, should return just the filtered services")
+                @ParameterizedTest
+                @MethodSource("getFilters")
+                void PossibleFiltersTrustedListAsArgument(List<Filter> filters) {
+                    createFilterList(filters);
+                    argumentTrustedList = Help.getWholeList();
+                    System.out.println(argumentTrustedList.getCountries());
+                    Set<String> providersExpected = filters.get(0).getWhitelist();
+                    Set<String> expectedServiceTypes = filters.get(1).getWhitelist();
+                    Set<String> expectedStatuses = filters.get(2).getWhitelist();
+                    System.out.println("ecco l'expected provider " + providersExpected);
+                    System.out.println("ecco l'expectedstatus " + expectedStatuses);
+                    System.out.println("ecco l'expectedservycetype " + expectedServiceTypes);
+                    System.out.println(filterList.get(0).getWhitelist());
+                    System.out.println(filterList.get(1).getWhitelist());
+                    System.out.println(filterList.get(2).getWhitelist());
+                    TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
+                    System.out.println("countries lista filtrata " + filteredList.getCountries());
+                    assertFalse(filteredList.isEmpty());
+                    filteredList.getCountries().forEach(country -> {
+                        country.getProviders().forEach(provider -> {
+                            System.out.println(provider.getName());
+                            assertTrue(providersExpected.contains(country.getName() + "/" + provider.getName()));
+                            provider.getServices().forEach(service -> {
+                                System.out.println(service.getServiceTypes());
+                                System.out.println(service.getStatus());
+                                assertTrue(service.getServiceTypes().stream().toList().stream().anyMatch(servizio -> expectedServiceTypes.contains(servizio)));
+                                assertTrue(expectedStatuses.contains(service.getStatus()));
                             });
                         });
-                    }
+                    });
+                }
 
-                    @DisplayName("a list as argument that do not contain services possible, should return just no services")
-                    @Test
-                    void PossibleFiltersButNotPossibleTrustedListAsArgument() throws IOException {
-                        argumentTrustedList = new TrustedList();
-                        TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
-                        assertTrue(filteredList.getCountries().isEmpty());
-                        filteredList.getCountries().forEach(country -> {
-                            assertTrue(country.getProviders().isEmpty());
-                            country.getProviders().forEach(provider -> {
-                                assertTrue(provider.getServices().isEmpty()); //OPPURE BASTA VEDERE CHE L'ARRAY DI COUNTRIES E' VUOTO?
-                            });
+                @DisplayName("a list as argument that do not contain services possible, should return just no services")
+                @ParameterizedTest
+                @MethodSource("getFilters")
+                void PossibleFiltersButNotPossibleTrustedListAsArgument(List<Filter> filters){
+                    createFilterList(filters);
+
+                    argumentTrustedList = new TrustedList();
+                    TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
+                    assertTrue(filteredList.getCountries().isEmpty());
+                    filteredList.getCountries().forEach(country -> {
+                        assertTrue(country.getProviders().isEmpty());
+                        country.getProviders().forEach(provider -> {
+                            assertTrue(provider.getServices().isEmpty()); //OPPURE BASTA VEDERE CHE L'ARRAY DI COUNTRIES E' VUOTO?
                         });
-                    }
+                    });
+                }
 
 
-                    @DisplayName("Null TrustedList as argument, should return an error")
-                    @Test
-                    void NullTrustedListAsArgument() throws IOException {
-                        argumentTrustedList = null;
-                        //assert
-                        assertThrows(NullPointerException.class, () -> filterList.getFilteredListFrom(argumentTrustedList));
+                @DisplayName("Null TrustedList as argument, should return an error")
+                @ParameterizedTest
+                @MethodSource("getFilters")
+                void NullTrustedListAsArgument(List<Filter> filters) {
+                    createFilterList(filters);
 
-                    }
+                    argumentTrustedList = null;
+
+                    assertThrows(NullPointerException.class, () -> filterList.getFilteredListFrom(argumentTrustedList));
 
                 }
 
             }
-            @DisplayName("and the filters do not link to any service")
+
+        }
+
+        @DisplayName("and the filters do not link to any service")
+        @Nested
+        class ImpossibleFilters {
+
+            @DisplayName("and I use the method getFilteredListFrom")
             @Nested
-            class ImpossibleFilters{
-                @BeforeEach
-                void createAFilterList() throws IOException {
-                    collectionOfFilters = new ArrayList<>();
+            class getFilteredListFrom {
+                TrustedList argumentTrustedList; //HA SENSO RIPETERE OGNI VOLTA ARGUMENTTRUSTEDLIST?
+
+                private static Stream<Arguments> getFilters() {
+                    List<Filter> collectionOfFilters = new ArrayList<>();
                     Set<String> providerSet = new HashSet<>();
                     providerSet.add("PrimeSign GmbH");
                     ProviderFilter filterProvider = new ProviderFilter();
@@ -122,17 +183,16 @@ import static org.junit.jupiter.api.Assertions.*;
                     collectionOfFilters.add(filterProvider);
                     collectionOfFilters.add(filterServiceType);
                     collectionOfFilters.add(filterStatus);
-
-                    filterList = new FilterList(collectionOfFilters);
+                    return Stream.of(
+                            Arguments.of(collectionOfFilters)
+                    );
                 }
-                @DisplayName("and I use the method getFilteredListFrom")
-                @Nested
-                class getFilteredListFrom {
-                    TrustedList argumentTrustedList; //HA SENSO RIPETERE OGNI VOLTA ARGUMENTTRUSTEDLIST?
 
-                    @DisplayName("with impossible filters and a list as argument, should return no providers")
-                    @Test
-                    void TrustedListAsArgument() throws IOException {
+                @DisplayName("with impossible filters and a list as argument, should return no providers")
+                @ParameterizedTest
+                @MethodSource("getFilters")
+                void TrustedListAsArgument(List<Filter> filters) {
+                    createFilterList(filters);
                     argumentTrustedList = Help.getWholeList();
 
                     TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
@@ -144,92 +204,53 @@ import static org.junit.jupiter.api.Assertions.*;
                         });
                     });
                 }
-                    @DisplayName("Null TrustedList as argument, should return an error") //HA SENSO RIPETERE CON NULL COME LISTA?
-                    @Test
-                    void NullTrustedListAsArgument() throws IOException {
-                        argumentTrustedList = null;
-                        //assert
-                        assertThrows(NullPointerException.class, () -> filterList.getFilteredListFrom(argumentTrustedList));
-
-                    }
-                }
-
             }
+
         }
+    }
+     //prova con collezione di filtri vuota
+    @Nested
+    @DisplayName("when new")
+    class WhenNew {
+        @BeforeEach
+        void createACountry() {
+            filterList = new FilterList();
+        }
+
+        @DisplayName("and I use the method getFilteredListFrom(TrustedList)")
         @Nested
-        @DisplayName("when new with collection of filters empty") //AVEVA SENSO FARLO?
-        class WhenNewWithCollectionOfFiltersEmpty{
-            ArrayList collectionOfFilters;
-            @BeforeEach
-            void createAFilterList() {
-                collectionOfFilters = new ArrayList<>();
-                filterList = new FilterList(collectionOfFilters);
-            }
-            @DisplayName("and I use the method getFilteredListFrom")
-            @Nested
-            class getFilteredListFrom{
-                TrustedList argumentTrustedList;
-                @DisplayName("with a TrustedList as argument, should return a list equal to the filtered one")
-                @Test
-                void TrustedListAsArgument() throws IOException {
-                     argumentTrustedList = Help.getWholeList();
-                    TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
-                    assertEquals(filteredList, argumentTrustedList);
-                }
-                @Disabled
-                @DisplayName("Null TrustedList as argument, should return a list equal to the filtered one")
-                @Test
-                void NullTrustedListAsArgument() throws IOException {
-                    argumentTrustedList=null;
-                    //assert
-                    assertThrows(NullPointerException.class, () -> filterList.getFilteredListFrom(argumentTrustedList));
+        class GetFilteredList {
+            TrustedList argumentTrustedList;
 
-                }
-                //POTREI ANCHE METTER EUNA TRUSTEDLIST VUOTA MA NON E' MOLTO INTERESSANTE
+            @DisplayName("with a TrustedList as argument should return the same trustedList")
+            @Test
+            void trustedListAsArgument() {
+                argumentTrustedList = Help.getWholeList();
+
+                TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
+                assertEquals(filteredList, argumentTrustedList);
             }
 
+            @DisplayName("with a null TrustedList as argument should return error")
+            @Test
+            void cloneNullTrustedList() {
+                argumentTrustedList = null;
+                assertThrows(NullPointerException.class, () -> filterList.getFilteredListFrom(argumentTrustedList));
+            }
         }
+    }
 
-        @Nested
-        @DisplayName("when new")
-        class WhenNew{
-            @BeforeEach
-            void createACountry() {
-                filterList = new FilterList();
-            }
-            @DisplayName("and I use the method getFilteredListFrom(TrustedList)")
-            @Nested
-            class GetFilteredList{
-                TrustedList argumentTrustedList;
-                @DisplayName("with a TrustedList as argument should return the same trustedList")
-                @Test
-                void trustedListAsArgument() throws IOException {
-                    argumentTrustedList=Help.getWholeList();
-                    //assert
-                    TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
-                    assertEquals(filteredList,argumentTrustedList);
-                }
-                @DisplayName("with a null TrustedList as argument should return error")
-                @Test
-                void cloneNullTrustedList() {
-                    argumentTrustedList=null;
-                    //assert
-                    assertThrows(NullPointerException.class, () -> filterList.getFilteredListFrom(argumentTrustedList));
-                }
-                //potrei fare anche come argomento la lista vuota
-            }
-           }
+    @Test
+    @DisplayName("is instantiated with new FilterList()")
+    void ConstructorWithoutArguments() {
+        new FilterList();
+    }
 
-        @Test
-        @DisplayName("is instantiated with new FilterList()")
-        void ConstructorWithoutArguments() {
-            new FilterList();
-        }
-        @Test
-        @DisplayName("is instantiated with new FilterList(Collection<? extends Filter>)")
-        void ConstructorWithFilters() {
-            new FilterList( new ArrayList<>() );
-        } //E'UN ERRORE METTERE COSI' COME ARGOMENTO?
-        //C'E' ANCHE UN ALTRO COSTRUTTORE IN VERITA'
+    @Test
+    @DisplayName("is instantiated with new FilterList(Collection<? extends Filter>)")
+    void ConstructorWithFilters() {
+        new FilterList(new ArrayList<>());
+    } //E'UN ERRORE METTERE COSI' COME ARGOMENTO?
+    //C'E' ANCHE UN ALTRO COSTRUTTORE IN VERITA'
 
 }

@@ -3,43 +3,44 @@ package com.trustedservices.navigator.filters;
 import com.trustedservices.Help;
 import com.trustedservices.domain.TrustedList;
 import org.junit.jupiter.api.*;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//COPIA E INCOLLA DA PROVIDERFILTERLIST
 
-@DisplayName("I create a StatusFilter")//esiste un termine piu tecnico di create?
+@DisplayName("I create a StatusFilter")
 class StatusFilterTest {
-    StatusFilter statusFilter = new StatusFilter();
+    StatusFilter statusFilter;
 
     @Test
-    @DisplayName("is instantiated with new StatusFilter()")
+    @BeforeEach
+    @DisplayName("is instantiated thanks to new StatusFilter()")
     void isInstantiatedWithNewStatus() {
-        new StatusFilter();
+        statusFilter = new StatusFilter();
     }
 
     //whitelist is set with setWhitelist method
+    @Test
+    @DisplayName("I can set a whiteList with setWhitelist(Set<String>) ")
+    void setWhitelistTest(){
+        statusFilter.setWhitelist(new HashSet<>());
+        //Volendo posso mettere sia qua che nei costruttori degli assert
+    }
 
-    @DisplayName("and I use the method ApplyTo")
+    @DisplayName("when I use the method ApplyTo")
     @Nested
     class ApplyTo {
         TrustedList argumentTrustedList;
 
-        @DisplayName("with a list as argument, should return the same list")
+        @DisplayName("with a list as argument, return the same list")
         @Test
-        void withListAsArgument(){
+        void withListAsArgument() {
             argumentTrustedList = Help.getWholeList();
             TrustedList expectedFilteredList = argumentTrustedList;
             statusFilter.applyTo(argumentTrustedList);
@@ -60,63 +61,77 @@ class StatusFilterTest {
     @Nested
     class setPossibleFilters {
 
-        private void setStatuses(String... statuses){
-            Set<String> setStatus = new HashSet<>(List.of(statuses));
-            statusFilter.setWhitelist(setStatus);
+       private void setStatuses(Set<String> statuses) {
+           statusFilter.setWhitelist(statuses);
         }
-
         @DisplayName("and I use the method ApplyTo")
         @Nested
         class ApplyTo {
             TrustedList argumentTrustedList;
 
-            private static Stream<Arguments> getStatuses(){
+            private static Stream<Arguments> getStatuses() {
+                Set<String> statusSet1 = new HashSet<>();
+                statusSet1.add("granted");
+                Set<String> statusSet2 = new HashSet<>();
+                statusSet2.add("granted");
+                statusSet2.add("withdrawn");
+                Set<String> statusSet3 = new HashSet<>();
+                statusSet3.add("withdrawn");
+                Set<String> statusSet4 = new HashSet<>();
+                statusSet4.add("granted");
+                statusSet4.add("withdrawn");
+                statusSet4.add("deprecatedatnationallevel");
+                statusSet4.add("recognisedatnationallevel");
+                //METTERE CASO IN CUI NON HO WHITELIST
                 return Stream.of(
-                        Arguments.of("granted"),
-                        Arguments.of("withdrawn")
+                        Arguments.of(statusSet1),
+                        Arguments.of(statusSet2),
+                        Arguments.of(statusSet3)
                 );
             }
             @ParameterizedTest
             @MethodSource("getStatuses")
-            @DisplayName("with a list with compatible elements with the filters as argument, should return a list with only those elements")
-            void withListAsArgument(String status) {
-                setStatuses(status);
+            @DisplayName("with a list with compatible elements with the filters as argument, return a list with only those elements")
+            void withListAsArgument(Set<String> statusSet) {
+                setStatuses(statusSet);
                 argumentTrustedList = Help.getWholeList();
-                String expectedStatus1 = status;
                 statusFilter.applyTo(argumentTrustedList);
+                //assertFalse(argumentTrustedList.isEmpty());
                 argumentTrustedList.getCountries().forEach(country -> {
                     country.getProviders().forEach(provider -> {
                         provider.getServices().forEach(service -> {
-                            assertTrue(service.getStatus().equals(expectedStatus1));
+                            System.out.println(service.getStatus());
+                            assertTrue(statusSet.contains(service.getStatus()));
                         });
                     });
                 });
-
-
+                //IN VERITA' STO CONTROLLANDO CHE NELLA LISTA VI ELEMENTI CORRETTI MA POTREBBE ESSERE STATO CANCELLATO QUALCHE ELEMENTO NEL PROCESSO
+                //DEVO DUNQUE CONTARE LGI ELEMENTI INIZIALI E FINALI O TROVARTE UN ALTRA SOLUZIONE
             }
 
-
-            @DisplayName("with a list with only incompatible elements with the filters as argument, should return a list with no elements")
+            @DisplayName("with a list with only incompatible elements with the filters as argument, return a list with no elements")
             @ParameterizedTest
             @MethodSource("getStatuses")
-            void withNotPossibleListAsArgument(){
+            void withNotPossibleListAsArgument(Set<String> statusSet) {
+                setStatuses(statusSet);
                 argumentTrustedList = new TrustedList();
                 statusFilter.applyTo(argumentTrustedList);
                 assertTrue(argumentTrustedList.getCountries().isEmpty());
             }
-            @Disabled
-            @DisplayName("with a null list, should return a list with no elements")
+
+            @DisplayName("with a null list, return a list null list")
             @ParameterizedTest
             @MethodSource("getStatuses")
-            void withNullListAsArgument() {
+            void withNullListAsArgument(Set<String> statusSet) {
+                setStatuses(statusSet);
                 argumentTrustedList = null;
-                assertThrows(NullPointerException.class, ()-> statusFilter.applyTo(argumentTrustedList));
-                //assertTrue(argumentTrustedList.getCountries().isEmpty());
+                assertThrows(NullPointerException.class,() -> statusFilter.applyTo(argumentTrustedList));
             }
 
         }
 
     }
-    //IMPOSSIBILE WHITHELIST FILTERS COMBINATION DO NOT EXIST
+
+    //IMPOSSIBILE (like no sense words) WHITHELIST FILTERS ?
 
 }
