@@ -4,6 +4,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Last layer of the tree. It contains all the information associated to the service, name, id, type,, status, a set of
+ * associated ServiceTypes, and the associated provider.
+ */
 public class Service implements Cloneable, Comparable<Service>, TrustedListEntity {
     private final int id;
     private final String name;

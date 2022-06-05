@@ -2,6 +2,10 @@ package com.trustedservices.domain;
 
 import java.util.*;
 
+/**
+ * Second layer of the tree, contains provider name, id, trustmark, a set of ServiceTypes, a set of associated services and
+ * the country which the provider belongs to.
+ */
 public class Provider implements Cloneable, Comparable<Provider>, TrustedListEntity {
     private final int providerId;
     private final String name;

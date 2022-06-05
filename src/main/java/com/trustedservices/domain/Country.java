@@ -2,6 +2,9 @@ package com.trustedservices.domain;
 
 import java.util.*;
 
+/**
+ * The first layer of the tree, each country contains its name, country code and a list of its associated providers.
+ */
 public class Country implements Cloneable, Comparable<Country>, TrustedListEntity {
     private final String name;
     private final String code;

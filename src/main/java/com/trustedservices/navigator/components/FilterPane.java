@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Set;
 
+/**
+ * Abstract class that will be implemented in ProvideFilterPane, ServiceFilterPane and StatusFilterPane
+ */
 public abstract class FilterPane extends TitledPane {
     private static final String FXML_RESOURCE_FILE_NAME = "filter-pane.fxml";
 
@@ -63,6 +66,10 @@ public abstract class FilterPane extends TitledPane {
     public abstract void disable(Collection<String> toDisable);
     protected abstract void setAllCheckBoxStatus(boolean status);
 
+    /**
+     * @param changedFilterValue the selected checkbox on the filter pane. Upon selection, 
+     * @return
+     */
     public ChangeListener<Boolean> handleFilterChange(String changedFilterValue) {
         return (value, wasSelected, isSelected) -> {
             if (!selectingAll) {
