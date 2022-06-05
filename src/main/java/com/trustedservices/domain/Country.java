@@ -61,14 +61,20 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
 
     @Override
     public Country clone() {
-        Country countryClone = new Country(name, code);
+        try {
+            Country countryClone = (Country) super.clone();
 
-        this.getProviders().forEach(provider -> {
-            Provider providerClone = provider.clone();
-            providerClone.setCountry(countryClone);
-            countryClone.getProviders().add(providerClone);
-        });
+            this.getProviders().forEach(provider -> {
+                Provider providerClone = provider.clone();
+                providerClone.setCountry(countryClone);
+                countryClone.getProviders().add(providerClone);
+            });
 
-        return countryClone;
+            return countryClone;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     }
 }
