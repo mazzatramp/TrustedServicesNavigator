@@ -24,6 +24,10 @@ public class TrustedList implements Cloneable {
         return countries;
     }
 
+    /**
+     * Used to get all the Service Types and Statuses in the list, be it complete or filtered
+     * @see com.trustedservices.navigator.filters.FilterList
+     */
     public void updateServiceTypesAndStatuses() {
         statuses.clear();
         serviceTypes.clear();
@@ -37,6 +41,12 @@ public class TrustedList implements Cloneable {
         });
     }
 
+    /**
+     * @return A clone of the TrustedList. Uses all the methods Override of the lower classes for each level
+     * @see Country
+     * @see Provider
+     * @see Service
+     */
     @Override
     public TrustedList clone() {
         try {
@@ -47,7 +57,7 @@ public class TrustedList implements Cloneable {
             );
             return clonedList;
         } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
+            throw new AssertionError();
         }
     }
 

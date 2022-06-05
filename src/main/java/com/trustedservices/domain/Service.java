@@ -34,6 +34,14 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
         return name;
     }
 
+    /**
+     * @return A String of provider name, provider country code, service status and service Types.
+     * used in Display pane
+     * @see com.trustedservices.navigator.components.DisplayPane
+     * implemented also in
+     * @see Country
+     * @see Provider
+     */
     @Override
     public String getHumanInformation() {
         return  name + "\n" +
@@ -64,7 +72,7 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Service that = (Service) o;
-        return this.id == that.id && this.provider.equals(that.provider);
+        return this.getId() == that.getId() && this.getProvider().equals(that.getProvider());
     }
 
     @Override
@@ -79,6 +87,12 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
                 '}';
     }
 
+    /**
+     * @return clonedService using the Object Method Clone.
+     * @see Country
+     * @see Provider
+     * @see TrustedList
+     */
     @Override
     public Service clone() {
         try {

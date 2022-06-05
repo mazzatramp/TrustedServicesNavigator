@@ -39,6 +39,14 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
         return name;
     }
 
+    /**
+     * @return A string of Name, Trustmark, Country name and code, and number of services.
+     * Used in DisplayPane
+     * @see com.trustedservices.navigator.components.DisplayPane
+     * implemented also in
+     * @see Country
+     * @see Service
+     */
     @Override
     public String getHumanInformation() {
         return  "Name: " + name + "\n" +
@@ -67,8 +75,9 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Provider provider = (Provider) o;
-        return Objects.equals(this.name, provider.name)
-                && Objects.equals(this.country, provider.country);
+        return Objects.equals(this.getName(), provider.getName())
+                && Objects.equals(this.getCountry(), provider.getCountry())
+                && Objects.equals(this.getServices(), provider.getServices());
     }
 
     @Override
@@ -88,6 +97,10 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
                 '}';
     }
 
+    /**
+     * @return providerClone using the Object Method Clone, but we implemented a safe clone of the Service List associated, using an override clone method for Service too
+     * @see Service
+     */
     @Override
     public Provider clone() {
         try {

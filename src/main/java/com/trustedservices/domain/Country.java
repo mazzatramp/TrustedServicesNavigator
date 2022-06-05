@@ -18,6 +18,14 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
         return name;
     }
 
+    /**
+     * @return A string of Name, Country code, number of providers and number of services.
+     * Used in Display Pane
+     * @see com.trustedservices.navigator.components.DisplayPane
+     * implemented also in
+     * @see Provider
+     * @see Service
+     */
     @Override
     public String getHumanInformation() {
         return name + " (" + code + ")\n\n" +
@@ -38,7 +46,9 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Country country = (Country) o;
-        return Objects.equals(this.code, country.code);
+        return Objects.equals(this.getCode(), country.getCode())
+               && Objects.equals(this.getName(), country.getName())
+               && Objects.equals(this.getProviders(), country.getProviders());
     }
 
     @Override
@@ -59,6 +69,11 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
                 '}';
     }
 
+    /**
+     * @return clonedCountry using the Object method clone, but we implemented a safe clone of the provider List associated, using an override Clone method for that too
+     * @see Provider
+     * @see Service
+     */
     @Override
     public Country clone() {
         try {
@@ -73,7 +88,7 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
 
             return countryClone;
         } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
+            throw new AssertionError();
         }
     }
 
