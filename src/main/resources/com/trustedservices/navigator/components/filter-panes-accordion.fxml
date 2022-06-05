@@ -8,8 +8,8 @@
 
 <fx:root type="javafx.scene.control.Accordion" xmlns:fx="http://javafx.com/fxml">
     <panes>
-        <ProviderFilterPane fx:id="providers"/>
-        <ServiceTypeFilterPane fx:id="serviceTypes"/>
-        <StatusFilterPane fx:id="statuses"/>
+        <ProviderFilterPane fx:id="providers" text="Countries and Providers"/>
+        <ServiceTypeFilterPane fx:id="serviceTypes" text="Service Types"/>
+        <StatusFilterPane fx:id="statuses" text="Statuses"/>
     </panes>
 </fx:root>
