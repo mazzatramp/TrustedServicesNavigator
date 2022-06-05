@@ -75,6 +75,7 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Provider provider = (Provider) o;
+
         return Objects.equals(this.getName(), provider.getName())
                 && Objects.equals(this.getCountry(), provider.getCountry())
                 && Objects.equals(this.getServices(), provider.getServices());
@@ -83,6 +84,7 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
     @Override
     public int hashCode() {
         return Objects.hash(providerId);
+
     }
 
     @Override
@@ -105,12 +107,14 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
     public Provider clone() {
         try {
             Provider providerClone = (Provider) super.clone();
+
             providerClone.services = new TreeSet<>();
             this.getServices().forEach(service -> {
                 Service serviceClone = service.clone();
                 providerClone.getServices().add(serviceClone);
                 serviceClone.setProvider(providerClone);
             });
+
             return providerClone;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
