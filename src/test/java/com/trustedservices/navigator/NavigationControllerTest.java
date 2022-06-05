@@ -97,7 +97,10 @@ class NavigationControllerTest {
                 builder.setCountriesJsonString(Files.readString(countries));
                 builder.setProvidersJsonString(Files.readString(providers));
                 navigationController.buildCompleteList(builder);
-                assertEquals(navigationController.getCompleteList(), Help.getWholeList());
+                System.out.println(navigationController.getCompleteList().getCountries());
+                System.out.println(builder.build().getCountries());
+                boolean areListsEquals = navigationController.getCompleteList().equals(builder.build());
+                assertTrue(areListsEquals);
             }
             @Test
             @DisplayName("with as argument a null TrustedListBuilder should throw NullPointer Exception")
