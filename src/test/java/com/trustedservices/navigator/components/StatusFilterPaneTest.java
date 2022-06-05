@@ -11,6 +11,7 @@ class StatusFilterPaneTest {
     //FORSE ESISTE UN MODO INDIRETTAMENTE?
 
     StatusFilterPane statusFilterPane;
+    @Disabled
     @Test
     @DisplayName("is instantiated with new costruttoreOggetto")
     void isInstantiatedWithNewClasse() {

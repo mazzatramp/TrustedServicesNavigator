@@ -50,10 +50,4 @@ public class Help {
         return wholeList.clone();
     }
 
-    public static Country getCountryN(int indexOfTheCountry) {
-        if (wholeList == null) {
-            constructWholeList();
-        }
-        return wholeList.getCountries().stream().toList().get(indexOfTheCountry);
-    }
 }

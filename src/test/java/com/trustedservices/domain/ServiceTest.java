@@ -15,7 +15,7 @@ public class ServiceTest {
 
     @BeforeEach
     @Test
-    @DisplayName("is instantiated thanks to new Service(int,String, String,String,List<ServiceType>)")
+    @DisplayName("is instantiated thanks to new Service(int,String, String,String,Set<ServiceType>)")
     void isInstantiatedWithNewService() {
         Provider provider = new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X00");
         service1 = new Service(provider,
@@ -28,15 +28,14 @@ public class ServiceTest {
     }
 
     @Test
-    @DisplayName("or alternatively is instantiated thanks to new Service(int,String, String,String,List<ServiceType>)")
+    @DisplayName("or alternatively is instantiated thanks to new Service(int,String, String,String)")
     void alternativelyIsInstantiatedWithNewService() {
-        Provider provider = Help.getCountryN(0).getProviders().stream().toList().get(0);
+        Provider provider = new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X00");
         new Service(provider,
                 0,
                 "TestService",
                 "type",
-                "status",
-                Set.of("ServiceType1", "ServiceType2")
+                "status"
         );
     }
 

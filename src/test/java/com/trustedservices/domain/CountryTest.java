@@ -174,10 +174,10 @@ class CountryTest {
     @DisplayName("when I use the method getInformation, it should return a List of Country name and code")
     @Test
     void getInformationMethod() {
-        List<String> expectedList = new ArrayList<>();
-        expectedList.add("Austria");
-        expectedList.add("AT");
-        assertEquals(expectedList, country.getInformation());
+        String expectedString= "Austria" + " (" + "AT" + ")\n\n" +
+                "With " + 0 + " providers displayed\n" +
+                "And " + 0 + " services displayed\n";
+        assertEquals(expectedString, country.getHumanInformation());
 
     }
 

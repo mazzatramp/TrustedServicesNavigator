@@ -234,15 +234,11 @@ class ProviderTest {
     @DisplayName("when I use the method getInformation, it should return a List of Country name and code")
     @Test
     void getInformationMethod(){
-        TreeSet<String> providerServiceTypes = new TreeSet<>(
-                List.of("QCertESeal", "QCertESig", "QTimestamp")
-        );
-        List<String> expectedList = new ArrayList<>();
-        expectedList.add("Italia");
-        expectedList.add("TestProvider");
-        expectedList.add("TTT-000-X01");
-        expectedList.add(providerServiceTypes.toString());
-        assertEquals(expectedList, provider.getInformation());
+        String expectedString = "Name: " + "TestProvider" + "\n" +
+                "Trustmark: " + "TTT-000-X01" + "\n\n" +
+                "Based in " + "Italia" + " (" + "IT" + ")\n" +
+                "With " + "1" + " services displayed.";
+        assertEquals(expectedString, provider.getHumanInformation());
 
     }
 
