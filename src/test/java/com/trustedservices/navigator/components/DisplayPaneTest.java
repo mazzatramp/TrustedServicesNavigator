@@ -46,9 +46,6 @@ public class DisplayPaneTest {
             }
 
         }
-        @DisplayName("and I use the method ...")
-        @Nested
-        class nomeMetodo2{}
     }
 
 }
