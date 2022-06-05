@@ -3,12 +3,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0">
-    <ScrollPane AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0">
-        <VBox AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0">
-            <Hyperlink fx:id="close" text="Close Panel"/>
-            <Separator />
-            <Label fx:id="text" />
-        </VBox>
-    </ScrollPane>
+<?import javafx.geometry.Insets?>
+<fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml" style="-fx-background-color: white;">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+    <StackPane AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0"
+               AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+        <Label fx:id="information"
+               StackPane.alignment="TOP_LEFT"/>
+        <Hyperlink fx:id="closeButton" text="Close"
+                StackPane.alignment="TOP_RIGHT"/>
+    </StackPane>
 </fx:root>

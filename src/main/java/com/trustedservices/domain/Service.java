@@ -35,8 +35,12 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
     }
 
     @Override
-    public List<String> getInformation() {
-        return List.of(provider.getName(), name, status, serviceTypes.toString());
+    public String getHumanInformation() {
+        return  name + "\n" +
+                "Of " + provider.getName() + " (" + provider.getCountry().getCode() + ")\n" +
+                "\n" +
+                "Status: " + status + "\n" +
+                "Service Types: " + serviceTypes.toString();
     }
 
     public String getType() {

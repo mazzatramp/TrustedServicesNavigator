@@ -19,8 +19,10 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
     }
 
     @Override
-    public List<String> getInformation() {
-        return List.of(name, code);
+    public String getHumanInformation() {
+        return name + " (" + code + ")\n\n" +
+                "With " + providers.size() + " providers displayed\n" +
+                "And " + countServices() + " services displayed\n";
     }
 
     public String getCode() {

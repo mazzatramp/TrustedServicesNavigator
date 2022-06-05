@@ -40,8 +40,11 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
     }
 
     @Override
-    public List<String> getInformation() {
-        return List.of(country.getName(), name, trustmark, serviceTypes.toString());
+    public String getHumanInformation() {
+        return  "Name: " + name + "\n" +
+                "Trustmark: " + trustmark + "\n\n" +
+                "Based in " + country.getName() + " (" + country.getCode() + ")\n" +
+                "With " + services.size() + " services displayed.";
     }
     public String getTrustmark() {
         return trustmark;

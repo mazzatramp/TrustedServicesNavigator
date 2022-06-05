@@ -3,6 +3,8 @@ package com.trustedservices.navigator;
 import com.trustedservices.domain.TrustedList;
 import com.trustedservices.navigator.components.*;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -22,9 +24,8 @@ public class WindowController {
 
     @FXML
     public void initialize() {
-        infoPane.setWindowController(this);
         displayPane.setWindowController(this);
-        setInfoPaneVisible(false);
+        initializeInfoPane();
     }
 
     public void setNavigationController(NavigationController navigationController) {
@@ -55,16 +56,19 @@ public class WindowController {
         handleFilterClick();
     }
 
-    public void openInfoPaneWithInfo(List<String> info) {
+    public void openInfoPaneWithInfo(String info) {
+        infoPane.setVisible(true);
         infoPane.setInfo(info);
-        setInfoPaneVisible(true);
     }
 
-    public void setInfoPaneVisible(boolean visible) {
-        if (infoPane.isVisible() && visible) return;
-        infoPane.setVisible(visible);
-        if (visible) splitPane.getItems().add(infoPane);
-        else splitPane.getItems().remove(infoPane);
+    private void initializeInfoPane() {
+        infoPane.visibleProperty().addListener((value, wasVisible, isVisible) -> {
+            if (isVisible)
+                splitPane.getItems().add(infoPane);
+            else
+                splitPane.getItems().remove(infoPane);
+        });
+        infoPane.setVisible(false);
     }
 
     public void bindProgressBarWith(Task<Void> task) {

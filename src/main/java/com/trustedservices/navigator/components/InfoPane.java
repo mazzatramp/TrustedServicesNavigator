@@ -13,15 +13,16 @@ import java.io.IOException;
 import java.util.List;
 
 public class InfoPane extends AnchorPane {
-    @FXML
-    private Label text;
-    @FXML
-    private Hyperlink close;
 
-    private WindowController windowController;
+    @FXML private Label information;
+    @FXML private Hyperlink closeButton;
 
     public InfoPane() {
+        loadFXMLResource();
+        closeButton.setOnAction(actionEvent -> setVisible(false));
+    }
 
+    private void loadFXMLResource() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("info-pane.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -31,20 +32,9 @@ public class InfoPane extends AnchorPane {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        close.setOnAction(actionEvent -> windowController.setInfoPaneVisible(false));
     }
 
-    public void setInfo(List<String> info) {
-        StringBuilder printingInformation = new StringBuilder();
-        for (String string : info) {
-            printingInformation.append(string);
-            printingInformation.append("\n");
-        }
-        text.setText(printingInformation.toString());
-    }
-
-    public void setWindowController(WindowController windowController) {
-        this.windowController = windowController;
+    public void setInfo(String information) {
+        this.information.setText(information);
     }
 }
