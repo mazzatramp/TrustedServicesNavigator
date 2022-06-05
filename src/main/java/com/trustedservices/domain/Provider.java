@@ -69,11 +69,6 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(providerId);
-    }
-
-    @Override
     public String toString() {
         return "Provider{" +
                 "providerId=" + providerId +

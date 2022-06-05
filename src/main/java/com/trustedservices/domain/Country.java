@@ -45,11 +45,6 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(code);
-    }
-
-    @Override
     public String toString() {
         return "Country{" +
                 "name='" + name + "', " +
