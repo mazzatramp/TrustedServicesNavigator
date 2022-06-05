@@ -7,7 +7,7 @@ import java.util.Set;
 
 public abstract class Filter {
 
-    protected Set<String> whitelist;
+    private Set<String> whitelist;
 
     public Filter() {
         this.whitelist = new HashSet<>();
