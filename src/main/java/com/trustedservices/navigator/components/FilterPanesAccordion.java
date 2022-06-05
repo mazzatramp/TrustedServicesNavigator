@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class FilterPanesAccordion extends Accordion {
@@ -20,7 +21,11 @@ public class FilterPanesAccordion extends Accordion {
     private TrustedList completeList;
 
     public FilterPanesAccordion() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("filter-selection-accordion.fxml"));
+        loadFXMLResource();
+    }
+
+    private void loadFXMLResource() {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("filter-panes-accordion.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
@@ -38,35 +43,37 @@ public class FilterPanesAccordion extends Accordion {
         statuses.fillWith(completeList);
     }
 
-    public void refreshPanesExcept(FilterPane notToRefresh) {
-        if (!(notToRefresh instanceof ProviderFilterPane))
+    public void refreshPanesExcept(FilterPane toNotRefresh) {
+        if (!(toNotRefresh instanceof ProviderFilterPane))
             disableItemsOf(providers);
-        if (!(notToRefresh instanceof ServiceTypeFilterPane))
+        if (!(toNotRefresh instanceof ServiceTypeFilterPane))
             disableItemsOf(serviceTypes);
-        if (!(notToRefresh instanceof StatusFilterPane))
+        if (!(toNotRefresh instanceof StatusFilterPane))
             disableItemsOf(statuses);
     }
 
     private void disableItemsOf(FilterPane filterPane) {
-        Set<String> unselectedFilterItems = filterPane.getUnselectedItems();
+        Set<String> unselectedFilterItems = filterPane.getUnselectedItems(); //We surely don't disable selected items
         Set<String> itemsToDisable = new HashSet<>();
 
         for (String unselectedFilterItem : unselectedFilterItems) {
-            Set<String> oldWhitelist = filterPane.getAssociatedFilter().getWhitelist();
-
-            Set<String> testWhitelist = new HashSet<>(1);
-            testWhitelist.add(unselectedFilterItem);
-            filterPane.getAssociatedFilter().setWhitelist(testWhitelist);
-
-            FilterList filters = new FilterList(getAssociatedFilters());
-            TrustedList filtered = filters.getFilteredListFrom(completeList);
-            filterPane.getAssociatedFilter().setWhitelist(oldWhitelist);
-
-            if (filtered.getCountries().isEmpty())
+            if (!wouldGetResults(filterPane.getAssociatedFilter(), unselectedFilterItem))
                 itemsToDisable.add(unselectedFilterItem);
         }
 
         filterPane.disable(itemsToDisable);
+    }
+
+    private boolean wouldGetResults(Filter filter, String filterItem) {
+        Set<String> savedWhitelist = filter.getWhitelist();
+
+        filter.setWhitelist(Set.of(filterItem));
+
+        FilterList filters = new FilterList(getAssociatedFilters());
+        boolean hasResults = !filters.getFilteredListFrom(completeList).isEmpty();
+
+        filter.setWhitelist(savedWhitelist);
+        return hasResults;
     }
 
     public void resetFilters() {
@@ -75,11 +82,11 @@ public class FilterPanesAccordion extends Accordion {
         statuses.selectAllFilters(false);
     }
 
-    public ArrayList<Filter> getAssociatedFilters() {
-        ArrayList<Filter> filters = new ArrayList<>(3);
-        filters.add(providers.getAssociatedFilter());
-        filters.add(statuses.getAssociatedFilter());
-        filters.add(serviceTypes.getAssociatedFilter());
-        return filters;
+    public List<Filter> getAssociatedFilters() {
+        return List.of(
+            providers.getAssociatedFilter(),
+            statuses.getAssociatedFilter(),
+            serviceTypes.getAssociatedFilter()
+        );
     }
 }

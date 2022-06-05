@@ -8,76 +8,74 @@ import java.util.*;
 
 public class ProviderFilterPane extends FilterPane {
 
-    private final TreeView<String> providers;
+    private final TreeView<String> filterTreeView;
 
     public ProviderFilterPane() {
-        this.setText("Country and Providers");
+        filterTreeView = new TreeView<>();
+        filterTreeView.setRoot(new FilterTreeItem<>());
+        filterTreeView.setShowRoot(false);
+        filterTreeView.setCellFactory(FilterTreeCell.forTreeView());
 
-        providers = new TreeView<>();
-        providers.setRoot(new FilterTreeItem<>());
-        providers.setShowRoot(false);
-        providers.setCellFactory(FilterTreeCell.forTreeView());
-
-        setFilterView(providers);
+        setFilterView(filterTreeView);
         this.setAssociatedFilter(new ProviderFilter());
     }
 
     @Override
     public void setAllCheckBoxStatus(boolean selectionStatus) {
-        providers.getRoot().getChildren().forEach(country-> {
-            CheckBoxTreeItem<String> checkBoxCountry = (CheckBoxTreeItem<String>) country;
-            checkBoxCountry.getChildren().forEach(provider -> {
-                ((CheckBoxTreeItem<String>) provider).setSelected(selectionStatus);
-            });
-
-        });
+        for (TreeItem<String> countryTreeItem : filterTreeView.getRoot().getChildren()) {
+            for (TreeItem<String> provider : countryTreeItem.getChildren()) {
+                ((FilterTreeItem<String>) provider).setSelected(selectionStatus);
+            }
+        }
     }
 
+    @Override
     public Set<String> getSelectedItems() {
         Set<String> selectedProviders = new HashSet<>();
-        providers.getRoot().getChildren().forEach(countryTreeItem -> {
-            CheckBoxTreeItem<String> countryCheckBox = (CheckBoxTreeItem<String>) countryTreeItem;
-            if (!countryCheckBox.isIndependent()) {
-                countryCheckBox.getChildren().forEach(providerTreeItem -> {
-                    CheckBoxTreeItem<String> providerCheckBox = (CheckBoxTreeItem<String>) providerTreeItem;
-                    if (providerCheckBox.isSelected())
-                        selectedProviders.add(countryCheckBox.getValue() + "/" +providerCheckBox.getValue());
-                });
+
+        for (TreeItem<String> countryTreeItem : filterTreeView.getRoot().getChildren()) {
+            for (TreeItem<String> providerTreeItem : countryTreeItem.getChildren()) {
+                FilterTreeItem<String> providerFilterItem = (FilterTreeItem<String>) providerTreeItem;
+                if (providerFilterItem.isSelected())
+                    selectedProviders.add(countryTreeItem.getValue() + "/" + providerTreeItem.getValue());
             }
-        });
+        }
+
+        System.out.println(selectedProviders);
         return selectedProviders;
     }
 
     @Override
     public Set<String> getUnselectedItems() {
-        Set<String> unselected = new HashSet<>();
-        providers.getRoot().getChildren().forEach(countryTreeItem -> {
-            CheckBoxTreeItem<String> countryCheckBox = (CheckBoxTreeItem<String>) countryTreeItem;
-            if (!countryCheckBox.isIndependent()) {
-                countryCheckBox.getChildren().forEach(providerTreeItem -> {
-                    CheckBoxTreeItem<String> providerCheckBox = (CheckBoxTreeItem<String>) providerTreeItem;
-                    if (!providerCheckBox.isSelected())
-                        unselected.add(countryCheckBox.getValue() +"/"+ providerCheckBox.getValue());
-                });
+        Set<String> selectedProviders = new HashSet<>();
+
+        for (TreeItem<String> countryTreeItem : filterTreeView.getRoot().getChildren()) {
+            for (TreeItem<String> providerTreeItem : countryTreeItem.getChildren()) {
+                FilterTreeItem<String> providerFilterItem = (FilterTreeItem<String>) providerTreeItem;
+                if (!providerFilterItem.isSelected())
+                    selectedProviders.add(countryTreeItem.getValue() + "/" + providerTreeItem.getValue());
             }
-        });
-        return unselected;
+        }
+
+        return selectedProviders;
     }
 
     @Override
     public void disable(Collection<String> itemsToDisable) {
-        for (TreeItem<String> countryTreeItem : providers.getRoot().getChildren()) {
-            FilterTreeItem countryFilterItem = (FilterTreeItem) countryTreeItem;
-            boolean allVisitedProvidersDisabled = true;
+        for (TreeItem<String> countryTreeItem : filterTreeView.getRoot().getChildren()) {
+            FilterTreeItem<String> countryFilterItem = (FilterTreeItem<String>) countryTreeItem;
+            boolean allProvidersDisabled = true;
 
-            for (TreeItem<String> providerTreeItem : countryTreeItem.getChildren()) {
+            for (TreeItem<String> providerTreeItem : countryFilterItem.getChildren()) {
                 FilterTreeItem providerFilterItem = (FilterTreeItem) providerTreeItem;
 
-                boolean disable = itemsToDisable.contains(countryTreeItem.getValue() + "/" + providerTreeItem.getValue());
+                boolean disable = itemsToDisable.contains(countryFilterItem.getValue() + "/" + providerFilterItem.getValue());
                 providerFilterItem.setDisabled(disable);
-                allVisitedProvidersDisabled &= disable;
+
+                if (!disable) allProvidersDisabled = false;
             }
-            countryFilterItem.setDisabled(allVisitedProvidersDisabled);
+
+            countryFilterItem.setDisabled(allProvidersDisabled);
         }
     }
 
@@ -85,23 +83,24 @@ public class ProviderFilterPane extends FilterPane {
     public void fillWith(TrustedList dataToShow) {
         for (Country country : dataToShow.getCountries()) {
             FilterTreeItem<String> countryCheckBox = createCountryCheckBox(country);
-            providers.getRoot().getChildren().add(countryCheckBox);
+            filterTreeView.getRoot().getChildren().add(countryCheckBox);
         }
     }
 
     private FilterTreeItem<String> createCountryCheckBox(Country country) {
-        FilterTreeItem<String> countryTreeItem = new FilterTreeItem<>(country.getName());
+        FilterTreeItem<String> countryFilterItem = new FilterTreeItem<>(country.getName());
         for (Provider provider : country.getProviders()) {
-            FilterTreeItem<String> providerCheckBox = createProviderCheckBox(provider);
-            countryTreeItem.getChildren().add(providerCheckBox);
+            FilterTreeItem<String> providerFilterItem = createProviderCheckBox(provider);
+            countryFilterItem.getChildren().add(providerFilterItem);
         }
-        return countryTreeItem;
+        return countryFilterItem;
     }
 
     private FilterTreeItem<String> createProviderCheckBox(Provider provider) {
-        FilterTreeItem<String> providerTreeItem = new FilterTreeItem<>(provider.getName());
-        providerTreeItem.selectedProperty().addListener(super.handleFilterChange(providerTreeItem.getValue()));
-        return providerTreeItem;
+        FilterTreeItem<String> providerFilterItem = new FilterTreeItem<>(provider.getName());
+        providerFilterItem.selectedProperty().addListener(
+                handleFilterChange(provider.getCountry().getName() + "/" + provider.getName())
+        );
+        return providerFilterItem;
     }
-
 }

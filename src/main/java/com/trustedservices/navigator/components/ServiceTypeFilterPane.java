@@ -13,15 +13,15 @@ public class ServiceTypeFilterPane extends FilterPane {
 
     public ServiceTypeFilterPane() {
         serviceTypes = new ListView<>();
-        this.setText("Service Types");
         this.setFilterView(serviceTypes);
         this.setAssociatedFilter(new ServiceTypeFilter());
     }
 
     @Override
-    protected void setAllCheckBoxStatus(boolean selectionStatus) {
+    protected void setAllCheckBoxStatus(boolean select) {
         serviceTypes.getItems().forEach(checkBox -> {
-            checkBox.setSelected(selectionStatus);
+            if (!checkBox.isDisabled() || !select)
+                checkBox.setSelected(select);
         });
     }
 
@@ -34,6 +34,7 @@ public class ServiceTypeFilterPane extends FilterPane {
         });
     }
 
+    @Override
     public Set<String> getSelectedItems() {
         Set<String> selectedServiceTypes = new HashSet<>(0);
 

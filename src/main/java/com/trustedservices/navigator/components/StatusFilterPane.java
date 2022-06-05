@@ -12,16 +12,16 @@ public class StatusFilterPane extends FilterPane {
     private final ListView<CheckBox> statuses;
 
     public StatusFilterPane() {
-        this.setText("Statuses");
         statuses = new ListView<>();
         setFilterView(statuses);
         this.setAssociatedFilter(new StatusFilter());
     }
 
     @Override
-    protected void setAllCheckBoxStatus(boolean selectionStatus) {
+    protected void setAllCheckBoxStatus(boolean select) {
         statuses.getItems().forEach(checkBox -> {
-            checkBox.setSelected(selectionStatus);
+            if (!checkBox.isDisabled() || !select)
+                checkBox.setSelected(select);
         });
     }
 
@@ -34,6 +34,7 @@ public class StatusFilterPane extends FilterPane {
         });
     }
 
+    @Override
     public Set<String> getSelectedItems() {
         Set<String> selectedStatuses = new HashSet<>();
 
