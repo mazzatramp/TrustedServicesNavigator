@@ -5,8 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class StatusFilterPaneTest {
     //QUI IN ALCUNI METODI MOCKANDO STATUSES POSSO FARLO ALTRI DOVE DEVO VERIFICARE CONDIZIONI STATUSES NON POSSO ARRIVARCI
     //FORSE ESISTE UN MODO INDIRETTAMENTE?
@@ -23,7 +21,7 @@ class StatusFilterPaneTest {
     class todo{
         @Test
         void setSelectionStatusForAll(){
-        statusFilterPane.setSelectionStatusForAll(true);
+        statusFilterPane.setAllCheckBoxStatus(true);
         //MI SERVIREBBE CHE UN METODO RITORNASSE GLI STATUS
     }
         @Test

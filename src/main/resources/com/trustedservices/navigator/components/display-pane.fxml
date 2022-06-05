@@ -10,7 +10,7 @@
     <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <ProgressBar fx:id="downloadBar" prefHeight="15.0" prefWidth="300.0"/>
     </VBox>
-    <Label fx:id="emptyDisplayMessage" visible="false" alignment="CENTER" textAlignment="CENTER"
+    <Label fx:id="emptyDisplayMessage" visible="false" alignment="CENTER" textAlignment="CENTER" textFill="darkgrey"
            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
 </fx:root>

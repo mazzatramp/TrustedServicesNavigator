@@ -5,6 +5,7 @@ import com.trustedservices.domain.TrustedList;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.net.URL;
@@ -15,37 +16,41 @@ public class TrustedListApiBuilder extends TrustedListJsonBuilder {
 
     @Override
     public TrustedList build() {
-        String countriesJson = getResponseFromUrl(COUNTRIES_API_ENDPOINT);
-        String providersJson = getResponseFromUrl(PROVIDERS_API_ENDPOINT);
+        String countriesJson = readJsonFromUrl(COUNTRIES_API_ENDPOINT);
+        String providersJson = readJsonFromUrl(PROVIDERS_API_ENDPOINT);
         super.setCountriesJsonString(countriesJson);
         super.setProvidersJsonString(providersJson);
         return super.build();
     }
 
-    private String getResponseFromUrl(String endpoint) {
+    private String readJsonFromUrl(String endpoint) {
         try {
-            return getContent(endpoint);
+            return getResponse(endpoint);
         } catch (IOException e) {
             System.err.println(e.getMessage());
             throw new RuntimeException(e);
         }
     }
 
-    private String getContent(String endpoint) throws IOException {
+    private String getResponse(String endpoint) throws IOException {
         HttpsURLConnection connection = getHttpsURLConnection(endpoint);
         connection.connect();
 
         if (connection.getResponseCode() != HttpsURLConnection.HTTP_OK)
-            throw new ConnectException();
+            throw new ConnectException("Connection response code: " + connection.getResponseMessage());
 
-        BufferedReader contentReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-        StringBuilder content = new StringBuilder();
-        contentReader.lines().forEach(content::append);
-        contentReader.close();
+        String content = readResponse(connection.getInputStream());
 
         connection.disconnect();
-        return content.toString();
+        return content;
+    }
+
+    private String readResponse(InputStream response) throws IOException {
+        BufferedReader responseReader = new BufferedReader(new InputStreamReader(response));
+        StringBuilder responseBuilder = new StringBuilder();
+        responseReader.lines().forEach(responseBuilder::append);
+        responseReader.close();
+        return responseBuilder.toString();
     }
 
     private HttpsURLConnection getHttpsURLConnection(String endpoint) throws IOException {

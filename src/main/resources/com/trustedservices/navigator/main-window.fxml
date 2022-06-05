@@ -7,16 +7,18 @@
 <?import com.trustedservices.navigator.components.FilterPanesAccordion?>
 <?import com.trustedservices.navigator.components.InfoPane?>
 
-<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<VBox prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.trustedservices.navigator.WindowController">
 
-    <SplitPane fx:id="splitPane" dividerPositions="0.3" VBox.vgrow="ALWAYS">
-        <FilterPanesAccordion fx:id="filterPanes"/>
-        <DisplayPane fx:id="displayPane"/>
-        <InfoPane fx:id="infoPane" />
+    <SplitPane VBox.vgrow="ALWAYS">
+        <FilterPanesAccordion fx:id="filterPanes" minWidth="170" maxWidth="250"/>
+        <SplitPane fx:id="displayAndInfoPanes" orientation="VERTICAL" >
+            <DisplayPane fx:id="displayPane" minWidth="300"/>
+            <InfoPane fx:id="infoPane" maxHeight="125"/>
+        </SplitPane>
     </SplitPane>
 
-    <ToolBar prefHeight="40.0" prefWidth="200.0">
+    <ToolBar prefHeight="40.0">
         <Button text="Filter" onAction="#handleFilterClick"/>
         <Hyperlink fx:id="resetFilters" text="Reset filters" onAction="#handleResetFilters"/>
     </ToolBar>

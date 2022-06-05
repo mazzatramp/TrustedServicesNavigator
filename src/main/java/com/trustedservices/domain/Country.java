@@ -19,8 +19,10 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
     }
 
     @Override
-    public List<String> getInformation() {
-        return List.of(name, code);
+    public String getHumanInformation() {
+        return name + " (" + code + ")\n\n" +
+                "With " + providers.size() + " providers displayed\n" +
+                "And " + countServices() + " services displayed\n";
     }
 
     public String getCode() {
@@ -59,14 +61,26 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
 
     @Override
     public Country clone() {
-        Country countryClone = new Country(name, code);
+        try {
+            Country countryClone = (Country) super.clone();
 
-        this.getProviders().forEach(provider -> {
-            Provider providerClone = provider.clone();
-            providerClone.setCountry(countryClone);
-            countryClone.getProviders().add(providerClone);
-        });
+            this.getProviders().forEach(provider -> {
+                Provider providerClone = provider.clone();
+                providerClone.setCountry(countryClone);
+                countryClone.getProviders().add(providerClone);
+            });
 
-        return countryClone;
+            return countryClone;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private int countServices() {
+        int count = 0;
+        for (Provider provider: providers) {
+            count += provider.getServices().size();
+        }
+        return count;
     }
 }
