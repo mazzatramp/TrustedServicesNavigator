@@ -21,6 +21,7 @@ public class WindowController {
     @FXML
     public void initialize() {
         displayPane.setWindowController(this);
+        filterPanes.setWindowController(this);
         initializeInfoPane();
     }
 
@@ -31,7 +32,7 @@ public class WindowController {
     public void fillDisplayAndFiltersViews() {
         //runLater is needed in order to avoid issues adding a lot of nodes at once
         Platform.runLater(() -> {
-            TrustedList completeList = navigationController.getCompleteList();
+            TrustedList completeList = getCompleteTrustedList();
             displayPane.fillWith(completeList);
             filterPanes.fillFilterPanesWith(completeList);
             navigationController.getFilters().addAll(filterPanes.getAssociatedFilters());
@@ -69,5 +70,9 @@ public class WindowController {
 
     public void bindProgressBarWith(Task<Void> task) {
         displayPane.bindProgressBarWith(task);
+    }
+
+    public TrustedList getCompleteTrustedList() {
+        return navigationController.getCompleteList();
     }
 }

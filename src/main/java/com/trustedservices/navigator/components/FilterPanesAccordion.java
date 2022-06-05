@@ -1,6 +1,7 @@
 package com.trustedservices.navigator.components;
 
 import com.trustedservices.domain.TrustedList;
+import com.trustedservices.navigator.WindowController;
 import com.trustedservices.navigator.filters.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,7 @@ public class FilterPanesAccordion extends Accordion {
     @FXML private StatusFilterPane statuses;
     @FXML private ServiceTypeFilterPane serviceTypes;
 
+    private WindowController windowController;
     private TrustedList completeList;
 
     public FilterPanesAccordion() {
@@ -34,6 +36,10 @@ public class FilterPanesAccordion extends Accordion {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void setWindowController(WindowController windowController) {
+        this.windowController = windowController;
     }
 
     public void fillFilterPanesWith(TrustedList completeList) {
