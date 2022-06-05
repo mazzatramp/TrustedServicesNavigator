@@ -48,8 +48,8 @@ public abstract class FilterPane extends TitledPane {
     }
 
     private void setHyperlinksOnAction() {
-        selectAll.setOnAction(actionEvent -> selectAllFilters(true));
-        deselectAll.setOnAction(actionEvent -> selectAllFilters(false));
+        selectAll.setOnAction(actionEvent -> setSelectedForAll(true));
+        deselectAll.setOnAction(actionEvent -> setSelectedForAll(false));
     }
 
     private void setHyperlinksAsAlwaysActive() {
@@ -63,19 +63,19 @@ public abstract class FilterPane extends TitledPane {
     public abstract void disable(Collection<String> toDisable);
     protected abstract void setAllCheckBoxStatus(boolean status);
 
-    public ChangeListener<Boolean> handleFilterChange(String filterChanged) {
+    public ChangeListener<Boolean> handleFilterChange(String changedFilterValue) {
         return (value, wasSelected, isSelected) -> {
             if (!selectingAll) {
                 if (isSelected)
-                    associatedFilter.getWhitelist().add(filterChanged);
+                    this.getAssociatedFilter().getWhitelist().add(changedFilterValue);
                 else
-                    associatedFilter.getWhitelist().remove(filterChanged);
+                    this.getAssociatedFilter().getWhitelist().remove(changedFilterValue);
                 refreshOtherPanes();
             }
         };
     }
 
-    public void selectAllFilters(boolean checkStatus) {
+    public void setSelectedForAll(boolean checkStatus) {
         selectingAll = true;
         setAllCheckBoxStatus(checkStatus);
         selectingAll = false;

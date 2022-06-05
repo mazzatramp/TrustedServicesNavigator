@@ -40,12 +40,12 @@ public class TrustedList implements Cloneable {
     @Override
     public TrustedList clone() {
         try {
-            TrustedList clone = (TrustedList) super.clone();
-            clone.countries = new TreeSet<>();
+            TrustedList clonedList = (TrustedList) super.clone();
+            clonedList.countries = new TreeSet<>();
             this.countries.forEach(
-                    country -> clone.getCountries().add(country.clone())
+                    country -> clonedList.getCountries().add(country.clone())
             );
-            return clone;
+            return clonedList;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }

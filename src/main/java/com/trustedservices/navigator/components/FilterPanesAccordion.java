@@ -53,7 +53,7 @@ public class FilterPanesAccordion extends Accordion {
     }
 
     private void disableItemsOf(FilterPane filterPane) {
-        Set<String> unselectedFilterItems = filterPane.getUnselectedItems(); //We surely don't disable selected items
+        Set<String> unselectedFilterItems = filterPane.getUnselectedItems(); //We don't disable selected items
         Set<String> itemsToDisable = new HashSet<>();
 
         for (String unselectedFilterItem : unselectedFilterItems) {
@@ -77,9 +77,9 @@ public class FilterPanesAccordion extends Accordion {
     }
 
     public void resetFilters() {
-        providers.selectAllFilters(false);
-        serviceTypes.selectAllFilters(false);
-        statuses.selectAllFilters(false);
+        providers.setSelectedForAll(false);
+        serviceTypes.setSelectedForAll(false);
+        statuses.setSelectedForAll(false);
     }
 
     public List<Filter> getAssociatedFilters() {
