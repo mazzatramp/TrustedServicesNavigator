@@ -76,5 +76,11 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
         }
     }
 
+    private int countServices() {
+        int count = 0;
+        for (Provider provider: providers) {
+            count += provider.getServices().size();
+        }
+        return count;
     }
 }
