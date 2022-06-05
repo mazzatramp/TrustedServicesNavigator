@@ -13,7 +13,7 @@ public class FilterList extends ArrayList<Filter> {
     public FilterList(Collection<? extends Filter> c) {
         super(c);
     }
-
+    
     public TrustedList getFilteredListFrom(TrustedList list) {
         TrustedList filteredList = list.clone();
         this.forEach(filter -> filter.applyTo(filteredList));

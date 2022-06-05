@@ -56,10 +56,12 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
 
     private void readJsonData() {
         try {
+
             jsonCountries = readJson(countriesJsonString, JsonCountry.class);
             jsonProviders = readJson(providersJsonString, JsonProvider.class);
         } catch (JsonProcessingException e) {
             System.err.println("Error Processing json: " + e.getMessage());
+
             throw new RuntimeException(e);
         }
     }

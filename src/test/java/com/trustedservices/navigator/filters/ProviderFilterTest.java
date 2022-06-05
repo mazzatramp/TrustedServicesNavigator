@@ -1,86 +1,124 @@
 package com.trustedservices.navigator.filters;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import com.trustedservices.Help;
+import com.trustedservices.domain.TrustedList;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-//CAPIRE COME TESTARE CLASSI FIGLIE
-@DisplayName("A provider filter")
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@DisplayName("I create a ProviderFilter")
 class ProviderFilterTest {
     ProviderFilter providerFilter;
+
     @Test
-    @DisplayName("is instantiated with new Filter()")
+    @BeforeEach
+    @DisplayName("is instantiated thanks to new ProviderFilter()")
     void isInstantiatedWithNewProviderFilter() {
-        new ProviderFilter();
+        providerFilter= new ProviderFilter();
     }
+
+    @DisplayName("and I use the method ApplyTo")
     @Nested
-    @DisplayName("when new")
-    class WhenNew
-    {
-        @BeforeEach
-        void createAFilterController(){
-            providerFilter = new ProviderFilter();
+    class ApplyTo {
+        TrustedList argumentTrustedList;
+
+        @DisplayName("with a list as argument, should return the same list")
+        @Test
+        void withListAsArgument() {
+            argumentTrustedList = Help.getWholeList();
+            TrustedList expectedFilteredList = argumentTrustedList;
+            providerFilter.applyTo(argumentTrustedList);
+            assertEquals(expectedFilteredList, argumentTrustedList);
+
         }
 
-        @DisplayName("and I use the method FilterByWhiteList")
+        @DisplayName("with a null list as argument, should return a null list")
+        @Test
+        void withNullListAsArgument() {
+            argumentTrustedList = null;
+            assertEquals(null, argumentTrustedList);
+        }
+
+    }
+
+    @DisplayName("and I set a possible whitelist filters")
+    @Nested
+    class setPossibleFilters {
+
+        private void setProviders(Set<String> providers) {
+            providerFilter.setWhitelist(providers);
+        }
+
+        @DisplayName("and I use the method ApplyTo")
         @Nested
-        class FilterByWhiteList{
-            //ESSENDO PROTECTED NON LO POSSO PROVARE QUA
-        }
-    }
-    /*
-    //METODI FATTI PRIMA CHE COUNTRYPROVIDERFILTER DIVENTASSE PROVIDERFILTER
-
-    @Test
-    void applyTo_WholeListWithNoWhitelist_WholeListDoesNotChange() throws IOException {
-        //arrange
-       ProviderFilter cpf = new ProviderFilter();
-       TrustedList listToFilter = Help.getWholeList();
-       List<Country> expectedListOfCountries = listToFilter.getCountries();
-
-       //act
-        cpf.applyTo(listToFilter);
-
-        //assert
-        //test che combacino i paesi e i providers
-        AtomicInteger i= new AtomicInteger();
-        AtomicInteger l= new AtomicInteger();
-        listToFilter.getCountries().forEach(country -> {
-            if (!( country.getName().equals(expectedListOfCountries.get(i.get()).getName())))
-            {
-                fail("I paesi non combaciano");
+        class ApplyTo {
+            TrustedList argumentTrustedList;
+            private static Stream<Arguments> getProviders() {
+                Set<String> providersSet1 = new HashSet<>();
+                providersSet1.add("Austria/Datakom Austria GmbH");
+                Set<String> providersSet2 = new HashSet<>();
+                providersSet2.add("Austria/Datakom Austria GmbH");
+                providersSet2.add("Italy/Azienda Zero");
+                Set<String> providersSet3 = new HashSet<>();
+                providersSet3.add("Italy/Azienda Zero");
+                return Stream.of(
+                        Arguments.of(providersSet1),
+                        Arguments.of(providersSet2),
+                        Arguments.of(providersSet3)
+                );
             }
-            System.out.println("\n actual " +  i.get() + " "+ country.getName());
-            System.out.println("\n expected "  +  i.get() + " " + expectedListOfCountries.get(i.get()).getName());
-            l.getAndSet(0);
-              country.getProviders().forEach(provider -> {
-                if (!(provider.getName().equals
-                        (expectedListOfCountries.get(i.get()).getProviders().get(l.get()).getName())))
-                {
-                    fail("i providers non combaciano")
-                    ;}
-                  System.out.println("\n actual " +  i.get() + " " + l.get() +" " + provider.getName());
-                  System.out.println("\n expected "+  i.get() + " " + l.get() +" "  +
-                          expectedListOfCountries.get(i.get()).getProviders().get(l.get()).getName());
-                l.getAndIncrement();
-            });
-            i.getAndIncrement();
-        });
+            @ParameterizedTest
+            @MethodSource("getProviders")
+            @DisplayName("with a list with compatible elements with the filters as argument, should return a list with only those elements")
+            void withListAsArgument(Set<String> providersSet)  {
+                setProviders(providersSet);
+                argumentTrustedList = Help.getWholeList();
+                Set<String> expectedProviders = new HashSet<>(providersSet);
+                providerFilter.applyTo(argumentTrustedList);
+                System.out.println(" countries"  + argumentTrustedList.getCountries());
+                argumentTrustedList.getCountries().forEach(country -> {
+                    country.getProviders().forEach(provider -> {
+                        System.out.println(provider.getName());
+                        assertTrue(providersSet.contains(country.getName() + "/" + provider.getName() ));
+                        });
+                    //VORREI ANCHE TESTARE CHE ABBIANO GLI STESSI SERVIZI MA POSSO FARLO ANCHE PIU ABVANTI
+                });
+            }
+            @ParameterizedTest
+            @MethodSource("getProviders")
+            @DisplayName("with a list with only incompatible elements with the filters as argument, should return a list with no elements")
+            void withNotPossibleListAsArgument(Set<String> providersSet)  {
+                setProviders(providersSet);
+                argumentTrustedList = new TrustedList();
+                providerFilter.applyTo(argumentTrustedList);
+                argumentTrustedList.getCountries().forEach(country -> {
+                    assertTrue(country.getProviders().isEmpty());
+                });
+            }
+            @ParameterizedTest
+            @MethodSource("getProviders")
+            @DisplayName("with a null list, should return NullPointerException")
+
+            void withNullListAsArgument(Set<String> providersSet) {
+                setProviders(providersSet);
+                argumentTrustedList = null;
+                assertThrows(NullPointerException.class, () -> providerFilter.applyTo(argumentTrustedList));
+            }
+
+        }
+
     }
 
-  /*  NON POSSO FARLO PERCHE' NON POSSO CREARE UNA TRUSTED LIST CON I VALORI CHE VOGLIO IO
-  AL MASSIMO DOVREI CREARE DELLE MAPPE E DEI SET DISTINTI CHE HANNO AL LORO INTERNO COUNTRIES
-  PROVIDERS SERVICE TYPES STATUSES
-  @Test
-    void applyTo_WholeListWithWhitelist_WholeListBecomesWhitelist() throws IOException {
-        //arrange
-        ProviderFilter cpf = new ProviderFilter();
-        TrustedList listToFilter = getWholeList();
-        List<Country> expectedListOfCountries = getATestWhitelist();
-
-        //act
-
-    }*/
-
+//Se metti un filtro nosense  + uno sensato non considera il non sensato
+//cosa succede se metti solo filtri nosense
 }
+
+

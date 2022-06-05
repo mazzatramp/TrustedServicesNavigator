@@ -83,10 +83,6 @@ public class TrustedList implements Cloneable {
                 && this.getStatuses().equals(list.getStatuses()));
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(countries);
-    }
 
     public boolean isEmpty() {
         return getCountries().isEmpty();

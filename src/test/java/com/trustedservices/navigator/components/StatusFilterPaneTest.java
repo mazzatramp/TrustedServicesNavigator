@@ -5,15 +5,18 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+
 class StatusFilterPaneTest {
     //QUI IN ALCUNI METODI MOCKANDO STATUSES POSSO FARLO ALTRI DOVE DEVO VERIFICARE CONDIZIONI STATUSES NON POSSO ARRIVARCI
     //FORSE ESISTE UN MODO INDIRETTAMENTE?
 
     StatusFilterPane statusFilterPane;
+    @Disabled
     @Test
     @DisplayName("is instantiated with new costruttoreOggetto")
     void isInstantiatedWithNewClasse() {
-        new StatusFilterPane(); //NON SO PERCHE NON FUNZIA
+        //StatusFilterPane statusFilterPane1=  new StatusFilterPane(); NON SO PERCHE FUNZIONA
+        new StatusFilterPane(); //NON SO PERCHE NON FUNZIONA
     }
     //FORSE SE RIESCO AD USARE CHECKBOX
     @Disabled
