@@ -115,7 +115,7 @@ class TrustedListTest {
             System.out.println(listToClone.getServiceTypes());
             System.out.println(clonedList.getServiceTypes());
             boolean areEquals = clonedList.equals(listToClone);
-            boolean areEqualsBefore = listToClone.equals(clonedList);
+            boolean areEqualsBefore = trustedList.equals(clonedList);
             System.out.println(areEquals);
             System.out.println(areEqualsBefore);
             assertTrue(areEquals);
