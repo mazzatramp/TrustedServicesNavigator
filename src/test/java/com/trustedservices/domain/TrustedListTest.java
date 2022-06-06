@@ -6,8 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +19,6 @@ class TrustedListTest {
     @DisplayName("when created without arguments thanks to new TrustedList()")
     class WhenNew {
         @BeforeEach
-        @Test
         void createATrustedList() {
             trustedList = new TrustedList();
         }
@@ -41,7 +38,6 @@ class TrustedListTest {
         }
 
         @DisplayName("and I use the method clone, it returns the same TrustedList")
-
         @Test
         void cloneATrustedListEmpty() {
 
@@ -56,17 +52,14 @@ class TrustedListTest {
         @DisplayName("and I use the method equals")
         @Nested
         class Equals {
+            TrustedList argumentList;
+
             @DisplayName("with a not empty list as argument, it returns false")
             @Test
             void equalsWithWholeListAsArgument() {
-                System.out.println(trustedList.getCountries());
-                TrustedList list1 = trustedList;
                 DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-                TrustedList list2 = dummyTrustedList.getDummyTrustedList();
-                System.out.println("lista 1 " + list1.getCountries());
-                System.out.println("lista 2 " + list2.getCountries());
-
-                boolean haveTrustedListsTheSameValues = list1.equals(list2);
+                argumentList = dummyTrustedList.getDummyTrustedList();
+                boolean haveTrustedListsTheSameValues = trustedList.equals(argumentList);
 
                 assertFalse(haveTrustedListsTheSameValues);
             }
@@ -74,12 +67,21 @@ class TrustedListTest {
             @DisplayName("with a empty list as argument, it returns true")
             @Test
             void equalsWithEmptyListAsArgument() {
-                TrustedList list1 = trustedList;
-                TrustedList list2 = new TrustedList();
+                argumentList = new TrustedList();
 
-                boolean haveTrustedListTheSameValues = list1.equals(list2);
+                boolean haveTrustedListTheSameValues = trustedList.equals(argumentList);
 
                 assertTrue(haveTrustedListTheSameValues);
+            }
+
+            @DisplayName("with a null list as argument, it returns false")
+            @Test
+            void equalsWithNullListAsArgument() {
+                argumentList = null;
+
+                boolean haveTrustedListTheSameValues = trustedList.equals(argumentList);
+
+                assertFalse(haveTrustedListTheSameValues);
             }
         }
     }
@@ -88,7 +90,6 @@ class TrustedListTest {
     @Nested
     class constructorWithArgument {
         @BeforeEach
-        @Test
         void createATrustedListWithArgument() {
             Set<Country> listOfCountries;
             DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
@@ -130,7 +131,7 @@ class TrustedListTest {
 
             @DisplayName("and the two lists are the same, it returns true")
             @Test
-            void equalsSameListAsArgument(){
+            void equalsSameListAsArgument() {
                 DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
                 argumentList = dummyTrustedList.getDummyTrustedList();
 

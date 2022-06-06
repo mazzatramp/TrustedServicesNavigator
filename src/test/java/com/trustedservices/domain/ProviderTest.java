@@ -3,6 +3,7 @@ package com.trustedservices.domain;
 import org.junit.jupiter.api.*;
 
 import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("I create a Provider")
@@ -10,7 +11,6 @@ class ProviderTest {
     Provider provider;
 
     @BeforeEach
-    @Test
     @DisplayName("thanks to new Provider(String,Int, String,String,List<ServiceType>,List<providerServices>)")
     void isInstantiatedWithNewProvider() {
         TreeSet<String> providerServiceTypes = new TreeSet<>(
@@ -28,7 +28,7 @@ class ProviderTest {
     @Test
     @DisplayName("or alternatively thanks to new Provider(Country, int, String, String)")
     void AlternativelyIsInstantiatedWithNewProvider() {
-        provider = new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X01");
+        new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X01");
     }
 
     @DisplayName("when I use the method equals(Object)")
@@ -88,9 +88,8 @@ class ProviderTest {
             argumentProvider = getATestProvider1();
 
             int comparison = provider.compareTo(argumentProvider);
-            int expectedReturn = 0;
-
-            assertEquals(expectedReturn, comparison);
+            int expectedResult = 0;
+            assertEquals(expectedResult, comparison);
 
         }
 

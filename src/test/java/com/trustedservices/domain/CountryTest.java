@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
 import java.util.List;
 import java.util.TreeSet;
 
@@ -14,7 +15,6 @@ class CountryTest {
     Country country;
 
     @BeforeEach
-    @Test
     @DisplayName("thanks to new Country(String,String)")
     void createACountry() {
         country = new Country("Austria", "AT");
@@ -83,7 +83,8 @@ class CountryTest {
         @Test
         void SameCountryAsArgument() {
 
-            argumentCountry =  new Country("Austria", "AT");;
+            argumentCountry = new Country("Austria", "AT");
+            ;
 
             int comparison = country.compareTo(argumentCountry);
             int expectedReturn = 0;
@@ -107,7 +108,7 @@ class CountryTest {
         @Test
         void aCountryCompareToLowerCountryReturnPositive() {
             argumentCountry = new Country("Belgium", "Be");
-            country =  new Country("Italy", "IT");
+            country = new Country("Italy", "IT");
 
             int comparison = country.compareTo(argumentCountry);
 
@@ -159,11 +160,11 @@ class CountryTest {
 
     }
 
-    @DisplayName("when I use the method getInformation, it should return a string with information")
+    @DisplayName("when I use the method getHumanInformation, it should return a string with information")
     @Test
     void getInformationMethod() {
         attachProviderToCountry(country);
-        String expectedString= "Austria" + " (" + "AT" + ")\n\n" +
+        String expectedString = "Austria" + " (" + "AT" + ")\n\n" +
                 "With " + 2 + " providers displayed\n" +
                 "And " + 2 + " services displayed\n";
         assertEquals(expectedString, country.getDescription());

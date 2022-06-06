@@ -11,7 +11,6 @@ public class ServiceTest {
     Service service1;
 
     @BeforeEach
-    @Test
     @DisplayName("is instantiated thanks to new Service(int,String, String,String,Set<ServiceType>)")
     void isInstantiatedWithNewService() {
         Provider provider = new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X00");
@@ -26,7 +25,7 @@ public class ServiceTest {
 
     @Test
     @DisplayName("or alternatively is instantiated thanks to new Service(int,String, String,String)")
-    void alternativelyIsInstantiatedWithNewService() {
+    void alternativelyIsInstantiatedWithOtherNewService() {
         Provider provider = new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X00");
         new Service(provider,
                 0,
@@ -55,14 +54,7 @@ public class ServiceTest {
         @DisplayName("and the two services are the same, method should return true")
         @Test
         void SameServiceAsArgument() {
-            Provider provider = new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X00");
-            argumentService = new Service(provider,
-                    0,
-                    "TestService",
-                    "type",
-                    "status",
-                    Set.of("ServiceType1", "ServiceType2")
-            );
+            argumentService = getService1();
 
             boolean areServicesTheSame = service1.equals(argumentService);
 
@@ -83,15 +75,8 @@ public class ServiceTest {
         @DisplayName("and the two services are not the same, method should return false")
         @Test
         void NotSameServiceAsArgument() {
-            Provider provider = new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X00");
+            argumentService = getService2();
 
-            argumentService = new Service(provider,
-                    1,
-                    "TestService2",
-                    "type2",
-                    "status2",
-                    Set.of("ServiceType1")
-            );
             boolean areServicesTheSame = service1.equals(argumentService);
 
             assertFalse(areServicesTheSame);
@@ -110,7 +95,7 @@ public class ServiceTest {
         @Test
         void SameServiceAsArgument() {
 
-            argumentService = service1;
+            argumentService = getService1();
 
             int comparison = service1.compareTo(argumentService);
             int expectedReturn = 0;
@@ -133,32 +118,15 @@ public class ServiceTest {
         @DisplayName("and the argument service is greater, method should return a negative number")
         @Test
         void aServiceCompareToBiggerServiceReturnNegative() {
-            Provider provider = new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X00");
-            Service service2 = new Service(
-                    provider,
-                    1,
-                    "TestService2",
-                    "type2",
-                    "status2",
-                    Set.of("ServiceType1")
-            );
-            assertTrue(service1.compareTo(service2) < 0);
+            argumentService = getService2();
+            assertTrue(service1.compareTo(argumentService) < 0);
         }
 
         @DisplayName("and the argument service is lower, method should return a positive number")
         @Test
         void aServiceCompareToLowerServiceReturnPositive() {
-            Provider provider = new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X00");
-
-            Service service2 = new Service(
-                    provider,
-                    1,
-                    "TestService2",
-                    "type2",
-                    "status2",
-                    Set.of("ServiceType1")
-            );
-            assertTrue(service2.compareTo(service1) > 0);
+            argumentService = getService2();
+            assertTrue(argumentService.compareTo(service1) > 0);
 
         }
 
@@ -174,9 +142,9 @@ public class ServiceTest {
 
     }
 
-    @DisplayName("when I use the method getInformation, it should return a string with information")
+    @DisplayName("when I use the method getHumanInformation, it should return a string with information")
     @Test
-    void getInformationMethod() {
+    void getHumanInformationMethod() {
         String expectedString = "TestService" + "\n" +
                 "Of " + "TestProvider" + " (" + "IT" + ")\n" +
                 "\n" +
@@ -199,6 +167,32 @@ public class ServiceTest {
                 '}';
         assertEquals(expectedString, service1.toString());
 
+    }
+
+    private Service getService1() {
+        Provider provider = new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X00");
+        Service service = new Service(provider,
+                0,
+                "TestService",
+                "type",
+                "status",
+                Set.of("ServiceType1", "ServiceType2")
+        );
+        return service;
+
+    }
+
+    private Service getService2() {
+        Provider provider = new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X00");
+
+        Service service = new Service(provider,
+                1,
+                "TestService2",
+                "type2",
+                "status2",
+                Set.of("ServiceType1")
+        );
+        return service;
     }
 }
 
