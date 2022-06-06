@@ -4,7 +4,6 @@ import org.junit.jupiter.api.*;
 
 import java.util.Set;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("I create a Service")
@@ -183,7 +182,7 @@ public class ServiceTest {
                 "\n" +
                 "Status: " + "status" + "\n" +
                 "Service Types: " + Set.of("ServiceType1", "ServiceType2");
-        assertEquals(expectedString, service1.getHumanInformation());
+        assertEquals(expectedString, service1.getDescription());
 
     }
 

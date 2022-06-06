@@ -13,7 +13,6 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -27,7 +26,7 @@ public abstract class FilterPane extends TitledPane {
     @FXML private Hyperlink deselectAll;
 
     private Filter associatedFilter;
-    private boolean selectingAll;
+    private boolean isWorkingOnAllCheckboxes;
 
     public FilterPane() {
         loadFXMLResource();
@@ -56,8 +55,8 @@ public abstract class FilterPane extends TitledPane {
      * checkboxes upon given boolean value.
      */
     private void setHyperlinksOnAction() {
-        selectAll.setOnAction(actionEvent -> setSelectedForAll(true));
-        deselectAll.setOnAction(actionEvent -> setSelectedForAll(false));
+        selectAll.setOnAction(actionEvent -> selectAllFilterItems(true));
+        deselectAll.setOnAction(actionEvent -> selectAllFilterItems(false));
     }
 
     /**
@@ -71,8 +70,8 @@ public abstract class FilterPane extends TitledPane {
     public abstract void fillWith(TrustedList dataToShow);
     public abstract Set<String> getSelectedItems();
     public abstract Set<String> getUnselectedItems();
-    public abstract void disable(Collection<String> toDisable);
-    protected abstract void setAllCheckBoxStatus(boolean status);
+    public abstract void disable(Set<String> toDisable);
+    protected abstract void setSelectedForAll(boolean status);
 
     /**
      * @param changedFilterValue the string of the selected checkbox on its filter pane. Upon selection, if the user is not using the select all feature,
@@ -83,7 +82,7 @@ public abstract class FilterPane extends TitledPane {
      */
     public ChangeListener<Boolean> handleFilterChange(String changedFilterValue) {
         return (value, wasSelected, isSelected) -> {
-            if (!selectingAll) {
+            if (!isWorkingOnAllCheckboxes) {
                 if (isSelected)
                     this.getAssociatedFilter().getWhitelist().add(changedFilterValue);
                 else
@@ -95,15 +94,15 @@ public abstract class FilterPane extends TitledPane {
 
     /**
      * The method is used by the two Hyperlinks SelectAll and Deselect all to change the status of the checkboxes, the
-     * @param checkStatus is false for deselection, and true for selection, and it's an argument for the function setAllCheckBoxStatus,
+     * @param toSelect is false for deselection, and true for selection, and it's an argument for the function setAllCheckBoxStatus,
      *                    implemented in each filter pane.
      * Then the method sets the whitelist by getting the selected items.
      * The parameter selectingAll is used to not trigger the refresh of the filters for each selection.
      */
-    public void setSelectedForAll(boolean checkStatus) {
-        selectingAll = true;
-        setAllCheckBoxStatus(checkStatus);
-        selectingAll = false;
+    public void selectAllFilterItems(boolean toSelect) {
+        isWorkingOnAllCheckboxes = true;
+        setSelectedForAll(toSelect);
+        isWorkingOnAllCheckboxes = false;
         associatedFilter.setWhitelist(this.getSelectedItems());
         refreshOtherPanes();
     }

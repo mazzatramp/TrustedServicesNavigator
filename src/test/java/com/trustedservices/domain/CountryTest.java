@@ -166,7 +166,7 @@ class CountryTest {
         String expectedString= "Austria" + " (" + "AT" + ")\n\n" +
                 "With " + 2 + " providers displayed\n" +
                 "And " + 2 + " services displayed\n";
-        assertEquals(expectedString, country.getHumanInformation());
+        assertEquals(expectedString, country.getDescription());
 
     }
 

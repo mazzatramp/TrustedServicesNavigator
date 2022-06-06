@@ -1,14 +1,15 @@
 package com.trustedservices.navigator.filters;
 
-import com.trustedservices.Help;
+import com.trustedservices.DummyTrustedList;
 import com.trustedservices.domain.TrustedList;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import java.io.IOException;
+
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,11 +39,11 @@ class ServiceTypeFilterTest {
         @DisplayName("with a list as argument, should return the same list")
         @Test
         void withListAsArgument() {
-            argumentTrustedList = Help.getWholeList();
+            DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+            argumentTrustedList = dummyTrustedList.getDummyTrustedList();
             TrustedList expectedFilteredList = argumentTrustedList;
             serviceTypeFilter.applyTo(argumentTrustedList);
             assertEquals(expectedFilteredList, argumentTrustedList);
-
         }
 
         @DisplayName("with a null list as argument, should return a null list")
@@ -105,18 +106,32 @@ class ServiceTypeFilterTest {
             @DisplayName("with a list with compatible elements with the filters as argument, should return a list with only those elements")
             void withListAsArgument(Set<String> serviceTypes) {
                 setServiceTypes(serviceTypes);
-                argumentTrustedList = Help.getWholeList();
+                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
                 Set<String> expectedServiceType = serviceTypes;
+                AtomicInteger numberOfServiceWithServiceTypeInWhitelist= new AtomicInteger();
+                argumentTrustedList.getCountries().forEach(country -> {
+                    country.getProviders().forEach(provider -> {
+                        provider.getServices().forEach(service -> {
+                            if(service.getServiceTypes().stream().toList().stream().anyMatch(servizio -> expectedServiceType.contains(servizio))){
+                                numberOfServiceWithServiceTypeInWhitelist.getAndIncrement();
+                            };
+                        });
+                    });
+                });
                 serviceTypeFilter.applyTo(argumentTrustedList);
                 argumentTrustedList.getCountries().forEach(country -> {
                     country.getProviders().forEach(provider -> {
                         provider.getServices().forEach(service -> {
-                            System.out.println(service.getServiceTypes());
+                            numberOfServiceWithServiceTypeInWhitelist.getAndDecrement();
+                            //System.out.println(service.getServiceTypes());
                             assertTrue(service.getServiceTypes().stream().toList().stream().anyMatch(servizio -> expectedServiceType.contains(servizio)));
 
                         });
                     });
                 });
+                assertEquals(numberOfServiceWithServiceTypeInWhitelist.get(),0);
+
 
             }
 

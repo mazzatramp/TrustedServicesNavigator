@@ -1,6 +1,5 @@
 package com.trustedservices;
 
-import com.trustedservices.domain.Country;
 import com.trustedservices.domain.TrustedList;
 import com.trustedservices.navigator.web.*;
 import org.jetbrains.annotations.NotNull;
@@ -9,27 +8,23 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class Help {
-    private static TrustedList wholeList;
+public class DummyTrustedList {
+    private static DummyTrustedList instance;
+    private final TrustedList dummyTrustedList;
 
-    private static void constructWholeList() {
+    public DummyTrustedList() {
         try {
-/*
-            TrustedListJsonBuilder builder = setupFileBuilder();
-*/
-            TrustedListJsonBuilder builder = new TrustedListJsonBuilder();
-
-            Path countries = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
-            Path providers = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
-            builder.setCountriesJsonString(Files.readString(countries));
-            builder.setProvidersJsonString(Files.readString(providers));
-
-
-            wholeList = builder.build();
+            this.dummyTrustedList = setupFileBuilder().build();
         } catch (IOException e) {
             System.err.println("Error reading file\n" + e.getMessage());
             throw new RuntimeException(e);
         }
+    }
+
+    public static DummyTrustedList getInstance() {
+        if (instance == null)
+            instance = new DummyTrustedList();
+        return instance;
     }
 
     @NotNull
@@ -43,11 +38,7 @@ public class Help {
         return builder;
     }
 
-    public static TrustedList getWholeList() {
-        if (wholeList == null) {
-            constructWholeList();
-        }
-        return wholeList.clone();
+    public TrustedList getDummyTrustedList() {
+        return dummyTrustedList.clone();
     }
-
 }

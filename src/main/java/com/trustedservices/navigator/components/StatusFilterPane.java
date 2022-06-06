@@ -22,7 +22,7 @@ public class StatusFilterPane extends FilterPane {
     }
 
     @Override
-    protected void setAllCheckBoxStatus(boolean select) {
+    protected void setSelectedForAll(boolean select) {
         statuses.getItems().forEach(checkBox -> {
             if (!checkBox.isDisabled() || !select)
                 checkBox.setSelected(select);
@@ -70,7 +70,7 @@ public class StatusFilterPane extends FilterPane {
      * @see FilterPanesAccordion
      */
     @Override
-    public void disable(Collection<String> itemsToDisable) {
+    public void disable(Set<String> itemsToDisable) {
         statuses.getItems().forEach(statusItem -> {
             boolean toDisable = itemsToDisable.contains(statusItem.getText());
             statusItem.setDisable(toDisable);

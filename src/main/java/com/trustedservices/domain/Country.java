@@ -30,7 +30,7 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
      * @see Service
      */
     @Override
-    public String getHumanInformation() {
+    public String getDescription() {
         return name + " (" + code + ")\n\n" +
                 "With " + providers.size() + " providers displayed\n" +
                 "And " + countServices() + " services displayed\n";

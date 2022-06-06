@@ -1,6 +1,6 @@
 package com.trustedservices.domain;
 
-import com.trustedservices.Help;
+import com.trustedservices.DummyTrustedList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -61,7 +61,8 @@ class TrustedListTest {
             void equalsWithWholeListAsArgument() {
                 System.out.println(trustedList.getCountries());
                 TrustedList list1 = trustedList;
-                TrustedList list2 = Help.getWholeList();
+                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+                TrustedList list2 = dummyTrustedList.getDummyTrustedList();
                 System.out.println("lista 1 " + list1.getCountries());
                 System.out.println("lista 2 " + list2.getCountries());
 
@@ -80,7 +81,6 @@ class TrustedListTest {
 
                 assertTrue(haveTrustedListTheSameValues);
             }
-
         }
     }
 
@@ -91,7 +91,8 @@ class TrustedListTest {
         @Test
         void createATrustedListWithArgument() {
             Set<Country> listOfCountries;
-            listOfCountries = Help.getWholeList().getCountries();
+            DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+            listOfCountries = dummyTrustedList.getDummyTrustedList().getCountries();
             trustedList = new TrustedList(listOfCountries);
         }
 
@@ -130,7 +131,8 @@ class TrustedListTest {
             @DisplayName("and the two lists are the same, it returns true")
             @Test
             void equalsSameListAsArgument(){
-                argumentList = Help.getWholeList();
+                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+                argumentList = dummyTrustedList.getDummyTrustedList();
 
                 boolean haveTrustedListTheSameValues = trustedList.equals(argumentList);
 

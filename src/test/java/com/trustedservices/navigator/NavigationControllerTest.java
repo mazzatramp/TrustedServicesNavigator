@@ -1,21 +1,16 @@
 package com.trustedservices.navigator;
-import com.trustedservices.Help;
+
 import com.trustedservices.domain.TrustedList;
-import com.trustedservices.navigator.NavigationController;
-import com.trustedservices.navigator.filters.Filter;
 import com.trustedservices.navigator.filters.ProviderFilter;
 import com.trustedservices.navigator.filters.ServiceTypeFilter;
 import com.trustedservices.navigator.filters.StatusFilter;
 import com.trustedservices.navigator.web.TrustedListBuilder;
 import com.trustedservices.navigator.web.TrustedListJsonBuilder;
 import org.junit.jupiter.api.*;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,7 +37,7 @@ class NavigationControllerTest {
         }
 
         @Test
-        @DisplayName("and I use the method getFilteredList after setting filters should return filtered list")
+        @DisplayName("and I use the method getFilteredList after setting filters and building a complete list should return filtered list")
         void getFilteredList() throws IOException {
             TrustedListJsonBuilder builder = new TrustedListJsonBuilder();
             Path countries = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
@@ -50,7 +45,7 @@ class NavigationControllerTest {
             builder.setCountriesJsonString(Files.readString(countries));
             builder.setProvidersJsonString(Files.readString(providers));
             navigationController.buildCompleteList(builder);
-            System.out.println("ciao");
+
             Set<String> providerSet = new HashSet<>();
             providerSet.add("Austria/PrimeSign GmbH");
             ProviderFilter filterProvider = new ProviderFilter();
@@ -66,19 +61,15 @@ class NavigationControllerTest {
             navigationController.getFilters().add(filterProvider);
             navigationController.getFilters().add(filterServiceType);
             navigationController.getFilters().add(filterStatus);
+
             Set<String> providersExpected = navigationController.getFilters().get(0).getWhitelist();
             Set<String> expectedServiceTypes = navigationController.getFilters().get(1).getWhitelist();
             Set<String> expectedStatuses = navigationController.getFilters().get(2).getWhitelist();
             TrustedList filteredList = navigationController.getFilteredList();
-            System.out.println("ciao");
-            System.out.println(filteredList.getCountries());
             filteredList.getCountries().forEach(country -> {
                 country.getProviders().forEach(provider -> {
-                    System.out.println(provider.getName());
                     assertTrue(providersExpected.contains(country.getName() + "/" + provider.getName()));
                     provider.getServices().forEach(service -> {
-                        System.out.println(service.getServiceTypes());
-                        System.out.println(service.getStatus());
                         assertTrue(service.getServiceTypes().stream().toList().stream().anyMatch(servizio -> expectedServiceTypes.contains(servizio)));
                         assertTrue(expectedStatuses.contains(service.getStatus()));
                     });
