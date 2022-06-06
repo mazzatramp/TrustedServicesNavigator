@@ -18,11 +18,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProviderFilterTest {
     ProviderFilter providerFilter;
 
-    @Test
     @BeforeEach
     @DisplayName("is instantiated thanks to new ProviderFilter()")
     void isInstantiatedWithNewProviderFilter() {
-        providerFilter= new ProviderFilter();
+        providerFilter = new ProviderFilter();
     }
 
     @DisplayName("and I use the method ApplyTo")
@@ -62,6 +61,7 @@ class ProviderFilterTest {
         @Nested
         class ApplyTo {
             TrustedList argumentTrustedList;
+
             private static Stream<Arguments> getProviders() {
                 Set<String> providersSet1 = new HashSet<>();
                 providersSet1.add("Austria/Datakom Austria GmbH");
@@ -70,46 +70,49 @@ class ProviderFilterTest {
                 providersSet2.add("Italy/Azienda Zero");
                 Set<String> providersSet3 = new HashSet<>();
                 providersSet3.add("Italy/Azienda Zero");
+                providersSet3.add("NoSenseFilter");
+                Set<String> providersSet4 = new HashSet<>();
+                providersSet4.add("NoSenseFilter");
                 return Stream.of(
                         Arguments.of(providersSet1),
                         Arguments.of(providersSet2),
-                        Arguments.of(providersSet3)
+                        Arguments.of(providersSet3),
+                        Arguments.of(providersSet4)
                 );
             }
+
             @ParameterizedTest
             @MethodSource("getProviders")
             @DisplayName("with a list with compatible elements with the filters as argument, should return a list with only those elements")
-            void withListAsArgument(Set<String> providersSet)  {
+            void withListAsArgument(Set<String> providersSet) {
                 setProviders(providersSet);
                 DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
                 argumentTrustedList = dummyTrustedList.getDummyTrustedList();
                 Set<String> expectedProviders = new HashSet<>(providersSet);
-                AtomicInteger numberOfServiceOfProviderInWhitelist= new AtomicInteger();
+                AtomicInteger numberOfServiceOfProviderInWhitelist = new AtomicInteger();//necessario per controllare che il numero di servizi compatibili con i filtri
+                //nella lista iniziale sia uguale al numero di servizi della lista filtrata
                 argumentTrustedList.getCountries().forEach(country -> {
                     country.getProviders().forEach(provider -> {
-                        if(providersSet.contains(country.getName() + "/" + provider.getName() )){
+                        if (providersSet.contains(country.getName() + "/" + provider.getName())) {
                             numberOfServiceOfProviderInWhitelist.getAndIncrement();
                         }
                     });
                 });
                 providerFilter.applyTo(argumentTrustedList);
-                //System.out.println(" countries"  + argumentTrustedList.getCountries());
                 argumentTrustedList.getCountries().forEach(country -> {
                     country.getProviders().forEach(provider -> {
                         numberOfServiceOfProviderInWhitelist.getAndDecrement();
-
-                        //System.out.println(provider.getName());
-                        assertTrue(providersSet.contains(country.getName() + "/" + provider.getName() ));
-                        });
-                    //VORREI ANCHE TESTARE CHE ABBIANO GLI STESSI SERVIZI MA POSSO FARLO ANCHE PIU ABVANTI
+                        assertTrue(providersSet.contains(country.getName() + "/" + provider.getName()));
+                    });
                 });
-                assertEquals(numberOfServiceOfProviderInWhitelist.get(),0);
+                assertEquals(numberOfServiceOfProviderInWhitelist.get(), 0);
 
             }
+
             @ParameterizedTest
             @MethodSource("getProviders")
             @DisplayName("with a list with only incompatible elements with the filters as argument, should return a list with no elements")
-            void withNotPossibleListAsArgument(Set<String> providersSet)  {
+            void withNotPossibleListAsArgument(Set<String> providersSet) {
                 setProviders(providersSet);
                 argumentTrustedList = new TrustedList();
                 providerFilter.applyTo(argumentTrustedList);
@@ -117,10 +120,10 @@ class ProviderFilterTest {
                     assertTrue(country.getProviders().isEmpty());
                 });
             }
+
             @ParameterizedTest
             @MethodSource("getProviders")
             @DisplayName("with a null list, should return NullPointerException")
-
             void withNullListAsArgument(Set<String> providersSet) {
                 setProviders(providersSet);
                 argumentTrustedList = null;
@@ -130,9 +133,6 @@ class ProviderFilterTest {
         }
 
     }
-
-//Se metti un filtro nosense  + uno sensato non considera il non sensato
-//cosa succede se metti solo filtri nosense
 }
 
 

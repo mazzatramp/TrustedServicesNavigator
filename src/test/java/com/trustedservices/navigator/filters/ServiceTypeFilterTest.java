@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class ServiceTypeFilterTest {
     ServiceTypeFilter serviceTypeFilter;
 
-    @Test
     @BeforeEach
     @DisplayName("is instantiated thanks to new ServiceTypeFilter()")
     void isInstantiatedWithNewServiceTypeFilter() {
@@ -93,11 +92,18 @@ class ServiceTypeFilterTest {
                 serviceTypesSet4.add("CertUndefined");
                 serviceTypesSet4.add("GenESig");
                 serviceTypesSet4.add("CertESig");
+                Set<String> serviceTypesSet5 = new HashSet<>();
+                serviceTypesSet5.add("CertESig");
+                serviceTypesSet5.add("noSenseFilter");
+                Set<String> serviceTypesSet6 = new HashSet<>();
+                serviceTypesSet6.add("noSenseFilter");
                 return Stream.of(
                         Arguments.of(serviceTypesSet1),
                         Arguments.of(serviceTypesSet2),
                         Arguments.of(serviceTypesSet3),
-                        Arguments.of(serviceTypesSet4)
+                        Arguments.of(serviceTypesSet4),
+                        Arguments.of(serviceTypesSet5),
+                        Arguments.of(serviceTypesSet6)
                 );
             }
 
@@ -109,13 +115,15 @@ class ServiceTypeFilterTest {
                 DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
                 argumentTrustedList = dummyTrustedList.getDummyTrustedList();
                 Set<String> expectedServiceType = serviceTypes;
-                AtomicInteger numberOfServiceWithServiceTypeInWhitelist= new AtomicInteger();
+                AtomicInteger numberOfServiceWithServiceTypeInWhitelist = new AtomicInteger();//necessario per controllare che il numero di servizi compatibili con i filtri
+                //nella lista iniziale sia uguale al numero di servizi della lista filtrata
                 argumentTrustedList.getCountries().forEach(country -> {
                     country.getProviders().forEach(provider -> {
                         provider.getServices().forEach(service -> {
-                            if(service.getServiceTypes().stream().toList().stream().anyMatch(servizio -> expectedServiceType.contains(servizio))){
+                            if (service.getServiceTypes().stream().anyMatch(currentService -> expectedServiceType.contains(currentService))) {
                                 numberOfServiceWithServiceTypeInWhitelist.getAndIncrement();
-                            };
+                            }
+                            ;
                         });
                     });
                 });
@@ -124,13 +132,12 @@ class ServiceTypeFilterTest {
                     country.getProviders().forEach(provider -> {
                         provider.getServices().forEach(service -> {
                             numberOfServiceWithServiceTypeInWhitelist.getAndDecrement();
-                            //System.out.println(service.getServiceTypes());
-                            assertTrue(service.getServiceTypes().stream().toList().stream().anyMatch(servizio -> expectedServiceType.contains(servizio)));
+                            assertTrue(service.getServiceTypes().stream().anyMatch(currentService -> expectedServiceType.contains(currentService)));
 
                         });
                     });
                 });
-                assertEquals(numberOfServiceWithServiceTypeInWhitelist.get(),0);
+                assertEquals(numberOfServiceWithServiceTypeInWhitelist.get(), 0);
 
 
             }
@@ -157,7 +164,6 @@ class ServiceTypeFilterTest {
         }
 
     }
-
 
 
 }
