@@ -31,9 +31,9 @@ class CountryTest {
 
             argumentCountry = country;
 
-            boolean areCountriesTHeSame = country.equals(argumentCountry);
+            boolean areCountriesTheSame = country.equals(argumentCountry);
 
-            assertTrue(areCountriesTHeSame);
+            assertTrue(areCountriesTheSame);
 
         }
 
@@ -44,9 +44,9 @@ class CountryTest {
             argumentCountry = new Country("Austria", "AT");
 
 
-            boolean areCountriesTHeSame = country.equals(argumentCountry);
+            boolean areCountriesTheSame = country.equals(argumentCountry);
 
-            assertTrue(areCountriesTHeSame);
+            assertTrue(areCountriesTheSame);
         }
 
         @DisplayName("and the two countries are not the same, method should return false")
@@ -55,9 +55,9 @@ class CountryTest {
 
             argumentCountry = new Country("Italia", "IT");
 
-            boolean areCountriesTHeSame = country.equals(argumentCountry);
+            boolean areCountriesTheSame = country.equals(argumentCountry);
 
-            assertFalse(areCountriesTHeSame);
+            assertFalse(areCountriesTheSame);
         }
 
         @DisplayName("with a country null as argument, method should return false")
@@ -86,14 +86,14 @@ class CountryTest {
             argumentCountry =  new Country("Austria", "AT");;
 
             int comparison = country.compareTo(argumentCountry);
-            int expectedreturn = 0;
+            int expectedReturn = 0;
 
-            assertEquals(expectedreturn, comparison);
+            assertEquals(expectedReturn, comparison);
         }
 
         @DisplayName("and the argument country is greater, method should return a negative number")
         @Test
-        void aCountry_CompareTo_BiggerCountry_ReturnNegative() {
+        void aCountryCompareToBiggerCountryReturnNegative() {
 
             argumentCountry = new Country("Belgium", "BE");
 
@@ -105,7 +105,7 @@ class CountryTest {
 
         @DisplayName("and the argument country is lower, method should return a positive number")
         @Test
-        void aCountry_CompareTo_LowerCountry_ReturnPositive() {
+        void aCountryCompareToLowerCountryReturnPositive() {
             argumentCountry = new Country("Belgium", "Be");
             country =  new Country("Italy", "IT");
 
@@ -114,9 +114,9 @@ class CountryTest {
             assertTrue(comparison > 0);
         }
 
-        @DisplayName("and the argument country is null, method should return an error")
+        @DisplayName("and the argument country is null, method should return a NullPointerException")
         @Test
-        void aCountry_CompareTo_null() {
+        void aCountryCompareToNull() {
             Country argumentCountry = null;
 
             assertThrows(NullPointerException.class, () -> country.compareTo(argumentCountry));
@@ -140,27 +140,7 @@ class CountryTest {
         @DisplayName("after attaching providers to country, it returns the same country with the providers attached")
         @Test
         void cloneACountryWithProvidersReturnsSameCountry() {
-
-
-            TreeSet<String> providerServiceTypes = new TreeSet<>(
-                    List.of("QCertESeal", "QCertESig", "QTimestamp")
-            );
-            TreeSet<Service> providerServices = new TreeSet<>();
-            Provider provider1 = new Provider(country, 0, "TestProvider", "TTT-000-X00", providerServiceTypes, providerServices);
-            providerServices.add(new Service(provider1, 1, "Service 1", "QC", "granted", providerServiceTypes));
-            providerServices.forEach(service -> service.setProvider(provider1));
-            TreeSet<String> providerServiceTypes2 = new TreeSet<>(
-                    List.of("QCertESeal", "QCertESig", "QTimestamp")
-            );
-
-            TreeSet<Service> providerServices2 = new TreeSet<>();
-
-            Provider provider2 = new Provider(country, 0, "TestProvider", "TTT-000-X01", providerServiceTypes2, providerServices2);
-
-            providerServices2.add(new Service(provider2, 1, "Service 1", "QC", "granted", providerServiceTypes2));
-            providerServices2.forEach(service -> service.setProvider(provider2));
-            country.getProviders().add(provider1);
-            country.getProviders().add(provider2);
+            attachProviderToCountry(country);
             Country countryToBeCloned = country;
             Country clonedCountry = countryToBeCloned.clone();
             assertEquals(countryToBeCloned, clonedCountry);
@@ -182,6 +162,16 @@ class CountryTest {
     @DisplayName("when I use the method getInformation, it should return a string with information")
     @Test
     void getInformationMethod() {
+        attachProviderToCountry(country);
+        String expectedString= "Austria" + " (" + "AT" + ")\n\n" +
+                "With " + 2 + " providers displayed\n" +
+                "And " + 2 + " services displayed\n";
+        assertEquals(expectedString, country.getHumanInformation());
+
+    }
+
+    private void attachProviderToCountry(Country country) // two test providers are attached to the country
+    {
         TreeSet<String> providerServiceTypes = new TreeSet<>(
                 List.of("QCertESeal", "QCertESig", "QTimestamp")
         );
@@ -193,18 +183,10 @@ class CountryTest {
                 List.of("QCertESeal", "QCertESig", "QTimestamp")
         );
         TreeSet<Service> providerServices2 = new TreeSet<>();
-
         Provider provider2 = new Provider(country, 0, "TestProvider", "TTT-000-X01", providerServiceTypes2, providerServices2);
-
         providerServices2.add(new Service(provider2, 1, "Service 1", "QC", "granted", providerServiceTypes2));
         providerServices2.forEach(service -> service.setProvider(provider2));
         country.getProviders().add(provider1);
         country.getProviders().add(provider2);
-        String expectedString= "Austria" + " (" + "AT" + ")\n\n" +
-                "With " + 2 + " providers displayed\n" +
-                "And " + 2 + " services displayed\n";
-        assertEquals(expectedString, country.getHumanInformation());
-
     }
-
 }
