@@ -109,7 +109,6 @@ class TrustedListTest {
 
             TrustedList clonedList = listToClone.clone();
 
-            //mettere un fail se non è vuota?
             assertEquals(listToClone, clonedList);
         }
 
@@ -151,7 +150,7 @@ class TrustedListTest {
 
             @DisplayName("with a null list as argument, it returns false")
             @Test
-            void equalsWithNullListAsArgument() throws IOException {
+            void equalsWithNullListAsArgument() {
                 argumentList = null;
 
                 boolean haveTrustedListTheSameValues = trustedList.equals(argumentList);
@@ -163,6 +162,7 @@ class TrustedListTest {
         @DisplayName("and I use the method updateServiceTypesAndStatuses, statuses and serviceTypes should be full with all the possible elements")
         @Test
         void updateServiceTypesAndStatuses() {
+            //ListOfAllServiceTypes and listOfAllStatuses are filled with all teh possible service types and statuses
             Set<String> listOfAllServiceTypes = new HashSet<>();
             Set<String> listOfAllStatuses = new HashSet<>();
             listOfAllStatuses.add("granted");
@@ -185,12 +185,11 @@ class TrustedListTest {
             listOfAllServiceTypes.add("CertUndefined");
             listOfAllServiceTypes.add("GenESig");
             listOfAllServiceTypes.add("CertESig");
+
             trustedList.updateServiceTypesAndStatuses();
             trustedList.getCountries().forEach(country -> {
                 country.getProviders().forEach(provider -> {
                     provider.getServices().forEach(service -> {
-                        System.out.println((service.getServiceTypes()));
-                        System.out.println((service.getStatus()));
                         assertTrue(listOfAllServiceTypes.containsAll(service.getServiceTypes()));
                         assertTrue(listOfAllStatuses.contains(service.getStatus()));
                     });

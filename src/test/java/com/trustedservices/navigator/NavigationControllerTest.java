@@ -107,9 +107,7 @@ class NavigationControllerTest {
             void trustedListBuilderNullAsArgument(){
                 TrustedListBuilder argumentTrustedListBuilder= null;
                 assertThrows(NullPointerException.class, () -> navigationController.buildCompleteList(argumentTrustedListBuilder));
-
             }
-
         }
     }
 }

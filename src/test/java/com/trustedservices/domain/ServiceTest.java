@@ -1,11 +1,9 @@
 package com.trustedservices.domain;
 
-import com.trustedservices.Help;
 import org.junit.jupiter.api.*;
 
-import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -176,9 +174,10 @@ public class ServiceTest {
         assertEquals(serviceToBeCloned, clonedService);
 
     }
+
     @DisplayName("when I use the method getInformation, it should return a string with information")
     @Test
-    void getInformationMethod(){
+    void getInformationMethod() {
         String expectedString = "TestService" + "\n" +
                 "Of " + "TestProvider" + " (" + "IT" + ")\n" +
                 "\n" +
@@ -187,12 +186,11 @@ public class ServiceTest {
         assertEquals(expectedString, service1.getHumanInformation());
 
     }
+
     @DisplayName("when I use the method toString, it should return tspId,serviceId, name,type,status, serviceTypes")
     @Test
-    void toStringMethod(){
-
-
-        String expectedString= "Service{" +
+    void toStringMethod() {
+        String expectedString = "Service{" +
                 "tspId=" + "0" +
                 ", serviceId=" + 0 +
                 ", name='" + "TestService" + '\'' +
