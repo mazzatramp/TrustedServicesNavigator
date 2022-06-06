@@ -190,8 +190,6 @@ public class ServiceTest {
     @DisplayName("when I use the method toString, it should return tspId,serviceId, name,type,status, serviceTypes")
     @Test
     void toStringMethod() {
-
-
         String expectedString = "Service{" +
                 "tspId=" + "0" +
                 ", serviceId=" + 0 +

@@ -75,7 +75,8 @@ public class DisplayPane extends AnchorPane {
     }
 
     /**
-     * @param dataToShow a version of the list that is empty once you start, and filtered after.
+     * @param dataToShow a version of the list that is empty once you start, and filtered after. It calls the method getRoot to create
+     * the rootTreeItem and countries, then sets it.
      * Shows a message if dataToShow is Empty
      */
     public void fillWith(TrustedList dataToShow) {

@@ -25,14 +25,6 @@ class StatusFilterTest {
         statusFilter = new StatusFilter();
     }
 
-    //whitelist is set with setWhitelist method
-    @Test
-    @DisplayName("I can set a whiteList with setWhitelist(Set<String>) ")
-    void setWhitelistTest(){
-        statusFilter.setWhitelist(new HashSet<>());
-        //Volendo posso mettere sia qua che nei costruttori degli assert
-    }
-
     @DisplayName("when I use the method ApplyTo")
     @Nested
     class ApplyTo {
