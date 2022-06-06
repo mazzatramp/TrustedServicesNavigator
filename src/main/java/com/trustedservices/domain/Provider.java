@@ -30,10 +30,6 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
         this(country, providerId, name, trustmark, new HashSet<>(), new TreeSet<>());
     }
 
-    public String getCountryCode() {
-        return country.getCode();
-    }
-
     public int getProviderId() {
         return providerId;
     }
@@ -58,6 +54,7 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
                 "Based in " + country.getName() + " (" + country.getCode() + ")\n" +
                 "With " + services.size() + " services displayed.";
     }
+
     public String getTrustmark() {
         return trustmark;
     }
@@ -88,7 +85,6 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
     @Override
     public int hashCode() {
         return Objects.hash(providerId);
-
     }
 
     @Override
