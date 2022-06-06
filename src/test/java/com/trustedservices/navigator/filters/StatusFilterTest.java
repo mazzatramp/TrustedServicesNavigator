@@ -51,7 +51,7 @@ class StatusFilterTest {
 
     }
 
-    @DisplayName("after I set a whitelist of filters")
+    @DisplayName("after I set a whitelist of filters that can link to a service")
     @Nested
     class setPossibleFilters {
 
@@ -83,24 +83,23 @@ class StatusFilterTest {
                 statusSet5.add("deprecatedatnationallevel");
                 statusSet5.add("recognisedatnationallevel");
                 statusSet5.add("noSenseFilter");
-                Set<String> statusSet6 = new HashSet<>();
-                statusSet6.add("noSenseFilter");
+
                 return Stream.of(
                         Arguments.of(statusSet1),
                         Arguments.of(statusSet2),
                         Arguments.of(statusSet3),
                         Arguments.of(statusSet4),
-                        Arguments.of(statusSet5),
-                        Arguments.of(statusSet6)
+                        Arguments.of(statusSet5)
 
                 );
             }
 
             @ParameterizedTest
             @MethodSource("getStatuses")
-            @DisplayName("with a list with compatible elements with the filters as argument, return a list with only those elements")
+            @DisplayName("with a list with compatible elements with the filters as argument, return a not empty list with only those elements")
             void withListAsArgument(Set<String> statusSet) {
                 setStatusesInWhitelist(statusSet);
+                Set<String> expectedStatusSet = statusSet;
                 DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
                 argumentTrustedList = dummyTrustedList.getDummyTrustedList();
                 AtomicInteger numberOfServicesWithStatusInWhitelist = new AtomicInteger(); //necessario per controllare che il numero di servizi compatibili con i filtri
@@ -109,7 +108,7 @@ class StatusFilterTest {
                 argumentTrustedList.getCountries().forEach(country -> {
                     country.getProviders().forEach(provider -> {
                         provider.getServices().forEach(service -> {
-                            if (statusSet.contains(service.getStatus())) {
+                            if (statusSet.contains(service.getStatus()) || expectedStatusSet.isEmpty()) {
                                 numberOfServicesWithStatusInWhitelist.getAndIncrement();
                             }
                             ;
@@ -117,11 +116,12 @@ class StatusFilterTest {
                     });
                 });
                 statusFilter.applyTo(argumentTrustedList);
+                assertFalse(argumentTrustedList.isEmpty());
                 argumentTrustedList.getCountries().forEach(country -> {
                     country.getProviders().forEach(provider -> {
                         provider.getServices().forEach(service -> {
                             numberOfServicesWithStatusInWhitelist.getAndDecrement();
-                            assertTrue(statusSet.contains(service.getStatus()));
+                            assertTrue(expectedStatusSet.contains(service.getStatus()) || expectedStatusSet.isEmpty());
                         });
                     });
                 });
@@ -139,6 +139,58 @@ class StatusFilterTest {
                 assertTrue(argumentTrustedList.getCountries().isEmpty());
             }
 
+            @DisplayName("with a null list, should return NullPointerException unless filters are empty")
+            @ParameterizedTest
+            @MethodSource("getStatuses")
+            void withNullListAsArgumentAndNotEmptyFilters(Set<String> statuses) {
+                setStatusesInWhitelist(statuses);
+                argumentTrustedList = null;
+
+                assertThrows(NullPointerException.class, () -> statusFilter.applyTo(argumentTrustedList));
+
+            }
+
+
+        }
+
+    }
+
+    @DisplayName("after I set a whitelist of filters that cannot link to a service")
+    @Nested
+    class setImpossibleFilters {
+
+        private void setStatusesInWhitelist(Set<String> statuses) {
+            statusFilter.setWhitelist(statuses);
+        }
+
+        @DisplayName("and I use the method ApplyTo")
+        @Nested
+        class ApplyTo {
+            TrustedList argumentTrustedList;
+
+            private static Stream<Arguments> getStatuses() {
+                Set<String> statusSet1 = new HashSet<>();
+                statusSet1.add("noSenseFilter");
+                Set<String> statusSet2 = new HashSet<>();
+                statusSet2.add("noSenseFilter");
+                statusSet2.add("anotherNoSenseFilter");
+                return Stream.of(
+                        Arguments.of(statusSet1),
+                        Arguments.of(statusSet2)
+                );
+            }
+
+            @ParameterizedTest
+            @MethodSource("getStatuses")
+            @DisplayName("with a list returns no element")
+            void withListAsArgument(Set<String> statusSet) {
+                setStatusesInWhitelist(statusSet);
+                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+                statusFilter.applyTo(argumentTrustedList);
+                assertTrue(argumentTrustedList.isEmpty());
+            }
+
             @DisplayName("with a null list, throw NullPointer Exception")
             @ParameterizedTest
             @MethodSource("getStatuses")
@@ -148,6 +200,34 @@ class StatusFilterTest {
                 assertThrows(NullPointerException.class, () -> statusFilter.applyTo(argumentTrustedList));
             }
 
+        }
+
+    }
+
+
+    @DisplayName("after I set a null whitelist")
+    @Nested
+    class setNullFilters {
+
+        private void setStatusesInWhitelist(Set<String> statuses) {
+            statusFilter.setWhitelist(statuses);
+        }
+
+        @DisplayName("and I use the method ApplyTo")
+        @Nested
+        class ApplyTo {
+            TrustedList argumentTrustedList;
+
+            @Test
+            @DisplayName("with a list, throw NullPointerException")
+            void withListAsArgument() {
+                Set<String> statusSet = null;
+                setStatusesInWhitelist(statusSet);
+                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+                assertThrows(NullPointerException.class, () -> statusFilter.applyTo(argumentTrustedList));
+
+            }
         }
 
     }
