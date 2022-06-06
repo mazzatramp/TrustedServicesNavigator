@@ -3,7 +3,10 @@ package com.trustedservices.domain;
 import org.junit.jupiter.api.*;
 
 import java.util.Set;
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -183,7 +186,7 @@ public class ServiceTest {
                 "\n" +
                 "Status: " + "status" + "\n" +
                 "Service Types: " + Set.of("ServiceType1", "ServiceType2");
-        assertEquals(expectedString, service1.getHumanInformation());
+        assertEquals(expectedString, service1.getDescription());
 
     }
 

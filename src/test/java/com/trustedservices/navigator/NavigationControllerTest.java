@@ -1,8 +1,5 @@
 package com.trustedservices.navigator;
-import com.trustedservices.Help;
 import com.trustedservices.domain.TrustedList;
-import com.trustedservices.navigator.NavigationController;
-import com.trustedservices.navigator.filters.Filter;
 import com.trustedservices.navigator.filters.ProviderFilter;
 import com.trustedservices.navigator.filters.ServiceTypeFilter;
 import com.trustedservices.navigator.filters.StatusFilter;
@@ -13,9 +10,7 @@ import org.junit.jupiter.api.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;

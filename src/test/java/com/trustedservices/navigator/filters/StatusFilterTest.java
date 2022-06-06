@@ -1,6 +1,6 @@
 package com.trustedservices.navigator.filters;
 
-import com.trustedservices.Help;
+import com.trustedservices.DummyTrustedList;
 import com.trustedservices.domain.TrustedList;
 import org.junit.jupiter.api.*;
 import java.util.HashSet;
@@ -33,7 +33,8 @@ class StatusFilterTest {
         @DisplayName("with a list as argument, return the same list")
         @Test
         void withListAsArgument() {
-            argumentTrustedList = Help.getWholeList();
+            DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+            argumentTrustedList = dummyTrustedList.getDummyTrustedList();
             TrustedList expectedFilteredList = argumentTrustedList;
             statusFilter.applyTo(argumentTrustedList);
             assertEquals(expectedFilteredList, argumentTrustedList);
@@ -86,7 +87,8 @@ class StatusFilterTest {
             @DisplayName("with a list with compatible elements with the filters as argument, return a list with only those elements")
             void withListAsArgument(Set<String> statusSet) {
                 setStatuses(statusSet);
-                argumentTrustedList = Help.getWholeList();
+                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
                 statusFilter.applyTo(argumentTrustedList);
                 //assertFalse(argumentTrustedList.isEmpty());
                 argumentTrustedList.getCountries().forEach(country -> {

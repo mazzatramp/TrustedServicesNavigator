@@ -188,5 +188,13 @@ class CountryTest {
         providerServices2.forEach(service -> service.setProvider(provider2));
         country.getProviders().add(provider1);
         country.getProviders().add(provider2);
+<<<<<<< Updated upstream
+=======
+        String expectedString= "Austria" + " (" + "AT" + ")\n\n" +
+                "With " + 2 + " providers displayed\n" +
+                "And " + 2 + " services displayed\n";
+        assertEquals(expectedString, country.getDescription());
+
+>>>>>>> Stashed changes
     }
 }
