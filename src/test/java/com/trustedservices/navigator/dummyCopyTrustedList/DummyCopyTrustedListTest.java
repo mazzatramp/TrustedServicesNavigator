@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DummyCopyTrustedListTest {
     @Disabled
-    //@Tag("Slow tests that require API connection")
     @Test
     @DisplayName("If the dummy trusted list is wanted to be up to date with the API, the trustedList built from APIBuilder should be the same as the one built with the JsonBuilder from countryListDummy and providerListDummy")
     void equalListsFromDifferentBuilders() throws IOException {
