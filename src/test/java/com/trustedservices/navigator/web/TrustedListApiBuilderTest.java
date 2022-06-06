@@ -2,6 +2,7 @@ package com.trustedservices.navigator.web;
 
 import com.trustedservices.domain.TrustedList;
 import org.junit.jupiter.api.*;
+
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,9 +35,10 @@ class TrustedListApiBuilderTest {
         @Test
         @DisplayName("using an empty builder should throw NullPointerException")
         void useEmptyJsonBuilder() {
-            trustedListApiBuilder= null;
+            trustedListApiBuilder = null;
             assertThrows(NullPointerException.class, () -> trustedListApiBuilder.build());
         }
+
         @Disabled
         @Nested
         @DisplayName("when set up with good json data")
