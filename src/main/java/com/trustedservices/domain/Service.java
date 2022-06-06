@@ -83,7 +83,7 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
     public String toString() {
         return "Service{" +
                 "tspId=" + provider.getProviderId() +
-                ", serviceI=" + id +
+                ", serviceId=" + id +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", status='" + status + '\'' +
