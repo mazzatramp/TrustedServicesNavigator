@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,7 +23,6 @@ public class FilterPanesAccordion extends Accordion {
     @FXML private ServiceTypeFilterPane serviceTypes;
 
     private WindowController windowController;
-    private TrustedList completeList;
 
     public FilterPanesAccordion() {
         loadFXMLResource();
@@ -51,7 +49,6 @@ public class FilterPanesAccordion extends Accordion {
      *                     complete list
      */
     public void fillFilterPanesWith(TrustedList completeList) {
-        this.completeList = completeList;
         providers.fillWith(completeList);
         serviceTypes.fillWith(completeList);
         statuses.fillWith(completeList);
@@ -88,7 +85,7 @@ public class FilterPanesAccordion extends Accordion {
         filter.setWhitelist(Set.of(filterItem));
 
         FilterList filters = new FilterList(getAssociatedFilters());
-        boolean hasResults = !filters.getFilteredListFrom(completeList).isEmpty();
+        boolean hasResults = !filters.getFilteredListFrom(windowController.getCompleteTrustedList()).isEmpty();
 
         filter.setWhitelist(savedWhitelist);
         return hasResults;
