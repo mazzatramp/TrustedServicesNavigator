@@ -42,8 +42,8 @@ class NavigationControllerTest {
             TrustedListJsonBuilder builder = new TrustedListJsonBuilder();
             Path countries = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
             Path providers = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
-            builder.setCountriesJsonString(Files.readString(countries));
-            builder.setProvidersJsonString(Files.readString(providers));
+            builder.setCountriesJson(Files.readString(countries));
+            builder.setProvidersJson(Files.readString(providers));
             navigationController.buildCompleteList(builder);
 
             Set<String> providerSet = new HashSet<>();
@@ -85,8 +85,8 @@ class NavigationControllerTest {
                 TrustedListJsonBuilder builder = new TrustedListJsonBuilder();
                 Path countries = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
                 Path providers = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
-                builder.setCountriesJsonString(Files.readString(countries));
-                builder.setProvidersJsonString(Files.readString(providers));
+                builder.setCountriesJson(Files.readString(countries));
+                builder.setProvidersJson(Files.readString(providers));
                 navigationController.buildCompleteList(builder);
                 System.out.println(navigationController.getCompleteList().getCountries());
                 System.out.println(builder.build().getCountries());

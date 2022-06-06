@@ -28,13 +28,7 @@ public class NavigationController {
     }
 
     public void buildCompleteList(TrustedListBuilder builder) {
-        try {
-            completeList = builder.build();
-        }catch(RuntimeException e) {
-            System.err.println("Connection failed, no response from API");
-            throw new RuntimeException(e);
-        }
-
+        completeList = builder.build();
     }
 
     public FilterList getFilters() {

@@ -45,8 +45,8 @@ class TrustedListJsonBuilderTest {
 
             Path countries = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
             Path providers = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
-            trustedJsonBuilder.setCountriesJsonString(Files.readString(countries));
-            trustedJsonBuilder.setProvidersJsonString(Files.readString(providers));
+            trustedJsonBuilder.setCountriesJson(Files.readString(countries));
+            trustedJsonBuilder.setProvidersJson(Files.readString(providers));
         }
 
         @Test

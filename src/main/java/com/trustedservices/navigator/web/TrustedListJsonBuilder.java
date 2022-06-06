@@ -29,17 +29,17 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
         countries = new TreeSet<>();
     }
 
-    public void setCountriesJsonString(String countriesJsonString) {
+    public void setCountriesJson(String countriesJsonString) {
         this.countriesJsonString = countriesJsonString;
     }
 
-    public void setProvidersJsonString(String providersJsonString) {
+    public void setProvidersJson(String providersJsonString) {
         this.providersJsonString = providersJsonString;
     }
 
     @Override
     public TrustedList build() {
-        if (!jsonStringSet())
+        if (!areJsonStringsSet())
             throw new IllegalStateException("Json strings not set.");
         readJsonData();
         return getFilledTrustedListFromReadData();
@@ -50,11 +50,10 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
         fillCountriesWithProviders();
         return new TrustedList(countries);
     }
-
     /**
      * @return checks that the strings have been set and returns a boolean to state it
      */
-    private boolean jsonStringSet() {
+    private boolean areJsonStringsSet() {
         return countriesJsonString != null && providersJsonString != null;
     }
 
@@ -68,7 +67,6 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
      */
     private void readJsonData() {
         try {
-
             jsonCountries = readJson(countriesJsonString, JsonCountry.class);
             jsonProviders = readJson(providersJsonString, JsonProvider.class);
         } catch (JsonProcessingException e) {
