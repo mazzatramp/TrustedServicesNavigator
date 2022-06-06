@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -34,25 +35,26 @@ public class TrustedServicesNavigatorApplication extends Application {
 
     private void startApiDataDownload() {
         Task<Void> downloadAndDisplay = getDownloadAndDisplayDataTask();
+        downloadAndDisplay.setOnFailed(event -> handleBadConnection());
         windowController.bindProgressBarWith(downloadAndDisplay);
         Thread th = new Thread(downloadAndDisplay);
         th.start();
+    }
+
+    private void handleBadConnection() {
+        ButtonType clicked = windowController.showConnectionAlertAndGetClickedButton();
+        if (clicked == ButtonType.YES) startApiDataDownload();
+        else System.exit(-1);
     }
 
     private Task<Void> getDownloadAndDisplayDataTask() {
         return new Task<>() {
             @Override
             protected Void call() {
-            TrustedListBuilder apiBuilder = new TrustedListApiBuilder();
-            try {
+                TrustedListBuilder apiBuilder = new TrustedListApiBuilder();
                 navigationController.buildCompleteList(apiBuilder);
                 windowController.fillDisplayAndFiltersViews();
                 return null;
-            }catch(RuntimeException e) {
-                System.err.println("Connection error, failed to download the TrustedList");
-                System.exit(-1);
-            }
-            return null;
             }
         };
     }

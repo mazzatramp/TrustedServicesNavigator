@@ -72,6 +72,14 @@ public class WindowController {
         displayPane.bindProgressBarWith(task);
     }
 
+    public ButtonType showConnectionAlertAndGetClickedButton() {
+        Alert alert = new Alert(Alert.AlertType.ERROR,
+                "Connection to the API failed.\n Do you want to retry?\n",
+                ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
+        return alert.getResult();
+    }
+
     public TrustedList getCompleteTrustedList() {
         return navigationController.getCompleteList();
     }
