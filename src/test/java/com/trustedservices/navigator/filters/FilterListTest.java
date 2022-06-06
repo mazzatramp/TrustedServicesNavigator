@@ -20,10 +20,7 @@ public class FilterListTest {
 
     FilterList filterList;
 
-    //NUOVA COLLEZIONE CON FILTRI NULLI
-    //NUOVA COLLEZIONE CON FILTRI NOT EMPTY AND IMPOSSIBLE
     @Nested
-    //IL PROBLEMA E' CHE VOLENDO CI SONO INFINITE COMBINAZIONI DI FILTRI DA METTERE NEL COSTRUTTORE
     @DisplayName("when new with collection of filters")
     class WhenNewWithFilters {
 
@@ -88,7 +85,7 @@ public class FilterListTest {
                     );
                 }
 
-                TrustedList argumentTrustedList; //HA SENSO RIPETERE OGNI VOLTA ARGUMENTTRUSTEDLIST?
+                TrustedList argumentTrustedList;
 
                 @DisplayName("a list as argument that contain services possible, should return just the filtered services")
                 @ParameterizedTest
