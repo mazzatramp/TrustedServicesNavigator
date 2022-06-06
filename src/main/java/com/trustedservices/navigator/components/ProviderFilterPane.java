@@ -13,14 +13,14 @@ import java.util.*;
  */
 public class ProviderFilterPane extends FilterPane {
 
-    private final TreeView<String> filterTreeView;
+    private final TreeView<String> filters;
 
     public ProviderFilterPane() {
-        filterTreeView = new TreeView<>();
-        filterTreeView.setRoot(new FilterTreeItem<>());
-        filterTreeView.setShowRoot(false);
-        filterTreeView.setCellFactory(FilterTreeCell.forTreeView());
-        setFilterView(filterTreeView);
+        filters = new TreeView<>();
+        filters.setRoot(new FilterTreeItem<>());
+        filters.setShowRoot(false);
+        filters.setCellFactory(FilterTreeCell.forTreeView());
+        setFilterView(filters);
         this.setAssociatedFilter(new ProviderFilter());
     }
 
@@ -30,7 +30,7 @@ public class ProviderFilterPane extends FilterPane {
      */
     @Override
     public void setSelectedForAll(boolean selectionStatus) {
-        for (TreeItem<String> countryTreeItem : filterTreeView.getRoot().getChildren()) {
+        for (TreeItem<String> countryTreeItem : filters.getRoot().getChildren()) {
             for (TreeItem<String> provider : countryTreeItem.getChildren()) {
                 ((FilterTreeItem<String>) provider).setSelected(selectionStatus);
             }
@@ -41,7 +41,7 @@ public class ProviderFilterPane extends FilterPane {
     public Set<String> getSelectedItems() {
         Set<String> selectedProviders = new HashSet<>();
 
-        for (TreeItem<String> countryTreeItem : filterTreeView.getRoot().getChildren()) {
+        for (TreeItem<String> countryTreeItem : filters.getRoot().getChildren()) {
             for (TreeItem<String> providerTreeItem : countryTreeItem.getChildren()) {
                 FilterTreeItem<String> providerFilterItem = (FilterTreeItem<String>) providerTreeItem;
                 if (providerFilterItem.isSelected())
@@ -57,7 +57,7 @@ public class ProviderFilterPane extends FilterPane {
     public Set<String> getUnselectedItems() {
         Set<String> selectedProviders = new HashSet<>();
 
-        for (TreeItem<String> countryTreeItem : filterTreeView.getRoot().getChildren()) {
+        for (TreeItem<String> countryTreeItem : filters.getRoot().getChildren()) {
             for (TreeItem<String> providerTreeItem : countryTreeItem.getChildren()) {
                 FilterTreeItem<String> providerFilterItem = (FilterTreeItem<String>) providerTreeItem;
                 if (!providerFilterItem.isSelected())
@@ -76,7 +76,7 @@ public class ProviderFilterPane extends FilterPane {
      */
     @Override
     public void disable(Set<String> itemsToDisable) {
-        for (TreeItem<String> countryTreeItem : filterTreeView.getRoot().getChildren()) {
+        for (TreeItem<String> countryTreeItem : filters.getRoot().getChildren()) {
             FilterTreeItem<String> countryFilterItem = (FilterTreeItem<String>) countryTreeItem;
             boolean allProvidersDisabled = true;
 
@@ -102,7 +102,7 @@ public class ProviderFilterPane extends FilterPane {
     public void fillWith(TrustedList dataToShow) {
         for (Country country : dataToShow.getCountries()) {
             FilterTreeItem<String> countryCheckBox = createCountryCheckBox(country);
-            filterTreeView.getRoot().getChildren().add(countryCheckBox);
+            filters.getRoot().getChildren().add(countryCheckBox);
         }
     }
 

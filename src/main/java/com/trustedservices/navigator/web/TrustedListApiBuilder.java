@@ -21,37 +21,28 @@ public class TrustedListApiBuilder extends TrustedListJsonBuilder {
      */
     @Override
     public TrustedList build() {
-        try {
-            String countriesJson = readJsonFromUrl(COUNTRIES_API_ENDPOINT);
-            String providersJson = readJsonFromUrl(PROVIDERS_API_ENDPOINT);
-            super.setCountriesJsonString(countriesJson);
-            super.setProvidersJsonString(providersJson);
-            return super.build();
-        }catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        }
-
+        String countriesJson = readJsonFromUrl(COUNTRIES_API_ENDPOINT);
+        String providersJson = readJsonFromUrl(PROVIDERS_API_ENDPOINT);
+        super.setCountriesJson(countriesJson);
+        super.setProvidersJson(providersJson);
+        return super.build();
     }
 
     private String readJsonFromUrl(String endpoint) {
         try {
             return getResponse(endpoint);
         } catch (IOException e) {
-            System.err.println("Tried to connect to " +e.getMessage());
             throw new RuntimeException(e);
         }
     }
 
     private String getResponse(String endpoint) throws IOException {
-        HttpsURLConnection connection = getHttpsURLConnection(endpoint);
-        connection.connect();
+        HttpsURLConnection apiConnection = getHttpsURLConnection(endpoint);
+        apiConnection.connect();
 
-        if (connection.getResponseCode() != HttpsURLConnection.HTTP_OK)
-            throw new ConnectException("Connection response code: " + connection.getResponseMessage());
+        String content = readResponse(apiConnection.getInputStream());
 
-        String content = readResponse(connection.getInputStream());
-
-        connection.disconnect();
+        apiConnection.disconnect();
         return content;
     }
 

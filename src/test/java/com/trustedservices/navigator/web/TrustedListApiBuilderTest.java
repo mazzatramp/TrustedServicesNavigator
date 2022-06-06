@@ -50,8 +50,8 @@ class TrustedListApiBuilderTest {
                 final String PROVIDERS_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list";
                 String countriesJson = readJsonFromUrl(COUNTRIES_API_ENDPOINT);
                 String providersJson = readJsonFromUrl(PROVIDERS_API_ENDPOINT);
-                trustedListApiBuilder.setCountriesJsonString(countriesJson);
-                trustedListApiBuilder.setProvidersJsonString(providersJson);
+                trustedListApiBuilder.setCountriesJson(countriesJson);
+                trustedListApiBuilder.setProvidersJson(providersJson);
             }
 
             @Test
@@ -109,4 +109,3 @@ class TrustedListApiBuilderTest {
         }
     }
 }
-

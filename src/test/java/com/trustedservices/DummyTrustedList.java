@@ -33,8 +33,8 @@ public class DummyTrustedList {
 
         Path countries = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
         Path providers = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
-        builder.setCountriesJsonString(Files.readString(countries));
-        builder.setProvidersJsonString(Files.readString(providers));
+        builder.setCountriesJson(Files.readString(countries));
+        builder.setProvidersJson(Files.readString(providers));
         return builder;
     }
 
