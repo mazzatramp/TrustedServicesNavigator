@@ -52,7 +52,7 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
      * @see Service
      */
     @Override
-    public String getHumanInformation() {
+    public String getDescription() {
         return  "Name: " + name + "\n" +
                 "Trustmark: " + trustmark + "\n\n" +
                 "Based in " + country.getName() + " (" + country.getCode() + ")\n" +

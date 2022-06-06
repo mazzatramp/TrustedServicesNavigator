@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Last layer of the tree. It contains all the information associated to the service, name, id, type,, status, a set of
+ * Last layer of the tree. It contains all the information associated to the service, name, id, type, status, a set of
  * associated ServiceTypes, and the associated provider.
  */
 public class Service implements Cloneable, Comparable<Service>, TrustedListEntity {
@@ -47,7 +47,7 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
      * @see Provider
      */
     @Override
-    public String getHumanInformation() {
+    public String getDescription() {
         return  name + "\n" +
                 "Of " + provider.getName() + " (" + provider.getCountry().getCode() + ")\n" +
                 "\n" +
