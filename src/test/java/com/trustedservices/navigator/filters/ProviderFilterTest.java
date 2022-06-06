@@ -71,19 +71,16 @@ class ProviderFilterTest {
                 Set<String> providersSet3 = new HashSet<>();
                 providersSet3.add("Italy/Azienda Zero");
                 providersSet3.add("NoSenseFilter");
-                Set<String> providersSet4 = new HashSet<>();
-                providersSet4.add("NoSenseFilter");
                 return Stream.of(
                         Arguments.of(providersSet1),
                         Arguments.of(providersSet2),
-                        Arguments.of(providersSet3),
-                        Arguments.of(providersSet4)
+                        Arguments.of(providersSet3)
                 );
             }
 
             @ParameterizedTest
             @MethodSource("getProviders")
-            @DisplayName("with a list with compatible elements with the filters as argument, should return a list with only those elements")
+            @DisplayName("with a list with compatible elements with the filters as argument, should return a not empty list with only those elements")
             void withListAsArgument(Set<String> providersSet) {
                 setProviders(providersSet);
                 DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
@@ -93,43 +90,123 @@ class ProviderFilterTest {
                 //nella lista iniziale sia uguale al numero di servizi della lista filtrata
                 argumentTrustedList.getCountries().forEach(country -> {
                     country.getProviders().forEach(provider -> {
-                        if (providersSet.contains(country.getName() + "/" + provider.getName())) {
+                        if ((expectedProviders.contains(country.getName() + "/" + provider.getName())) || (expectedProviders.isEmpty())) {
                             numberOfServiceOfProviderInWhitelist.getAndIncrement();
                         }
                     });
                 });
                 providerFilter.applyTo(argumentTrustedList);
+                assertFalse(argumentTrustedList.isEmpty());
+
                 argumentTrustedList.getCountries().forEach(country -> {
                     country.getProviders().forEach(provider -> {
                         numberOfServiceOfProviderInWhitelist.getAndDecrement();
-                        assertTrue(providersSet.contains(country.getName() + "/" + provider.getName()));
+                        assertTrue(expectedProviders.contains(country.getName() + "/" + provider.getName()) || (expectedProviders.isEmpty()));
                     });
                 });
                 assertEquals(numberOfServiceOfProviderInWhitelist.get(), 0);
 
             }
 
+            @DisplayName("with a list with only incompatible elements with the filters as argument, should return a list with no elements")
             @ParameterizedTest
             @MethodSource("getProviders")
-            @DisplayName("with a list with only incompatible elements with the filters as argument, should return a list with no elements")
-            void withNotPossibleListAsArgument(Set<String> providersSet) {
-                setProviders(providersSet);
+            void withNotPossibleListAsArgument(Set<String> providers) {
+                setProviders(providers);
                 argumentTrustedList = new TrustedList();
                 providerFilter.applyTo(argumentTrustedList);
-                argumentTrustedList.getCountries().forEach(country -> {
-                    assertTrue(country.getProviders().isEmpty());
-                });
+                assertTrue(argumentTrustedList.getCountries().isEmpty());
+            }
+
+            @DisplayName("with a null list, should return NullPointerException unless filters are empty")
+            @ParameterizedTest
+            @MethodSource("getProviders")
+            void withNullListAsArgumentAndNotEmptyFilters(Set<String> providers) {
+                setProviders(providers);
+                argumentTrustedList = null;
+
+                assertThrows(NullPointerException.class, () -> providerFilter.applyTo(argumentTrustedList));
+
+            }
+
+
+        }
+
+    }
+
+    @DisplayName("after I set a whitelist of filters that cannot link to a service")
+    @Nested
+    class setImpossibleFilters {
+
+        private void setProviders(Set<String> providers) {
+            Set<String> providersSet = new HashSet<>(providers);
+            providerFilter.setWhitelist(providersSet);
+        }
+
+        @DisplayName("and I use the method ApplyTo")
+        @Nested
+        class ApplyTo {
+            TrustedList argumentTrustedList;
+
+            private static Stream<Arguments> getProviders() {
+                Set<String> providersSet1 = new HashSet<>();
+                providersSet1.add("noSenseFilter");
+                Set<String> providersSet2 = new HashSet<>();
+                providersSet2.add("noSenseFilter");
+                providersSet2.add("anotherNoSenseFilter");
+                return Stream.of(
+                        Arguments.of(providersSet2),
+                        Arguments.of(providersSet2)
+                );
             }
 
             @ParameterizedTest
             @MethodSource("getProviders")
-            @DisplayName("with a null list, should return NullPointerException")
-            void withNullListAsArgument(Set<String> providersSet) {
-                setProviders(providersSet);
+            @DisplayName("with a list, returns no element")
+            void withListAsArgument(Set<String> providerSet) {
+                setProviders(providerSet);
+                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+                providerFilter.applyTo(argumentTrustedList);
+                assertTrue(argumentTrustedList.isEmpty());
+            }
+
+            @DisplayName("with a null list, throw NullPointer Exception")
+            @ParameterizedTest
+            @MethodSource("getProviders")
+            void withNullListAsArgument(Set<String> providerSet) {
+                setProviders(providerSet);
                 argumentTrustedList = null;
                 assertThrows(NullPointerException.class, () -> providerFilter.applyTo(argumentTrustedList));
             }
 
+        }
+
+    }
+
+    @DisplayName("after I set a null whitelist")
+    @Nested
+    class setNullFilters {
+
+        private void setServiceTypesInWhitelist(Set<String> providers) {
+            providerFilter.setWhitelist(providers);
+        }
+
+        @DisplayName("and I use the method ApplyTo")
+        @Nested
+        class ApplyTo {
+            TrustedList argumentTrustedList;
+
+            @Test
+            @DisplayName("with a list, throw NullPointerException")
+            void withListAsArgument() {
+                Set<String> providerSet = null;
+                setServiceTypesInWhitelist(providerSet);
+                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+                assertThrows(NullPointerException.class, () -> providerFilter.applyTo(argumentTrustedList));
+
+            }
         }
 
     }
