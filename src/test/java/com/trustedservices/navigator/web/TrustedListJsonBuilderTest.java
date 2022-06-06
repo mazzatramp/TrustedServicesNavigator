@@ -14,7 +14,7 @@ class TrustedListJsonBuilderTest {
     TrustedListJsonBuilder trustedJsonBuilder;
 
     @Test
-    @DisplayName("is created")
+    @DisplayName("is created with TrustedListJsonBuilder()")
     void isInstantiatedWithNewClass() {
         new TrustedListJsonBuilder();
     }
@@ -54,14 +54,13 @@ class TrustedListJsonBuilderTest {
         void buildWithGoodBuilderNoException() {
             assertDoesNotThrow(() -> trustedJsonBuilder.build());
         }
-        @Test
-        @DisplayName("The trustedList should not be empty")
-        void buildWithGoodBuilderNotEmpty() {
-            TrustedList trustedList= trustedJsonBuilder.build();
-            assertFalse(trustedList.isEmpty());
 
+        @Test
+        @DisplayName("the trusted list built should not be null")
+        void builtTrustedListShouldNotBeNull() {
+            TrustedList trustedList = trustedJsonBuilder.build();
+            assertNotNull(trustedList);
         }
     }
-
 
 }

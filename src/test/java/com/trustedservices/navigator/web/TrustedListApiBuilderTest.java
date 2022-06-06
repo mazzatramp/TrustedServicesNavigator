@@ -9,8 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("A TrustedListApiBuilder")
@@ -39,7 +38,6 @@ class TrustedListApiBuilderTest {
             assertThrows(NullPointerException.class, () -> trustedListApiBuilder.build());
         }
         @Disabled
-        //@Tag("Slow tests that require API connection")
         @Nested
         @DisplayName("when set up with good json data")
         class WhenSetUp {
@@ -61,28 +59,13 @@ class TrustedListApiBuilderTest {
             }
 
             @Test
-            @DisplayName("The trustedList should not be empty")
+            @DisplayName("The trustedList built should not be null")
             void buildWithGoodBuilderNotEmpty() {
                 TrustedList trustedList = trustedListApiBuilder.build();
-                assertFalse(trustedList.isEmpty());
+                assertNotNull(trustedList);
 
             }
-            @Test
-            @DisplayName("If the dummy trusted list is wanted to be up to date with the API, the trustedList built from APIBuilder should be the same as the one built with the JsonBuilder from countryListDummy and providerListDummy")
-            void equalListsFromDifferentBuilders() throws IOException {
-                TrustedListJsonBuilder trustedJsonBuilder = new TrustedListJsonBuilder();
-                Path countries = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
-                Path providers = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
-                trustedJsonBuilder.setCountriesJsonString(Files.readString(countries));
-                trustedJsonBuilder.setProvidersJsonString(Files.readString(providers));
-                TrustedList trustedListAPI = trustedListApiBuilder.build();
-                TrustedList trustedListDummy= trustedJsonBuilder.build();
-                boolean areListsEqual = trustedListDummy.equals(trustedListAPI);
-                System.out.println(trustedListDummy.getCountries());
-                System.out.println(trustedListAPI.getCountries());
-                assertTrue(areListsEqual,"i file dummy non sono più aggiornati");
 
-            }
         }
 
         private String readJsonFromUrl(String endpoint) {
