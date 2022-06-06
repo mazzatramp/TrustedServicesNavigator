@@ -67,13 +67,66 @@ public class FilterListTest {
                     Set<String> statusSet2 = new HashSet<>();
                     statusSet2.add("withdrawn");
                     StatusFilter filterStatus2 = new StatusFilter();
-                    filterStatus2.setWhitelist(statusSet1);
-                    collectionOfFilters2.add(filterProvider1);
-                    collectionOfFilters2.add(filterServiceType1);
-                    collectionOfFilters2.add(filterStatus1);
+                    filterStatus2.setWhitelist(statusSet2);
+                    collectionOfFilters2.add(filterProvider2);
+                    collectionOfFilters2.add(filterServiceType2);
+                    collectionOfFilters2.add(filterStatus2);
+
+                    List<Filter> collectionOfFilters3 = new ArrayList<>();
+                    Set<String> providerSet3 = new HashSet<>();
+                    providerSet3.add("Italy/Azienda Zero");
+                    providerSet3.add("Austria/PrimeSign GmbH");
+                    ProviderFilter filterProvider3 = new ProviderFilter();
+                    filterProvider3.setWhitelist(providerSet3);
+                    Set<String> serviceTypeSet3 = new HashSet<>();
+                    serviceTypeSet3.add("QCertESeal");
+                    ServiceTypeFilter filterServiceType3 = new ServiceTypeFilter();
+                    filterServiceType3.setWhitelist(serviceTypeSet3);
+                    Set<String> statusSet3 = new HashSet<>();
+                    statusSet3.add("withdrawn");
+                    StatusFilter filterStatus3 = new StatusFilter();
+                    filterStatus3.setWhitelist(statusSet3);
+                    collectionOfFilters3.add(filterProvider3);
+                    collectionOfFilters3.add(filterServiceType3);
+                    collectionOfFilters3.add(filterStatus3);
+
+                    List<Filter> collectionOfFilters4 = new ArrayList<>();
+                    Set<String> providerSet4 = new HashSet<>();
+                    ProviderFilter filterProvider4 = new ProviderFilter();
+                    providerSet4.add("Austria/PrimeSign GmbH");
+                    filterProvider4.setWhitelist(providerSet4);
+                    Set<String> serviceTypeSet4 = new HashSet<>();
+                    ServiceTypeFilter filterServiceType4 = new ServiceTypeFilter();
+                    filterServiceType4.setWhitelist(serviceTypeSet4);
+                    Set<String> statusSet4 = new HashSet<>();
+                    StatusFilter filterStatus4 = new StatusFilter();
+                    filterStatus4.setWhitelist(statusSet4);
+                    collectionOfFilters4.add(filterProvider4);
+                    collectionOfFilters4.add(filterServiceType4);
+                    collectionOfFilters4.add(filterStatus4);
+
+                    List<Filter> collectionOfFilters5 = new ArrayList<>();
+                    Set<String> providerSet5 = new HashSet<>();
+                    ProviderFilter filterProvider5 = new ProviderFilter();
+                    providerSet5.add("Austria/PrimeSign GmbH");
+                    filterProvider5.setWhitelist(providerSet5);
+                    Set<String> serviceTypeSet5 = new HashSet<>();
+                    ServiceTypeFilter filterServiceType5 = new ServiceTypeFilter();
+                    filterServiceType5.setWhitelist(serviceTypeSet5);
+                    Set<String> statusSet5 = new HashSet<>();
+                    statusSet5.add("noSenseFilter");
+                    statusSet5.add("granted");
+                    StatusFilter filterStatus5 = new StatusFilter();
+                    filterStatus4.setWhitelist(statusSet5);
+                    collectionOfFilters5.add(filterProvider5);
+                    collectionOfFilters5.add(filterServiceType5);
+                    collectionOfFilters5.add(filterStatus5);
                     return Stream.of(
                             Arguments.of(collectionOfFilters1),
-                            Arguments.of(collectionOfFilters2)
+                            Arguments.of(collectionOfFilters2),
+                            Arguments.of(collectionOfFilters3),
+                            Arguments.of(collectionOfFilters4),
+                            Arguments.of(collectionOfFilters5)
                     );
                 }
 
@@ -93,9 +146,10 @@ public class FilterListTest {
 
                     argumentTrustedList.getCountries().forEach(country -> {
                         country.getProviders().forEach(provider -> {
-                            if (providersExpected.contains(country.getName() + "/" + provider.getName())) {
+                            if ((providersExpected.contains(country.getName() + "/" + provider.getName()))||(providersExpected.isEmpty())) {
                                 provider.getServices().forEach(service -> {
-                                    if ((expectedStatuses.contains(service.getStatus())) && (service.getServiceTypes().stream().anyMatch(currentService -> expectedServiceTypes.contains(currentService)))) {
+                                    if (((expectedStatuses.contains(service.getStatus()))||(expectedStatuses.isEmpty()))
+                                            && ((service.getServiceTypes().stream().anyMatch(currentService -> expectedServiceTypes.contains(currentService)))||(expectedServiceTypes.isEmpty()))) {
                                         numberOfServicesCompatibleWithFilters.getAndIncrement();
                                     }
                                 });
@@ -106,11 +160,11 @@ public class FilterListTest {
                     assertFalse(filteredList.isEmpty());
                     filteredList.getCountries().forEach(country -> {
                         country.getProviders().forEach(provider -> {
-                            assertTrue(providersExpected.contains(country.getName() + "/" + provider.getName()));
+                            assertTrue((providersExpected.contains(country.getName() + "/" + provider.getName()))||(providersExpected.isEmpty()));
                             provider.getServices().forEach(service -> {
                                 numberOfServicesCompatibleWithFilters.getAndDecrement();
-                                assertTrue(service.getServiceTypes().stream().anyMatch(currentService -> expectedServiceTypes.contains(currentService)));
-                                assertTrue(expectedStatuses.contains(service.getStatus()));
+                                assertTrue((service.getServiceTypes().stream().anyMatch(currentService -> expectedServiceTypes.contains(currentService)))||(expectedServiceTypes.isEmpty()));
+                                assertTrue((expectedStatuses.contains(service.getStatus()))||(expectedStatuses.isEmpty()));
                             });
                         });
                     });
@@ -145,9 +199,11 @@ public class FilterListTest {
 
         }
 
+
         @DisplayName("and the filters do not link to any service")
         @Nested
-        class ImpossibleFilters {
+        class ImpossibleFilters //with impossible filters I mean filters that summed do not represent any service
+        {
 
             @DisplayName("and I use the method getFilteredListFrom")
             @Nested
@@ -155,24 +211,42 @@ public class FilterListTest {
                 TrustedList argumentTrustedList;
 
                 private static Stream<Arguments> getFiltersThatCannotLinkToAService() {
-                    List<Filter> collectionOfFilters = new ArrayList<>();
-                    Set<String> providerSet = new HashSet<>();
-                    providerSet.add("PrimeSign GmbH");
-                    ProviderFilter filterProvider = new ProviderFilter();
-                    filterProvider.setWhitelist(providerSet);
-                    Set<String> serviceTypeSet = new HashSet<>();
-                    serviceTypeSet.add("QCertESeal");
-                    ServiceTypeFilter filterServiceType = new ServiceTypeFilter();
-                    filterServiceType.setWhitelist(serviceTypeSet);
-                    Set<String> statusSet = new HashSet<>();
-                    statusSet.add("withdrawn");
-                    StatusFilter filterStatus = new StatusFilter();
-                    filterStatus.setWhitelist(statusSet);
-                    collectionOfFilters.add(filterProvider);
-                    collectionOfFilters.add(filterServiceType);
-                    collectionOfFilters.add(filterStatus);
+                    List<Filter> collectionOfFilters1 = new ArrayList<>();
+                    Set<String> providerSet1 = new HashSet<>();
+                    providerSet1.add("PrimeSign GmbH");
+                    ProviderFilter filterProvider1 = new ProviderFilter();
+                    filterProvider1.setWhitelist(providerSet1);
+                    Set<String> serviceTypeSet1 = new HashSet<>();
+                    serviceTypeSet1.add("QCertESeal");
+                    ServiceTypeFilter filterServiceType1 = new ServiceTypeFilter();
+                    filterServiceType1.setWhitelist(serviceTypeSet1);
+                    Set<String> statusSet1 = new HashSet<>();
+                    statusSet1.add("withdrawn");
+                    StatusFilter filterStatus1 = new StatusFilter();
+                    filterStatus1.setWhitelist(statusSet1);
+                    collectionOfFilters1.add(filterProvider1);
+                    collectionOfFilters1.add(filterServiceType1);
+                    collectionOfFilters1.add(filterStatus1);
+
+                    List<Filter> collectionOfFilters2 = new ArrayList<>();
+                    Set<String> providerSet2 = new HashSet<>();
+                    providerSet2.add("PrimeSign GmbH");
+                    ProviderFilter filterProvider2 = new ProviderFilter();
+                    filterProvider2.setWhitelist(providerSet2);
+                    Set<String> serviceTypeSet2 = new HashSet<>();
+                    ServiceTypeFilter filterServiceType2 = new ServiceTypeFilter();
+                    filterServiceType2.setWhitelist(serviceTypeSet2);
+                    Set<String> statusSet2 = new HashSet<>();
+                    statusSet2.add("NoSenseFilter");
+                    statusSet2.add("AnotherNoSenseFilter");
+                    StatusFilter filterStatus2 = new StatusFilter();
+                    filterStatus2.setWhitelist(statusSet2);
+                    collectionOfFilters2.add(filterProvider2);
+                    collectionOfFilters2.add(filterServiceType2);
+                    collectionOfFilters2.add(filterStatus2);
                     return Stream.of(
-                            Arguments.of(collectionOfFilters)
+                            Arguments.of(collectionOfFilters1),
+                            Arguments.of(collectionOfFilters2)
                     );
                 }
 
@@ -191,6 +265,67 @@ public class FilterListTest {
             }
 
         }
+        @DisplayName("and the filters are null")
+        @Nested
+        class NullFilters
+        {
+
+            @DisplayName("and I use the method getFilteredListFrom")
+            @Nested
+            class getFilteredListFrom {
+                TrustedList argumentTrustedList;
+
+                private static Stream<Arguments> getFiltersThatCannotLinkToAService() {
+                    List<Filter> collectionOfFilters1 = new ArrayList<>();
+                    Set<String> providerSet1 = null;
+                    ProviderFilter filterProvider1 = new ProviderFilter();
+                    filterProvider1.setWhitelist(providerSet1);
+                    Set<String> serviceTypeSet1 = null;
+                    ServiceTypeFilter filterServiceType1 = new ServiceTypeFilter();
+                    filterServiceType1.setWhitelist(serviceTypeSet1);
+                    Set<String> statusSet1 = null;
+                    StatusFilter filterStatus1 = new StatusFilter();
+                    filterStatus1.setWhitelist(statusSet1);
+                    collectionOfFilters1.add(filterProvider1);
+                    collectionOfFilters1.add(filterServiceType1);
+                    collectionOfFilters1.add(filterStatus1);
+
+                    List<Filter> collectionOfFilters2 = new ArrayList<>();
+                    Set<String> providerSet2 = null;
+                    ProviderFilter filterProvider2 = new ProviderFilter();
+                    filterProvider2.setWhitelist(providerSet2);
+                    Set<String> serviceTypeSet2 = null;
+                    ServiceTypeFilter filterServiceType2 = new ServiceTypeFilter();
+                    filterServiceType2.setWhitelist(serviceTypeSet2);
+                    Set<String> statusSet2 = new HashSet<>();
+                    StatusFilter filterStatus2 = new StatusFilter();
+                    filterStatus2.setWhitelist(statusSet2);
+                    collectionOfFilters2.add(filterProvider2);
+                    collectionOfFilters2.add(filterServiceType2);
+                    collectionOfFilters2.add(filterStatus2);
+
+                    return Stream.of(
+                            Arguments.of(collectionOfFilters1),
+                            Arguments.of(collectionOfFilters2)
+                    );
+                }
+
+                @DisplayName("with null filters throw NullPointerException")
+                @ParameterizedTest
+                @MethodSource("getFiltersThatCannotLinkToAService")
+                void TrustedListAsArgument(List<Filter> filters) {
+                    createFilterList(filters);
+                    DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+                    argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+
+                    assertThrows(NullPointerException.class, ()-> filterList.getFilteredListFrom(argumentTrustedList));
+
+
+                }
+            }
+
+        }
+
     }
 
     @Nested
