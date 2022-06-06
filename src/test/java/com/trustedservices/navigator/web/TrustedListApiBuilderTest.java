@@ -2,7 +2,6 @@ package com.trustedservices.navigator.web;
 
 import com.trustedservices.domain.TrustedList;
 import org.junit.jupiter.api.*;
-
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +11,6 @@ import java.net.ConnectException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("A TrustedListApiBuilder")
@@ -47,7 +45,7 @@ class TrustedListApiBuilderTest {
         class WhenSetUp {
 
             @BeforeEach
-            void createAndSetupApiBuilder() throws IOException {
+            void createAndSetupApiBuilder() {
                 final String COUNTRIES_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list_no_lotl_territory";
                 final String PROVIDERS_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list";
                 String countriesJson = readJsonFromUrl(COUNTRIES_API_ENDPOINT);

@@ -150,7 +150,7 @@ class TrustedListTest {
 
             @DisplayName("with a null list as argument, it returns false")
             @Test
-            void equalsWithNullListAsArgument() throws IOException {
+            void equalsWithNullListAsArgument() {
                 argumentList = null;
 
                 boolean haveTrustedListTheSameValues = trustedList.equals(argumentList);
