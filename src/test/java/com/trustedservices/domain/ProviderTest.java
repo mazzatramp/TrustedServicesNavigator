@@ -1,10 +1,7 @@
 package com.trustedservices.domain;
 
 import org.junit.jupiter.api.*;
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
