@@ -40,8 +40,8 @@ class TrustedListApiBuilderTest {
             trustedListApiBuilder= null;
             assertThrows(NullPointerException.class, () -> trustedListApiBuilder.build());
         }
-        @Disabled
-        @Tag("Slow tests that require API connection")
+        //@Disabled
+        //@Tag("Slow tests that require API connection")
         @Nested
         @DisplayName("when set up with good json data")
         class WhenSetUp {
