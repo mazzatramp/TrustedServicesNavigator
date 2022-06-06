@@ -29,14 +29,14 @@ public class DummyCopyTrustedListTest {
         final String PROVIDERS_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list";
         String countriesJson = readJsonFromUrl(COUNTRIES_API_ENDPOINT);
         String providersJson = readJsonFromUrl(PROVIDERS_API_ENDPOINT);
-        trustedListApiBuilder.setCountriesJsonString(countriesJson);
-        trustedListApiBuilder.setProvidersJsonString(providersJson);
+        trustedListApiBuilder.setCountriesJson(countriesJson);
+        trustedListApiBuilder.setProvidersJson(providersJson);
 
         TrustedListJsonBuilder trustedJsonBuilder = new TrustedListJsonBuilder();
         Path countries = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
         Path providers = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
-        trustedJsonBuilder.setCountriesJsonString(Files.readString(countries));
-        trustedJsonBuilder.setProvidersJsonString(Files.readString(providers));
+        trustedJsonBuilder.setCountriesJson(Files.readString(countries));
+        trustedJsonBuilder.setProvidersJson(Files.readString(providers));
         TrustedList trustedListAPI = trustedListApiBuilder.build();
         TrustedList trustedListDummy= trustedJsonBuilder.build();
         boolean areListsEqual = trustedListDummy.equals(trustedListAPI);
