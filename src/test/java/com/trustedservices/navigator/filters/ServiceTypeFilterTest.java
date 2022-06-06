@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -108,16 +109,29 @@ class ServiceTypeFilterTest {
                 DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
                 argumentTrustedList = dummyTrustedList.getDummyTrustedList();
                 Set<String> expectedServiceType = serviceTypes;
+                AtomicInteger numberOfServiceWithServiceTypeInWhitelist= new AtomicInteger();
+                argumentTrustedList.getCountries().forEach(country -> {
+                    country.getProviders().forEach(provider -> {
+                        provider.getServices().forEach(service -> {
+                            if(service.getServiceTypes().stream().toList().stream().anyMatch(servizio -> expectedServiceType.contains(servizio))){
+                                numberOfServiceWithServiceTypeInWhitelist.getAndIncrement();
+                            };
+                        });
+                    });
+                });
                 serviceTypeFilter.applyTo(argumentTrustedList);
                 argumentTrustedList.getCountries().forEach(country -> {
                     country.getProviders().forEach(provider -> {
                         provider.getServices().forEach(service -> {
-                            System.out.println(service.getServiceTypes());
+                            numberOfServiceWithServiceTypeInWhitelist.getAndDecrement();
+                            //System.out.println(service.getServiceTypes());
                             assertTrue(service.getServiceTypes().stream().toList().stream().anyMatch(servizio -> expectedServiceType.contains(servizio)));
 
                         });
                     });
                 });
+                assertEquals(numberOfServiceWithServiceTypeInWhitelist.get(),0);
+
 
             }
 

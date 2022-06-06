@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -83,15 +84,27 @@ class ProviderFilterTest {
                 DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
                 argumentTrustedList = dummyTrustedList.getDummyTrustedList();
                 Set<String> expectedProviders = new HashSet<>(providersSet);
-                providerFilter.applyTo(argumentTrustedList);
-                System.out.println(" countries"  + argumentTrustedList.getCountries());
+                AtomicInteger numberOfServiceOfProviderInWhitelist= new AtomicInteger();
                 argumentTrustedList.getCountries().forEach(country -> {
                     country.getProviders().forEach(provider -> {
-                        System.out.println(provider.getName());
+                        if(providersSet.contains(country.getName() + "/" + provider.getName() )){
+                            numberOfServiceOfProviderInWhitelist.getAndIncrement();
+                        }
+                    });
+                });
+                providerFilter.applyTo(argumentTrustedList);
+                //System.out.println(" countries"  + argumentTrustedList.getCountries());
+                argumentTrustedList.getCountries().forEach(country -> {
+                    country.getProviders().forEach(provider -> {
+                        numberOfServiceOfProviderInWhitelist.getAndDecrement();
+
+                        //System.out.println(provider.getName());
                         assertTrue(providersSet.contains(country.getName() + "/" + provider.getName() ));
                         });
                     //VORREI ANCHE TESTARE CHE ABBIANO GLI STESSI SERVIZI MA POSSO FARLO ANCHE PIU ABVANTI
                 });
+                assertEquals(numberOfServiceOfProviderInWhitelist.get(),0);
+
             }
             @ParameterizedTest
             @MethodSource("getProviders")

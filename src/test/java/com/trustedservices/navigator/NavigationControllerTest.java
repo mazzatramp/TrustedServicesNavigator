@@ -37,7 +37,7 @@ class NavigationControllerTest {
         }
 
         @Test
-        @DisplayName("and I use the method getFilteredList after setting filters should return filtered list")
+        @DisplayName("and I use the method getFilteredList after setting filters and building a complete list should return filtered list")
         void getFilteredList() throws IOException {
             TrustedListJsonBuilder builder = new TrustedListJsonBuilder();
             Path countries = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
@@ -45,6 +45,7 @@ class NavigationControllerTest {
             builder.setCountriesJsonString(Files.readString(countries));
             builder.setProvidersJsonString(Files.readString(providers));
             navigationController.buildCompleteList(builder);
+
             Set<String> providerSet = new HashSet<>();
             providerSet.add("Austria/PrimeSign GmbH");
             ProviderFilter filterProvider = new ProviderFilter();
@@ -60,6 +61,7 @@ class NavigationControllerTest {
             navigationController.getFilters().add(filterProvider);
             navigationController.getFilters().add(filterServiceType);
             navigationController.getFilters().add(filterStatus);
+
             Set<String> providersExpected = navigationController.getFilters().get(0).getWhitelist();
             Set<String> expectedServiceTypes = navigationController.getFilters().get(1).getWhitelist();
             Set<String> expectedStatuses = navigationController.getFilters().get(2).getWhitelist();

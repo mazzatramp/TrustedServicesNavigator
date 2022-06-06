@@ -5,6 +5,7 @@ import com.trustedservices.domain.TrustedList;
 import org.junit.jupiter.api.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,8 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("I create a StatusFilter")
 class StatusFilterTest {
     StatusFilter statusFilter;
-
-    @Test
     @BeforeEach
     @DisplayName("is instantiated thanks to new StatusFilter()")
     void isInstantiatedWithNewStatus() {
@@ -54,7 +53,7 @@ class StatusFilterTest {
     @Nested
     class setPossibleFilters {
 
-       private void setStatuses(Set<String> statuses) {
+       private void setStatusesInWhitelist(Set<String> statuses) {
            statusFilter.setWhitelist(statuses);
         }
         @DisplayName("and I use the method ApplyTo")
@@ -86,19 +85,30 @@ class StatusFilterTest {
             @MethodSource("getStatuses")
             @DisplayName("with a list with compatible elements with the filters as argument, return a list with only those elements")
             void withListAsArgument(Set<String> statusSet) {
-                setStatuses(statusSet);
+                setStatusesInWhitelist(statusSet);
                 DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
                 argumentTrustedList = dummyTrustedList.getDummyTrustedList();
-                statusFilter.applyTo(argumentTrustedList);
-                //assertFalse(argumentTrustedList.isEmpty());
+                AtomicInteger numberOfServicesWithStatusInWhitelist= new AtomicInteger();
+
                 argumentTrustedList.getCountries().forEach(country -> {
                     country.getProviders().forEach(provider -> {
                         provider.getServices().forEach(service -> {
-                            System.out.println(service.getStatus());
+                            if(statusSet.contains(service.getStatus())){
+                                numberOfServicesWithStatusInWhitelist.getAndIncrement();
+                            };
+                        });
+                    });
+                });
+                statusFilter.applyTo(argumentTrustedList);
+                argumentTrustedList.getCountries().forEach(country -> {
+                    country.getProviders().forEach(provider -> {
+                        provider.getServices().forEach(service -> {
+                            numberOfServicesWithStatusInWhitelist.getAndDecrement();
                             assertTrue(statusSet.contains(service.getStatus()));
                         });
                     });
                 });
+                assertEquals(numberOfServicesWithStatusInWhitelist.get(),0);
                 //IN VERITA' STO CONTROLLANDO CHE NELLA LISTA VI ELEMENTI CORRETTI MA POTREBBE ESSERE STATO CANCELLATO QUALCHE ELEMENTO NEL PROCESSO
                 //DEVO DUNQUE CONTARE LGI ELEMENTI INIZIALI E FINALI O TROVARTE UN ALTRA SOLUZIONE
             }
@@ -107,7 +117,7 @@ class StatusFilterTest {
             @ParameterizedTest
             @MethodSource("getStatuses")
             void withNotPossibleListAsArgument(Set<String> statusSet) {
-                setStatuses(statusSet);
+                setStatusesInWhitelist(statusSet);
                 argumentTrustedList = new TrustedList();
                 statusFilter.applyTo(argumentTrustedList);
                 assertTrue(argumentTrustedList.getCountries().isEmpty());
@@ -117,7 +127,7 @@ class StatusFilterTest {
             @ParameterizedTest
             @MethodSource("getStatuses")
             void withNullListAsArgument(Set<String> statusSet) {
-                setStatuses(statusSet);
+                setStatusesInWhitelist(statusSet);
                 argumentTrustedList = null;
                 assertThrows(NullPointerException.class,() -> statusFilter.applyTo(argumentTrustedList));
             }
