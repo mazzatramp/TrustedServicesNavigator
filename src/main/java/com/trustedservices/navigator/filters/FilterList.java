@@ -5,6 +5,9 @@ import com.trustedservices.domain.TrustedList;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * This class carries every filter and applies them all to the TrustedList
+ */
 public class FilterList extends ArrayList<Filter> {
     public FilterList() {
         super();

@@ -7,6 +7,10 @@ import com.trustedservices.domain.Service;
 
 import java.util.List;
 
+/**
+ * Class created to get the attributes of a Service from a json file and create a new Service safely (with this system it's hard
+ * to modify items of the TrustedList, or add external objects).
+ */
 public class JsonService {
     private int tspId;
     private int serviceId;
@@ -17,17 +21,27 @@ public class JsonService {
     private String tob;
     private List<String> serviceTypes;
 
+    /**
+     * @param provider creates a Service associated to a given Provider and adds it to the provider's list of services
+     */
     public void createServiceIn(Provider provider) {
         Service createdService = new Service(provider, serviceId, serviceName, type, getLastPartFromUrl(statusAsUrl));
         createdService.getServiceTypes().addAll(serviceTypes);
         provider.getServices().add(createdService);
     }
 
+    /**
+     * @param statusUrl gets an url string and splits it in a string array element for each "/" it contains.
+     * @return the last element of the array, the real status of the service
+     */
     private String getLastPartFromUrl(String statusUrl) {
         String[] splitUrl = statusUrl.split("/");
         return splitUrl[splitUrl.length-1];
     }
 
+    /**
+     * Reads the parameters from the json property to identify the attributes of a service and constructs a new JsonService
+     */
     @JsonCreator
     public JsonService(
             @JsonProperty("serviceId") int serviceId,

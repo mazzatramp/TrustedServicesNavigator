@@ -8,6 +8,9 @@ import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.CheckBoxTreeCell;
 import javafx.util.Callback;
 
+/**
+ * This class implements the disableProperty on a single CheckBoxTreeCell
+ */
 public class FilterTreeCell<T> extends CheckBoxTreeCell<T> implements ChangeListener<Boolean>
 {
     protected SimpleBooleanProperty disabledProperty;

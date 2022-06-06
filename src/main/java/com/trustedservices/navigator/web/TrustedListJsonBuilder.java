@@ -6,6 +6,13 @@ import com.trustedservices.domain.*;
 
 import java.util.*;
 
+/**
+ * This class builds the TrustedList using
+ * @see JsonCountry
+ * @see JsonProvider
+ * @see JsonService
+ * and gets the data by reading a string of json data
+ */
 public class TrustedListJsonBuilder implements TrustedListBuilder {
 
     private List<JsonCountry> jsonCountries;
@@ -34,7 +41,6 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
     public TrustedList build() {
         if (!jsonStringSet())
             throw new IllegalStateException("Json strings not set.");
-
         readJsonData();
         return getFilledTrustedListFromReadData();
     }
@@ -45,6 +51,9 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
         return new TrustedList(countries);
     }
 
+    /**
+     * @return checks that the strings have been set and returns a boolean to state it
+     */
     private boolean jsonStringSet() {
         return countriesJsonString != null && providersJsonString != null;
     }
@@ -54,6 +63,9 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
         return countries;
     }
 
+    /**
+     * This method casts another method, readJson, and builds two lists, jsonCountries and jsonProviders
+     */
     private void readJsonData() {
         try {
 
@@ -66,6 +78,13 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
         }
     }
 
+    /**
+     * @param json reads a string of json data that processes to build
+     * @param <T> a given class
+     * @return an object of the given class
+     * @throws JsonProcessingException
+     * if the data has not the correct format, which is set in the constructor of the given class
+     */
     private <T> List<T> readJson(String json, Class<T> type) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(
@@ -74,10 +93,18 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
         );
     }
 
+    /**
+     * method that associates each JsonCountry with its JsonProviders, given the country code of both
+     */
     private void fillCountriesWithProviders() {
         for (JsonProvider jsonProvider : jsonProviders) {
-            Country itsCountry = getCountryFromCode(jsonProvider.getCountryCode());
-            jsonProvider.createProviderIn(itsCountry);
+            try {
+                Country itsCountry = getCountryFromCode(jsonProvider.getCountryCode());
+                jsonProvider.createProviderIn(itsCountry);
+                } catch (IllegalArgumentException exception){
+                    System.err.println("Can't find a country code to match the country");
+                    throw new RuntimeException();
+                    }
         }
     }
 
@@ -86,6 +113,6 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
             if (country.getCode().equals(countryCode))
                 return country;
 
-        throw new RuntimeException("Can't find " + countryCode + " from the countries");
+        throw new IllegalArgumentException();
     }
 }

@@ -7,6 +7,10 @@ import javafx.scene.control.ListView;
 
 import java.util.*;
 
+/**
+ * This class extends the FilterPane and enable the filtering of the list by Statuses, which are showed on a list of checkBoxes
+ * that the user can interact with
+ */
 public class StatusFilterPane extends FilterPane {
 
     private final ListView<CheckBox> statuses;
@@ -25,6 +29,10 @@ public class StatusFilterPane extends FilterPane {
         });
     }
 
+    /**
+     * @param dataToShow fills the panel with list of statuses that the complete TrustedList builds upon creation.
+     * Adds a listener on each checkBox to add a checked item to the filter whitelist
+     */
     @Override
     public void fillWith(TrustedList dataToShow) {
         dataToShow.getStatuses().forEach(status -> {
@@ -56,6 +64,11 @@ public class StatusFilterPane extends FilterPane {
         return selectedStatuses;
     }
 
+    /**
+     * @param itemsToDisable This method disables the items that would get no results if added as parameters of the search.
+     *                       The parameter is filled in the
+     * @see FilterPanesAccordion
+     */
     @Override
     public void disable(Collection<String> itemsToDisable) {
         statuses.getItems().forEach(statusItem -> {

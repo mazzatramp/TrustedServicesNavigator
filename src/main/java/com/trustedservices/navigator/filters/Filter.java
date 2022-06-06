@@ -5,6 +5,10 @@ import com.trustedservices.domain.TrustedList;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Abstract class for Filters. The filtering methods differ for each filter, but implements for everyone a disposal
+ * of empty items after filtering.
+ */
 public abstract class Filter {
 
     private Set<String> whitelist;
@@ -22,6 +26,11 @@ public abstract class Filter {
     }
     protected abstract void filterByWhitelist(TrustedList listToFilter);
 
+    /**
+     * Method that applies the filters to the
+     * @param listToFilter
+     * After filtering, removes empty entities inside the list.
+     */
     public void applyTo(TrustedList listToFilter) {
         if (!whitelist.isEmpty()) {
             filterByWhitelist(listToFilter);

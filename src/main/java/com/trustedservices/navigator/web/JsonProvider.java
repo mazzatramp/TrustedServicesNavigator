@@ -6,6 +6,10 @@ import com.trustedservices.domain.*;
 
 import java.util.List;
 
+/**
+ * Class created to read the attributes of a Provider from a json file and create a new Provider safely  (with this system it's hard
+ *  * to modify items of the TrustedList, or add external objects).
+ */
 public class JsonProvider {
     private int providerId;
     private String countryCode;
@@ -14,6 +18,12 @@ public class JsonProvider {
     private List<String> serviceTypes;
     private List<JsonService> jsonServices;
 
+    /**
+     * @param country creates a new provider inside a country, then uses the method createServiceIn to create a list of
+     * services inside it
+     * @see JsonCountry
+     * @see JsonService
+     */
     public void createProviderIn(Country country) {
         Provider createdProvider = new Provider(country, providerId, name, trustmark);
         createdProvider.getServiceTypes().addAll(serviceTypes);
@@ -21,6 +31,9 @@ public class JsonProvider {
         country.getProviders().add(createdProvider);
     }
 
+    /**
+     * Reads the parameters from the json property to identify the attributes of a provider and constructs a new JsonProvider
+     */
     @JsonCreator
     public JsonProvider(
             @JsonProperty("countryCode") String countryCode,

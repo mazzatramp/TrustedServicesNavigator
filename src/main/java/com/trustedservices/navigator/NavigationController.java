@@ -5,6 +5,10 @@ import com.trustedservices.navigator.filters.Filter;
 import com.trustedservices.navigator.filters.FilterList;
 import com.trustedservices.navigator.web.TrustedListBuilder;
 
+/**
+ * This class gets the built list from the TrustedListApiBuilder, gets the filtered list from the filters and acts as a mediator
+ * between front-end and back-end
+ */
 public class NavigationController {
 
     private final FilterList filters;
@@ -24,7 +28,13 @@ public class NavigationController {
     }
 
     public void buildCompleteList(TrustedListBuilder builder) {
-        completeList = builder.build();
+        try {
+            completeList = builder.build();
+        }catch(RuntimeException e) {
+            System.err.println("Connection failed, no response from API");
+            throw new RuntimeException(e);
+        }
+
     }
 
     public FilterList getFilters() {

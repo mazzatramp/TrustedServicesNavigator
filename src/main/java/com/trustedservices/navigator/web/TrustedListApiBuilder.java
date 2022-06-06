@@ -14,20 +14,30 @@ public class TrustedListApiBuilder extends TrustedListJsonBuilder {
     private static final String COUNTRIES_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list_no_lotl_territory";
     private static final String PROVIDERS_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/tsp_list";
 
+    /**
+     * This constructor uses the method readJsonFromUrl, then sets the string to build the list, then uses the super class constructor
+     * method to build the
+     * @return TrustedList
+     */
     @Override
     public TrustedList build() {
-        String countriesJson = readJsonFromUrl(COUNTRIES_API_ENDPOINT);
-        String providersJson = readJsonFromUrl(PROVIDERS_API_ENDPOINT);
-        super.setCountriesJsonString(countriesJson);
-        super.setProvidersJsonString(providersJson);
-        return super.build();
+        try {
+            String countriesJson = readJsonFromUrl(COUNTRIES_API_ENDPOINT);
+            String providersJson = readJsonFromUrl(PROVIDERS_API_ENDPOINT);
+            super.setCountriesJsonString(countriesJson);
+            super.setProvidersJsonString(providersJson);
+            return super.build();
+        }catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private String readJsonFromUrl(String endpoint) {
         try {
             return getResponse(endpoint);
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            System.err.println("Tried to connect to " +e.getMessage());
             throw new RuntimeException(e);
         }
     }

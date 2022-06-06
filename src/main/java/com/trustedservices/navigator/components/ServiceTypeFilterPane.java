@@ -7,6 +7,10 @@ import javafx.scene.control.ListView;
 
 import java.util.*;
 
+/**
+ * This class extends the FilterPane and enable the filtering of the list by ServiceTypes, which are showed on a list of checkBoxes
+ * that the user can interact with
+ */
 public class ServiceTypeFilterPane extends FilterPane {
 
     private final ListView<CheckBox> serviceTypes;
@@ -25,6 +29,10 @@ public class ServiceTypeFilterPane extends FilterPane {
         });
     }
 
+    /**
+     * @param dataToShow fills the panel with list of serviceTypes that the complete TrustedList builds upon creation.
+     * Adds a listener on each checkBox to add a checked item to the filter whitelist
+     */
     @Override
     public void fillWith(TrustedList dataToShow) {
         dataToShow.getServiceTypes().forEach(serviceType -> {
@@ -56,6 +64,11 @@ public class ServiceTypeFilterPane extends FilterPane {
         return selectedServiceTypes;
     }
 
+    /**
+     * @param itemsToDisable This method disables the items that would get no results if added as parameters of the search.
+     *                       The parameter is filled in the
+     * @see FilterPanesAccordion
+     */
     @Override
     public void disable(Collection<String> itemsToDisable) {
         serviceTypes.getItems().forEach(serviceTypeItem -> {

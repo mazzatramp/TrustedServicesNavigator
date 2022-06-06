@@ -70,6 +70,10 @@ public class FilterPanesAccordion extends Accordion {
             disableItemsOf(statuses);
     }
 
+    /**
+     * @param filterPane for the parameter filterPane, builds a list of parameter items that would add no new results to the search,
+     *                   by using the method wouldGetNoResults
+     */
     private void disableItemsOf(FilterPane filterPane) {
         Set<String> unselectedFilterItems = filterPane.getUnselectedItems(); //We don't disable selected items
         Set<String> itemsToDisable = new HashSet<>();
@@ -82,6 +86,14 @@ public class FilterPanesAccordion extends Accordion {
         filterPane.disable(itemsToDisable);
     }
 
+    /**
+     * @param filter for the filter parameter
+     * @param filterItem checks if this filter parameter item would show results upon filtering, which is done with method getFilteredListFrom
+     * The method saves the WhiteList for this filter, resets it with only the parameter filter item (the whiteLists of other filters won't be affected and
+     * those filters will work as usual),then filters the list for each filter and asks if the new list is empty.
+     * At last, resets the filter whiteList as it was.
+     * @return a boolean that is true if the filtered list has at least an item
+     */
     private boolean wouldGetResults(Filter filter, String filterItem) {
         Set<String> savedWhitelist = filter.getWhitelist();
 

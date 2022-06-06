@@ -7,6 +7,10 @@ import com.trustedservices.domain.TrustedList;
 import java.util.Collections;
 import java.util.Set;
 
+/**
+ * The ServiceTypes filter browses the list and removes providers and services if they don't have the required serviceTypes,
+ * which are on the ServiceTypeFilter's whiteList
+ */
 public class ServiceTypeFilter extends Filter {
     @Override
     public void filterByWhitelist (TrustedList listToFilter) {

@@ -44,8 +44,14 @@ public class TrustedServicesNavigatorApplication extends Application {
             @Override
             protected Void call() {
             TrustedListBuilder apiBuilder = new TrustedListApiBuilder();
-            navigationController.buildCompleteList(apiBuilder);
-            windowController.fillDisplayAndFiltersViews();
+            try {
+                navigationController.buildCompleteList(apiBuilder);
+                windowController.fillDisplayAndFiltersViews();
+                return null;
+            }catch(RuntimeException e) {
+                System.err.println("Connection error, failed to download the TrustedList");
+                System.exit(-1);
+            }
             return null;
             }
         };
