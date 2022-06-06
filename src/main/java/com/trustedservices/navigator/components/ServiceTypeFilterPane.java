@@ -18,7 +18,7 @@ public class ServiceTypeFilterPane extends FilterPane {
     }
 
     @Override
-    protected void setAllCheckBoxStatus(boolean select) {
+    protected void setSelectedForAll(boolean select) {
         serviceTypes.getItems().forEach(checkBox -> {
             if (!checkBox.isDisabled() || !select)
                 checkBox.setSelected(select);
@@ -57,7 +57,7 @@ public class ServiceTypeFilterPane extends FilterPane {
     }
 
     @Override
-    public void disable(Collection<String> itemsToDisable) {
+    public void disable(Set<String> itemsToDisable) {
         serviceTypes.getItems().forEach(serviceTypeItem -> {
             boolean toDisable = itemsToDisable.contains(serviceTypeItem.getText());
             serviceTypeItem.setDisable(toDisable);

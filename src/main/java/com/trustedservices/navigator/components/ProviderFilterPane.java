@@ -29,7 +29,7 @@ public class ProviderFilterPane extends FilterPane {
      *                        selection status to the according parameter.
      */
     @Override
-    public void setAllCheckBoxStatus(boolean selectionStatus) {
+    public void setSelectedForAll(boolean selectionStatus) {
         for (TreeItem<String> countryTreeItem : filterTreeView.getRoot().getChildren()) {
             for (TreeItem<String> provider : countryTreeItem.getChildren()) {
                 ((FilterTreeItem<String>) provider).setSelected(selectionStatus);
@@ -75,7 +75,7 @@ public class ProviderFilterPane extends FilterPane {
      * the associated country gets disabled too.
      */
     @Override
-    public void disable(Collection<String> itemsToDisable) {
+    public void disable(Set<String> itemsToDisable) {
         for (TreeItem<String> countryTreeItem : filterTreeView.getRoot().getChildren()) {
             FilterTreeItem<String> countryFilterItem = (FilterTreeItem<String>) countryTreeItem;
             boolean allProvidersDisabled = true;
