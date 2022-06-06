@@ -68,10 +68,9 @@ class TrustedListApiBuilderTest {
 
             }
             @Test
-            @DisplayName("The trustedList built from APIBuilder should be the same as the one built with the JsonBuilder from dummycopytrustedList")
+            @DisplayName("If the dummy trusted list is wanted to be up to date with the API, the trustedList built from APIBuilder should be the same as the one built with the JsonBuilder from countryListDummy and providerListDummy")
             void equalListsFromDifferentBuilders() throws IOException {
                 TrustedListJsonBuilder trustedJsonBuilder = new TrustedListJsonBuilder();
-
                 Path countries = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
                 Path providers = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
                 trustedJsonBuilder.setCountriesJsonString(Files.readString(countries));
@@ -81,7 +80,7 @@ class TrustedListApiBuilderTest {
                 boolean areListsEqual = trustedListDummy.equals(trustedListAPI);
                 System.out.println(trustedListDummy.getCountries());
                 System.out.println(trustedListAPI.getCountries());
-                assertTrue(areListsEqual,"il file dummy non è più aggiornato");
+                assertTrue(areListsEqual,"i file dummy non sono più aggiornati");
 
             }
         }
