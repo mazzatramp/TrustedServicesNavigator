@@ -1,13 +1,9 @@
 package com.trustedservices.domain;
 
-import com.trustedservices.Help;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -144,16 +140,28 @@ class CountryTest {
         @DisplayName("after attaching providers to country, it returns the same country with the providers attached")
         @Test
         void cloneACountryWithProvidersReturnsSameCountry() {
-            Country countryToBeCloned = country;
+
 
             TreeSet<String> providerServiceTypes = new TreeSet<>(
                     List.of("QCertESeal", "QCertESig", "QTimestamp")
             );
             TreeSet<Service> providerServices = new TreeSet<>();
-            Provider provider1 = new Provider(new Country("Belgium", "Be"), 0, "TestProvider", "TTT-000-X00", providerServiceTypes, providerServices);
+            Provider provider1 = new Provider(country, 0, "TestProvider", "TTT-000-X00", providerServiceTypes, providerServices);
             providerServices.add(new Service(provider1, 1, "Service 1", "QC", "granted", providerServiceTypes));
             providerServices.forEach(service -> service.setProvider(provider1));
+            TreeSet<String> providerServiceTypes2 = new TreeSet<>(
+                    List.of("QCertESeal", "QCertESig", "QTimestamp")
+            );
+
+            TreeSet<Service> providerServices2 = new TreeSet<>();
+
+            Provider provider2 = new Provider(country, 0, "TestProvider", "TTT-000-X01", providerServiceTypes2, providerServices2);
+
+            providerServices2.add(new Service(provider2, 1, "Service 1", "QC", "granted", providerServiceTypes2));
+            providerServices2.forEach(service -> service.setProvider(provider2));
             country.getProviders().add(provider1);
+            country.getProviders().add(provider2);
+            Country countryToBeCloned = country;
             Country clonedCountry = countryToBeCloned.clone();
             assertEquals(countryToBeCloned, clonedCountry);
 
@@ -171,12 +179,30 @@ class CountryTest {
 
     }
 
-    @DisplayName("when I use the method getInformation, it should return a List of Country name and code")
+    @DisplayName("when I use the method getInformation, it should return a string with information")
     @Test
     void getInformationMethod() {
+        TreeSet<String> providerServiceTypes = new TreeSet<>(
+                List.of("QCertESeal", "QCertESig", "QTimestamp")
+        );
+        TreeSet<Service> providerServices = new TreeSet<>();
+        Provider provider1 = new Provider(country, 0, "TestProvider", "TTT-000-X00", providerServiceTypes, providerServices);
+        providerServices.add(new Service(provider1, 1, "Service 1", "QC", "granted", providerServiceTypes));
+        providerServices.forEach(service -> service.setProvider(provider1));
+        TreeSet<String> providerServiceTypes2 = new TreeSet<>(
+                List.of("QCertESeal", "QCertESig", "QTimestamp")
+        );
+        TreeSet<Service> providerServices2 = new TreeSet<>();
+
+        Provider provider2 = new Provider(country, 0, "TestProvider", "TTT-000-X01", providerServiceTypes2, providerServices2);
+
+        providerServices2.add(new Service(provider2, 1, "Service 1", "QC", "granted", providerServiceTypes2));
+        providerServices2.forEach(service -> service.setProvider(provider2));
+        country.getProviders().add(provider1);
+        country.getProviders().add(provider2);
         String expectedString= "Austria" + " (" + "AT" + ")\n\n" +
-                "With " + 0 + " providers displayed\n" +
-                "And " + 0 + " services displayed\n";
+                "With " + 2 + " providers displayed\n" +
+                "And " + 2 + " services displayed\n";
         assertEquals(expectedString, country.getHumanInformation());
 
     }

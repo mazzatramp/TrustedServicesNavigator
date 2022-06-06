@@ -176,5 +176,32 @@ public class ServiceTest {
         assertEquals(serviceToBeCloned, clonedService);
 
     }
+    @DisplayName("when I use the method getInformation, it should return a string with information")
+    @Test
+    void getInformationMethod(){
+        String expectedString = "TestService" + "\n" +
+                "Of " + "TestProvider" + " (" + "IT" + ")\n" +
+                "\n" +
+                "Status: " + "status" + "\n" +
+                "Service Types: " + Set.of("ServiceType1", "ServiceType2");
+        assertEquals(expectedString, service1.getHumanInformation());
+
+    }
+    @DisplayName("when I use the method toString, it should return tspId,serviceId, name,type,status, serviceTypes")
+    @Test
+    void toStringMethod(){
+
+
+        String expectedString= "Service{" +
+                "tspId=" + "0" +
+                ", serviceId=" + 0 +
+                ", name='" + "TestService" + '\'' +
+                ", type='" + "type" + '\'' +
+                ", status='" + "status" + '\'' +
+                ", serviceTypes=" + Set.of("ServiceType1", "ServiceType2") +
+                '}';
+        assertEquals(expectedString, service1.toString());
+
+    }
 }
 

@@ -1,5 +1,6 @@
 package com.trustedservices.navigator.web;
 
+import com.trustedservices.domain.TrustedList;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
@@ -50,8 +51,15 @@ class TrustedListJsonBuilderTest {
 
         @Test
         @DisplayName("building the trusted list should not throw any exception")
-        void buildWithGoodBuilder() {
+        void buildWithGoodBuilderNoException() {
             assertDoesNotThrow(() -> trustedJsonBuilder.build());
+        }
+        @Test
+        @DisplayName("The trustedList should not be empty")
+        void buildWithGoodBuilderNotEmpty() {
+            TrustedList trustedList= trustedJsonBuilder.build();
+            assertFalse(trustedList.isEmpty());
+
         }
     }
 

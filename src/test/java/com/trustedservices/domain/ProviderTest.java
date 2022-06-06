@@ -231,7 +231,7 @@ class ProviderTest {
         assertEquals(expectedString, provider.toString());
 
     }
-    @DisplayName("when I use the method getInformation, it should return a List of Country name and code")
+    @DisplayName("when I use the method getInformation, it should return string with information")
     @Test
     void getInformationMethod(){
         String expectedString = "Name: " + "TestProvider" + "\n" +
