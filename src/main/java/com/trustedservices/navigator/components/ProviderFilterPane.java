@@ -6,6 +6,11 @@ import javafx.scene.control.*;
 
 import java.util.*;
 
+/**
+ * This class fills the ProviderFilterPane and inherits and implements methods from FilterPane. This filter Pane has a treeView
+ * much like the Display pane, that displays the providers for each country, letting the user select each item by implementing
+ * a checkBoxTreeItem
+ */
 public class ProviderFilterPane extends FilterPane {
 
     private final TreeView<String> filterTreeView;
@@ -15,11 +20,14 @@ public class ProviderFilterPane extends FilterPane {
         filterTreeView.setRoot(new FilterTreeItem<>());
         filterTreeView.setShowRoot(false);
         filterTreeView.setCellFactory(FilterTreeCell.forTreeView());
-
         setFilterView(filterTreeView);
         this.setAssociatedFilter(new ProviderFilter());
     }
 
+    /**
+     * @param selectionStatus implementation of the same abstract method fo the class filter pane, for each country, changes the
+     *                        selection status to the according parameter.
+     */
     @Override
     public void setAllCheckBoxStatus(boolean selectionStatus) {
         for (TreeItem<String> countryTreeItem : filterTreeView.getRoot().getChildren()) {
@@ -60,6 +68,12 @@ public class ProviderFilterPane extends FilterPane {
         return selectedProviders;
     }
 
+    /**
+     * The method browses the Tree of countries and Providers and disables all providers belonging to the list
+     * @param itemsToDisable . The method double-checks the identity of the providers, by checking also the name of the associated
+     * country. The variable allProviderDisable becomes false when an element does not get disable, if all elements get disable
+     * the associated country gets disabled too.
+     */
     @Override
     public void disable(Collection<String> itemsToDisable) {
         for (TreeItem<String> countryTreeItem : filterTreeView.getRoot().getChildren()) {
@@ -79,6 +93,11 @@ public class ProviderFilterPane extends FilterPane {
         }
     }
 
+    /**
+     * Fills the Country and Provider CheckBoxTreeItem with
+     * @param dataToShow
+     * It delegates the creation of the CountryCheckBox to the method createCountryCheckBox.
+     */
     @Override
     public void fillWith(TrustedList dataToShow) {
         for (Country country : dataToShow.getCountries()) {
@@ -87,6 +106,11 @@ public class ProviderFilterPane extends FilterPane {
         }
     }
 
+    /**
+     * @param country given the parameter country, creates a FilterTreeItem. Then it browses the list of providers associated
+     * to the country and creates them with the method createProviderCheckBox, and add them to the node.
+     * @return a new countryFilterItem with its children
+     */
     private FilterTreeItem<String> createCountryCheckBox(Country country) {
         FilterTreeItem<String> countryFilterItem = new FilterTreeItem<>(country.getName());
         for (Provider provider : country.getProviders()) {
@@ -96,6 +120,10 @@ public class ProviderFilterPane extends FilterPane {
         return countryFilterItem;
     }
 
+    /**
+     * @param provider given a provider argument, creates a new FilterTreeItem and adds a new listener to it.
+     * @return a providerFilterItem
+     */
     private FilterTreeItem<String> createProviderCheckBox(Provider provider) {
         FilterTreeItem<String> providerFilterItem = new FilterTreeItem<>(provider.getName());
         providerFilterItem.selectedProperty().addListener(

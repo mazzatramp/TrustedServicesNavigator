@@ -13,6 +13,9 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * This class implements the information panel called upon click on an object in the Display Pane
+ */
 public class InfoPane extends AnchorPane {
 
     @FXML private Label information;
@@ -27,10 +30,10 @@ public class InfoPane extends AnchorPane {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("info-pane.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
-
         try {
             fxmlLoader.load();
         } catch (IOException e) {
+            System.err.println("Error while setting the scene for info Pane in FXMLLoader");
             throw new RuntimeException(e);
         }
     }

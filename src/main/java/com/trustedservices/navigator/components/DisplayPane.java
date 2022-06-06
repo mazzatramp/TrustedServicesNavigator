@@ -32,7 +32,6 @@ public class DisplayPane extends AnchorPane {
         loadFXMLResource();
         initializeEmptyDisplayMessage();
         initializeDownloadBar();
-
         EventHandler<MouseEvent> mouseEventEventHandler = this::handleMouseClick;
         displayed.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEventEventHandler);
     }
@@ -62,7 +61,7 @@ public class DisplayPane extends AnchorPane {
         try {
             fxmlLoader.load();
         } catch (IOException e) {
-            System.err.println("Error in downloading the data from the api.\n" + e.getMessage());
+            System.err.println("Error while setting the scene for Display Pane with FXMLLoader.\n" + e.getMessage());
             throw new RuntimeException(e);
         }
     }

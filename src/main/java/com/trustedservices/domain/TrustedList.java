@@ -5,7 +5,10 @@ import java.util.*;
 /**
  * It has been decided to organize the TrustedList in a treeView, so this class represents the root of the tree.
  * It contains a set of countries, and two set of Strings, serviceTypes and statuses, that get filled with the
- * method updateServiceTypeAndStatuses. The sets serviceTypes and statuses will be used to filter the list and fill filter panels
+ * method updateServiceTypeAndStatuses. The sets serviceTypes and statuses will be used to filter the list and fill filter panels.
+ * The Trusted List gets filled by two different classes,
+ * @see com.trustedservices.navigator.web.TrustedListJsonBuilder
+ * @see com.trustedservices.navigator.web.TrustedListApiBuilder
  */
 public class TrustedList implements Cloneable {
     private final Set<String> serviceTypes;

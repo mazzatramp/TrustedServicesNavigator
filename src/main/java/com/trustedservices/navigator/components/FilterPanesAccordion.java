@@ -13,6 +13,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Class that contains all the filter panes. It fills them with data from the complete list, refreshes the filters and disables
+ * the checkboxes if needed
+ */
 public class FilterPanesAccordion extends Accordion {
 
     @FXML private ProviderFilterPane providers;
@@ -30,10 +34,10 @@ public class FilterPanesAccordion extends Accordion {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("filter-panes-accordion.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
-
         try {
             fxmlLoader.load();
         } catch (IOException e) {
+            System.err.println("Error while setting the scene for FilterPane Accordion in FXMLLoader");
             throw new RuntimeException(e);
         }
     }
@@ -42,6 +46,10 @@ public class FilterPanesAccordion extends Accordion {
         this.windowController = windowController;
     }
 
+    /**
+     * @param completeList the complete TrustedList built by ApiData. The method asks each filter to fill itself with the
+     *                     complete list
+     */
     public void fillFilterPanesWith(TrustedList completeList) {
         this.completeList = completeList;
         providers.fillWith(completeList);
@@ -49,6 +57,10 @@ public class FilterPanesAccordion extends Accordion {
         statuses.fillWith(completeList);
     }
 
+    /**
+     * @param toNotRefresh method that asks to refresh the items of each filter by the method disableItemsOf, but the parameter filter,
+     *                     which is the last selected
+     */
     public void refreshPanesExcept(FilterPane toNotRefresh) {
         if (!(toNotRefresh instanceof ProviderFilterPane))
             disableItemsOf(providers);
