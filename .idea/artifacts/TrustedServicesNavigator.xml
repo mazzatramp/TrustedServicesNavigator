@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jpackage" name="TrustedServicesNavigator">
+    <output-path>$PROJECT_DIR$/out/artifacts/TrustedServicesNavigator</output-path>
+    <root id="root">
+      <element id="archive" name="TrustedServicesNavigator.jar">
+        <element id="module-output" name="TrustedServicesNavigator" />
+      </element>
+    </root>
+  </artifact>
+</component>

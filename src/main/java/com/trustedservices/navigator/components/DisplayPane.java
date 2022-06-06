@@ -75,21 +75,22 @@ public class DisplayPane extends AnchorPane {
     }
 
     /**
-     * @param dataToShow a version of the list that is empty once you start, and filtered after.
+     * @param dataToShow a version of the list that is empty once you start, and filtered after. It calls the method getRoot to create
+     * the rootTreeItem and countries, then sets it.
      * Shows a message if dataToShow is Empty
      */
     public void fillWith(TrustedList dataToShow) {
         emptyDisplayMessage.setVisible(dataToShow.isEmpty());
-        TreeItem<Label> root = getRootFrom(dataToShow);
+        TreeItem<Label> root = createRootFrom(dataToShow);
         displayed.setRoot(root);
     }
 
     /**
      * @param dataToShow creates the tree using the TrustedList. For each country it contains, it builds a branch on the Tree using
      *                   following method: createCountryItemFrom
-     * @return  root, the filled Tree to show in the display pane
+     * @return root, the filled Tree to show in the display pane
      */
-    private TreeItem<Label> getRootFrom(TrustedList dataToShow) {
+    private TreeItem<Label> createRootFrom(TrustedList dataToShow) {
         TreeItem<Label> root = new TreeItem<>();
         dataToShow.getCountries().forEach(country -> {
             TreeItem<Label> countryTreeItem = createCountryItemFrom(country);
@@ -131,7 +132,7 @@ public class DisplayPane extends AnchorPane {
     }
 
     /**
-     * @param entity creates a TreeItem using a TrustedListEntity item, that could be a country, a provider or a domain.
+     * @param entity creates a TreeItem using a TrustedListEntity item, that could be a country, a provider or a service.
      * @return the new TreeItem
      */
     private TreeItem<Label> createTreeItemFrom(TrustedListEntity entity) {
@@ -148,8 +149,8 @@ public class DisplayPane extends AnchorPane {
 
     /**
      * @param event Handler for click on an item.
-     * This method opens upon click the info panel with the information about the selected item.
-     * It uses the method getHumanInformation, that belongs to classes Country, Providers and Services
+     * This method opens upon click the info panel with the description about the selected item.
+     * It uses the method getDescription, implemented in Country, Provider and Service.
      * @see Country
      * @see Provider
      * @see Service
@@ -158,7 +159,7 @@ public class DisplayPane extends AnchorPane {
         Node node = event.getPickResult().getIntersectedNode();
         if (node instanceof Text || (node instanceof TreeCell && ((TreeCell) node).getText() != null)) {
             if (displayed.getSelectionModel().getSelectedItem().getValue() instanceof TrustedEntityLabel selected) {
-                windowController.openInfoPaneWithInfo(selected.getRefereed().getHumanInformation());
+                windowController.openInfoPaneWithInfo(selected.getRefereed().getDescription());
             }
         }
     }

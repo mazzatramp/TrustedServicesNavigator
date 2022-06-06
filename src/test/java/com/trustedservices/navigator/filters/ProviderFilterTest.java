@@ -1,13 +1,12 @@
 package com.trustedservices.navigator.filters;
 
-import com.trustedservices.Help;
+import com.trustedservices.DummyTrustedList;
 import com.trustedservices.domain.TrustedList;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -33,7 +32,8 @@ class ProviderFilterTest {
         @DisplayName("with a list as argument, should return the same list")
         @Test
         void withListAsArgument() {
-            argumentTrustedList = Help.getWholeList();
+            DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+            argumentTrustedList = dummyTrustedList.getDummyTrustedList();
             TrustedList expectedFilteredList = argumentTrustedList;
             providerFilter.applyTo(argumentTrustedList);
             assertEquals(expectedFilteredList, argumentTrustedList);
@@ -80,7 +80,8 @@ class ProviderFilterTest {
             @DisplayName("with a list with compatible elements with the filters as argument, should return a list with only those elements")
             void withListAsArgument(Set<String> providersSet)  {
                 setProviders(providersSet);
-                argumentTrustedList = Help.getWholeList();
+                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
                 Set<String> expectedProviders = new HashSet<>(providersSet);
                 providerFilter.applyTo(argumentTrustedList);
                 System.out.println(" countries"  + argumentTrustedList.getCountries());

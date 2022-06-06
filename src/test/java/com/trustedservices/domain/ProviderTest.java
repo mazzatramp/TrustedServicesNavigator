@@ -1,6 +1,7 @@
 package com.trustedservices.domain;
 
 import org.junit.jupiter.api.*;
+
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -168,7 +169,7 @@ class ProviderTest {
                 "Trustmark: " + "TTT-000-X01" + "\n\n" +
                 "Based in " + "Italia" + " (" + "IT" + ")\n" +
                 "With " + "1" + " services displayed.";
-        assertEquals(expectedString, provider.getHumanInformation());
+        assertEquals(expectedString, provider.getDescription());
 
     }
 

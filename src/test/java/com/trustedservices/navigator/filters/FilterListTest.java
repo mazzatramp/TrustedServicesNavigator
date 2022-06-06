@@ -1,6 +1,6 @@
 package com.trustedservices.navigator.filters;
 
-import com.trustedservices.Help;
+import com.trustedservices.DummyTrustedList;
 import com.trustedservices.domain.TrustedList;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -92,14 +92,15 @@ public class FilterListTest {
                 @MethodSource("getFilters")
                 void PossibleFiltersTrustedListAsArgument(List<Filter> filters) {
                     createFilterList(filters);
-                    argumentTrustedList = Help.getWholeList();
+                    DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+                    argumentTrustedList = dummyTrustedList.getDummyTrustedList();
                     System.out.println(argumentTrustedList.getCountries());
                     Set<String> providersExpected = filters.get(0).getWhitelist();
                     Set<String> expectedServiceTypes = filters.get(1).getWhitelist();
                     Set<String> expectedStatuses = filters.get(2).getWhitelist();
                     System.out.println("ecco l'expected provider " + providersExpected);
-                    System.out.println("ecco l'expectedstatus " + expectedStatuses);
-                    System.out.println("ecco l'expectedservycetype " + expectedServiceTypes);
+                    System.out.println("ecco l'expected status " + expectedStatuses);
+                    System.out.println("ecco l'expected service type " + expectedServiceTypes);
                     System.out.println(filterList.get(0).getWhitelist());
                     System.out.println(filterList.get(1).getWhitelist());
                     System.out.println(filterList.get(2).getWhitelist());
@@ -190,7 +191,8 @@ public class FilterListTest {
                 @MethodSource("getFilters")
                 void TrustedListAsArgument(List<Filter> filters) {
                     createFilterList(filters);
-                    argumentTrustedList = Help.getWholeList();
+                    DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+                    argumentTrustedList = dummyTrustedList.getDummyTrustedList();
 
                     TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
                     assertTrue(filteredList.getCountries().isEmpty());
@@ -205,7 +207,8 @@ public class FilterListTest {
 
         }
     }
-     //prova con collezione di filtri vuota
+
+    //prova con collezione di filtri vuota
     @Nested
     @DisplayName("when new")
     class WhenNew {
@@ -222,7 +225,8 @@ public class FilterListTest {
             @DisplayName("with a TrustedList as argument should return the same trustedList")
             @Test
             void trustedListAsArgument() {
-                argumentTrustedList = Help.getWholeList();
+                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
 
                 TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
                 assertEquals(filteredList, argumentTrustedList);

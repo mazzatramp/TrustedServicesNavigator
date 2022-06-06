@@ -1,0 +1,6 @@
+module:com.tsn.trustedservicesnavigator
+com.trustedservices.domain
+com.trustedservices.navigator
+com.trustedservices.navigator.components
+com.trustedservices.navigator.filters
+com.trustedservices.navigator.web
