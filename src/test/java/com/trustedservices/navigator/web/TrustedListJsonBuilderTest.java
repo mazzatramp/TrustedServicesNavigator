@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -70,27 +71,27 @@ class TrustedListJsonBuilderTest {
         @DisplayName("the trusted list built should represent the values in the json")
         void builtRightTrustedList() {
             TrustedList trustedList = trustedJsonBuilder.build();
-            Set<Country> listOfCountries = new HashSet<>();
+            TreeSet<Country> listOfCountries = new TreeSet<>();
 
             Country country1 = new Country("Austria","AT");
-            Set <String> serviceTypesDatakom = new HashSet<>();
+            TreeSet<String> serviceTypesDatakom = new TreeSet<>();
             serviceTypesDatakom.add("QCertESig");
-            Set <String> serviceTypesA_sign_premium_CA = new HashSet<>();
+            TreeSet<String> serviceTypesA_sign_premium_CA = new TreeSet<>();
             serviceTypesA_sign_premium_CA.add("QCertESig");
-            Set <Service> servicesDatakom = new HashSet<>();
+            TreeSet<Service> servicesDatakom = new TreeSet<>();
             Provider Datakom_Austria_GmbH = new Provider(country1,3,"Datakom Austria GmbH","VATAT-U44837307", serviceTypesDatakom,servicesDatakom);
             Service A_sign_premium_CA = new Service(Datakom_Austria_GmbH,1,"a-sign Premium CA","http://uri.etsi.org/TrstSvc/Svctype/CA/QC","withdrawn",serviceTypesA_sign_premium_CA);
             servicesDatakom.add(A_sign_premium_CA);
             country1.getProviders().add(Datakom_Austria_GmbH);
 
             Country country2 = new Country("Belgium","Be");
-            Set <String> serviceTypesConnective = new HashSet<>();
+            TreeSet <String> serviceTypesConnective = new TreeSet<>();
             serviceTypesConnective.add("QValQESig");
             serviceTypesConnective.add("QValQESeal");
-            Set <String> serviceTypesConnective_Validation_Service = new HashSet<>();
+            TreeSet <String> serviceTypesConnective_Validation_Service = new TreeSet<>();
             serviceTypesConnective_Validation_Service.add("QValQESig");
             serviceTypesConnective_Validation_Service.add("QValQESeal");
-            Set <Service> servicesConnective = new HashSet<>();
+            TreeSet <Service> servicesConnective = new TreeSet<>();
             Provider Connective = new Provider(country2,13,"CONNECTIVE","VATBE-0467046486", serviceTypesConnective,servicesConnective);
             Service Connective_Validation_Service = new Service(Connective,1,"Connective Validation Service","http://uri.etsi.org/TrstSvc/Svctype/QESValidation/Q","granted",serviceTypesConnective_Validation_Service);
             servicesConnective.add(Connective_Validation_Service);
