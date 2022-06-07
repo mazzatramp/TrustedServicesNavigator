@@ -40,7 +40,12 @@ The results are displayed in a tree view, with the root beeing the country. Upon
 ---
 <a name="compile"></a>
 ### Compile from source
-Make sure to have the latest JDK installed, that your PATH includes a valid reference to it, and that JAVA_PATH is valid. We use the `maven` tool as the build tool.
+Make sure to have java version 17 installed as well as maven version 3.8.5.
+```
+$ mvn clean install
+```
+Inside the target folder you'll find the jar executable.
+
 
 ---
 <a name="thirdparties"></a>
