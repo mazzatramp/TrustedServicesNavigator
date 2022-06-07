@@ -1,5 +1,6 @@
 package com.trustedservices.navigator.filters;
 
+import com.trustedservices.domain.Country;
 import com.trustedservices.domain.TrustedList;
 
 import java.util.HashSet;
@@ -24,33 +25,32 @@ public abstract class Filter {
     public Set<String> getWhitelist() {
         return whitelist;
     }
-    protected abstract void filterByWhitelist(TrustedList listToFilter);
+    protected abstract void doWhitelistFiltering(TrustedList toFilter);
 
     /**
      * Method that applies the filters to the
-     * @param listToFilter
+     * @param toFilter
      * After filtering, removes empty entities inside the list.
      */
-    public void applyTo(TrustedList listToFilter) {
+    public void applyTo(TrustedList toFilter) {
         if (!whitelist.isEmpty()) {
-            filterByWhitelist(listToFilter);
-            removeEmptyEntities(listToFilter);
+            doWhitelistFiltering(toFilter);
+            removeEmptyEntities(toFilter);
         }
     }
 
-    private void removeEmptyEntities(TrustedList list) {
-        removeEmptyProviders(list);
-        removeEmptyCountries(list);
+    private void removeEmptyEntities(TrustedList trustedList) {
+        removeEmptyProviders(trustedList);
+        removeEmptyCountries(trustedList);
     }
 
-    private void removeEmptyProviders(TrustedList list) {
-        list.getCountries().forEach(country -> {
+    private void removeEmptyProviders(TrustedList trustedList) {
+        for (Country country : trustedList.getCountries())
             country.getProviders().removeIf(provider -> provider.getServices().isEmpty());
-        });
     }
 
-    private void removeEmptyCountries(TrustedList list) {
-        list.getCountries().removeIf(country -> country.getProviders().isEmpty());
+    private void removeEmptyCountries(TrustedList trustedList) {
+        trustedList.getCountries().removeIf(country -> country.getProviders().isEmpty());
     }
 }
 
