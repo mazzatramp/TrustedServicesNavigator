@@ -147,7 +147,9 @@ class ServiceTypeFilterTest {
             @MethodSource("getServiceTypes")
             void withNotPossibleListAsArgument(Set<String> serviceTypes) {
                 setServiceTypes(serviceTypes);
-                argumentTrustedList = getTestTrustedList();
+                argumentTrustedList = TestTrustedList.getTrustedListWith(
+                        "CountryWithProviderWithServices_ButServiceTypesSetToTest1",
+                        "CountryWithProviderWithServices_ButServiceTypesSetToTest2");
                 serviceTypeFilter.applyTo(argumentTrustedList);
                 assertTrue(argumentTrustedList.getCountries().isEmpty());
             }
@@ -242,36 +244,5 @@ class ServiceTypeFilterTest {
 
     }
 
-    private TrustedList getTestTrustedList() {
-        TreeSet<Country> listOfCountries = new TreeSet<>();
-        Country country1 = new Country("Austria", "AT");
-        TreeSet<String> serviceTypesDatakom = new TreeSet<>();
-        serviceTypesDatakom.add("test");
-        TreeSet<String> serviceTypesA_sign_premium_CA = new TreeSet<>();
-        serviceTypesA_sign_premium_CA.add("test");
-        TreeSet<Service> servicesDatakom = new TreeSet<>();
-        Provider Datakom_Austria_GmbH = new Provider(country1, 3, "Datakom Austria GmbH", "VATAT-U44837307", serviceTypesDatakom, servicesDatakom);
-        Service A_sign_premium_CA = new Service(Datakom_Austria_GmbH, 1, "a-sign Premium CA", "http://uri.etsi.org/TrstSvc/Svctype/CA/QC", "withdrawn", serviceTypesA_sign_premium_CA);
-        servicesDatakom.add(A_sign_premium_CA);
-        country1.getProviders().add(Datakom_Austria_GmbH);
-
-        Country country2 = new Country("Belgium", "Be");
-        TreeSet<String> serviceTypesConnective = new TreeSet<>();
-        serviceTypesConnective.add("test1");
-        serviceTypesConnective.add("test2");
-        TreeSet<String> serviceTypesConnective_Validation_Service = new TreeSet<>();
-        serviceTypesConnective_Validation_Service.add("test1");
-        serviceTypesConnective_Validation_Service.add("test2");
-        TreeSet<Service> servicesConnective = new TreeSet<>();
-        Provider Connective = new Provider(country2, 13, "CONNECTIVE", "VATBE-0467046486", serviceTypesConnective, servicesConnective);
-        Service Connective_Validation_Service = new Service(Connective, 1, "Connective Validation Service", "http://uri.etsi.org/TrstSvc/Svctype/QESValidation/Q", "granted", serviceTypesConnective_Validation_Service);
-        servicesConnective.add(Connective_Validation_Service);
-        country2.getProviders().add(Connective);
-        listOfCountries.add(country1);
-        listOfCountries.add(country2);
-        TrustedList testTrustedList = new TrustedList(listOfCountries);
-        testTrustedList.updateServiceTypesAndStatuses();
-        return testTrustedList;
-    }
 
 }
