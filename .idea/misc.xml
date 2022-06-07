@@ -9,7 +9,7 @@
     </writeAnnotations>
   </component>
   <component name="JavadocGenerationManager">
-    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/javadoc" />
+    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/wiki" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
