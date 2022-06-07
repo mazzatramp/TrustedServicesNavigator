@@ -193,8 +193,6 @@ class TrustedListTest {
             listOfServiceTypes.add("QValQESeal");
             listOfServiceTypes.add("QCertESig");
 
-            System.out.println(trustedList.getServiceTypes());
-            System.out.println(trustedList.getStatuses());
 
             assertEquals(trustedList.getStatuses(), listOfStatuses);
             assertEquals(trustedList.getServiceTypes(), listOfServiceTypes);
