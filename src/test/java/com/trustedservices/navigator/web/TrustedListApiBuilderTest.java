@@ -18,7 +18,7 @@ class TrustedListApiBuilderTest {
     TrustedListApiBuilder trustedListApiBuilder;
 
     @Test
-    @DisplayName("is created")
+    @DisplayName("is created with TrustedListApiBuilder()")
     void constructorTest() {
         new TrustedListApiBuilder();
     }
@@ -39,7 +39,7 @@ class TrustedListApiBuilderTest {
             assertThrows(NullPointerException.class, () -> trustedListApiBuilder.build());
         }
 
-        @Disabled
+        @Disabled // can be disabled because it is a time-consuming test.
         @Nested
         @DisplayName("when set up with good json data")
         class WhenSetUp {
@@ -62,7 +62,7 @@ class TrustedListApiBuilderTest {
 
             @Test
             @DisplayName("The trustedList built should not be null")
-            void buildWithGoodBuilderNotEmpty() {
+            void buildWithGoodBuilderNotNullList() {
                 TrustedList trustedList = trustedListApiBuilder.build();
                 assertNotNull(trustedList);
 

@@ -12,7 +12,7 @@ public class ServiceTest {
 
     @BeforeEach
     @DisplayName("is instantiated thanks to new Service(int,String, String,String,Set<ServiceType>)")
-    void isInstantiatedWithNewService() {
+    void createAService() {
         Provider provider = new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X00");
         service1 = new Service(provider,
                 0,
@@ -24,8 +24,21 @@ public class ServiceTest {
     }
 
     @Test
+    @DisplayName("is instantiated thanks to new Service(int,String, String,String,Set<ServiceType>)")
+    void testingConstructor1() {
+        service1 = new Service(new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X00")
+                ,
+                0,
+                "TestService",
+                "type",
+                "status",
+                Set.of("ServiceType1", "ServiceType2")
+        );
+    }
+
+    @Test
     @DisplayName("or alternatively is instantiated thanks to new Service(int,String, String,String)")
-    void alternativelyIsInstantiatedWithOtherNewService() {
+    void testingConstructor2() {
         Provider provider = new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X00");
         new Service(provider,
                 0,

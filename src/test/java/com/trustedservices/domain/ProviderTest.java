@@ -11,8 +11,7 @@ class ProviderTest {
     Provider provider;
 
     @BeforeEach
-    @DisplayName("thanks to new Provider(String,Int, String,String,List<ServiceType>,List<providerServices>)")
-    void isInstantiatedWithNewProvider() {
+    void createAProvider() {
         TreeSet<String> providerServiceTypes = new TreeSet<>(
                 List.of("QCertESeal", "QCertESig", "QTimestamp")
         );
@@ -26,8 +25,21 @@ class ProviderTest {
     }
 
     @Test
+    @DisplayName("thanks to new Provider(String,Int, String,String,List<ServiceType>,List<providerServices>)")
+    void testingConstructor1() {
+        TreeSet<String> providerServiceTypes = new TreeSet<>(
+                List.of("QCertESeal", "QCertESig", "QTimestamp")
+        );
+
+        TreeSet<Service> providerServices = new TreeSet<>();
+
+        new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X01", providerServiceTypes, providerServices);
+
+    }
+
+    @Test
     @DisplayName("or alternatively thanks to new Provider(Country, int, String, String)")
-    void AlternativelyIsInstantiatedWithNewProvider() {
+    void testingConstructor2() {
         new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X01");
     }
 
@@ -141,21 +153,18 @@ class ProviderTest {
     @DisplayName("when I use the method toString, it should return Provider providerId, name, trustmark, serviceTypes, countryCode, Services")
     @Test
     void toStringMethod() {
-        //Another service is attached to provider in order to better test toStringMethod()
+        //Another service is attached to provider in order to better test toString() method
+        attachAServiceTo(provider);
         TreeSet<String> providerServiceTypes = new TreeSet<>(
                 List.of("QCertESeal", "QCertESig", "QTimestamp")
         );
-        TreeSet<Service> providerServices = new TreeSet<>();
-        providerServices.add(new Service(provider, 1, "Service 1", "QC", "granted", providerServiceTypes));
-        providerServices.forEach(service -> service.setProvider(provider));
-
         String expectedString = "Provider{" +
                 "providerId=" + "0" +
                 ", name='" + "TestProvider" + '\'' +
                 ", trustmark='" + "TTT-000-X01" + '\'' +
                 ", serviceTypes=" + providerServiceTypes +
                 ", countryCode=" + "IT" +
-                ", services=" + providerServices +
+                ", services=" + provider.getServices() +
                 '}';
         assertEquals(expectedString, provider.toString());
 
@@ -213,6 +222,12 @@ class ProviderTest {
         providerServices2.add(new Service(provider2, 1, "Service 1", "QC", "granted", providerServiceTypes2));
         providerServices2.forEach(service -> service.setProvider(provider2));
         return provider2;
+    }
+
+    private void attachAServiceTo(Provider provider) {
+        TreeSet<Service> providerServices = new TreeSet<>();
+        providerServices.add(new Service(provider, 1, "Service 1", "QC", "granted", provider.getServiceTypes()));
+        providerServices.forEach(service -> service.setProvider(provider));
     }
 
 }

@@ -1,15 +1,11 @@
 package com.trustedservices.navigator.filters;
 
 import com.trustedservices.TestTrustedList;
-import com.trustedservices.domain.Country;
-import com.trustedservices.domain.Provider;
-import com.trustedservices.domain.Service;
 import com.trustedservices.domain.TrustedList;
 import org.junit.jupiter.api.*;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -24,6 +20,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class StatusFilterTest {
     StatusFilter statusFilter;
 
+    @Test
+    @DisplayName("is instantiated thanks to new StatusFilter()")
+    void testingConstructor() {
+        new StatusFilter();
+    }
+
     @BeforeEach
     @DisplayName("is instantiated thanks to new StatusFilter()")
     void isInstantiatedWithNewStatus() {
@@ -31,6 +33,7 @@ class StatusFilterTest {
     }
 
     @DisplayName("when I use the method ApplyTo")
+    // In this nested class filters are empty because I will not use setWhitelist
     @Nested
     class ApplyTo {
         TrustedList argumentTrustedList;
@@ -38,7 +41,7 @@ class StatusFilterTest {
         @DisplayName("with a list as argument, return the same list")
         @Test
         void withListAsArgument() {
-            argumentTrustedList = TestTrustedList.getActualApiTrustedList();
+            argumentTrustedList = TestTrustedList.getWholeLocalTrustedList();
             TrustedList expectedFilteredList = argumentTrustedList;
             statusFilter.applyTo(argumentTrustedList);
             assertEquals(expectedFilteredList, argumentTrustedList);
@@ -75,12 +78,13 @@ class StatusFilterTest {
                 statusSet2.add("withdrawn");
                 Set<String> statusSet3 = new HashSet<>();
                 statusSet3.add("withdrawn");
-                Set<String> statusSet4 = new HashSet<>();
+                Set<String> statusSet4 = new HashSet<>();//will have all possible statuses
                 statusSet4.add("granted");
                 statusSet4.add("withdrawn");
                 statusSet4.add("deprecatedatnationallevel");
                 statusSet4.add("recognisedatnationallevel");
-                Set<String> statusSet5 = new HashSet<>();
+                Set<String> statusSet5 = new HashSet<>();//the presence of one or more of made up filters like "noSenseFilter"
+                // do not affect the behaviour of the filter if other meaningful filters are present
                 statusSet5.add("granted");
                 statusSet5.add("withdrawn");
                 statusSet5.add("deprecatedatnationallevel");
@@ -103,17 +107,18 @@ class StatusFilterTest {
             void withListAsArgument(Set<String> statusSet) {
                 setStatusesInWhitelist(statusSet);
                 Set<String> expectedStatusSet = statusSet;
-                argumentTrustedList = TestTrustedList.getActualApiTrustedList();
-                AtomicInteger numberOfServicesWithStatusInWhitelist = new AtomicInteger(); //necessario per controllare che il numero di servizi compatibili con i filtri
-                //nella lista iniziale sia uguale al numero di servizi della lista filtrata
+                argumentTrustedList = TestTrustedList.getWholeLocalTrustedList();
+                AtomicInteger numberOfServicesCompatibleWithFiltersInArgumentTrustedList = new AtomicInteger();
+                AtomicInteger numberOfServiceInFilteredList = new AtomicInteger();
+                //these last two variables are needed to check that the number of services in the argument list compatible with the filters
+                //is equal to the number of services in the filtered list
 
                 argumentTrustedList.getCountries().forEach(country -> {
                     country.getProviders().forEach(provider -> {
                         provider.getServices().forEach(service -> {
                             if (statusSet.contains(service.getStatus()) || expectedStatusSet.isEmpty()) {
-                                numberOfServicesWithStatusInWhitelist.getAndIncrement();
+                                numberOfServicesCompatibleWithFiltersInArgumentTrustedList.getAndIncrement();
                             }
-                            ;
                         });
                     });
                 });
@@ -122,13 +127,15 @@ class StatusFilterTest {
                 argumentTrustedList.getCountries().forEach(country -> {
                     country.getProviders().forEach(provider -> {
                         provider.getServices().forEach(service -> {
-                            numberOfServicesWithStatusInWhitelist.getAndDecrement();
+                            numberOfServiceInFilteredList.getAndIncrement();
                             assertTrue(expectedStatusSet.contains(service.getStatus()) || expectedStatusSet.isEmpty());
                         });
                     });
                 });
-                assertEquals(numberOfServicesWithStatusInWhitelist.get(), 0);
-
+                assertEquals(numberOfServicesCompatibleWithFiltersInArgumentTrustedList.get(), numberOfServiceInFilteredList.get());
+                //This assertion is done because if we would check only the other assertions we would not have really checked if the expected and
+                //actual output are the same. The filtered list could have missed some services compatible with the filters from the argument list and
+                //we would not have known. By counting the services we know.
             }
 
             @DisplayName("with a list with only incompatible elements with the filters as argument, return a list with no elements")
@@ -173,6 +180,7 @@ class StatusFilterTest {
             TrustedList argumentTrustedList;
 
             private static Stream<Arguments> getStatuses() {
+                //a list of filters with only made up elements link to no services
                 Set<String> statusSet1 = new HashSet<>();
                 statusSet1.add("noSenseFilter");
                 Set<String> statusSet2 = new HashSet<>();
@@ -189,7 +197,7 @@ class StatusFilterTest {
             @DisplayName("with a list returns no element")
             void withListAsArgument(Set<String> statusSet) {
                 setStatusesInWhitelist(statusSet);
-                argumentTrustedList = TestTrustedList.getActualApiTrustedList();
+                argumentTrustedList = TestTrustedList.getWholeLocalTrustedList();
                 statusFilter.applyTo(argumentTrustedList);
                 assertTrue(argumentTrustedList.isEmpty());
             }
@@ -226,7 +234,7 @@ class StatusFilterTest {
             void withListAsArgument() {
                 Set<String> statusSet = null;
                 setStatusesInWhitelist(statusSet);
-                argumentTrustedList = TestTrustedList.getActualApiTrustedList();
+                argumentTrustedList = TestTrustedList.getWholeLocalTrustedList();
                 assertThrows(NullPointerException.class, () -> statusFilter.applyTo(argumentTrustedList));
 
             }

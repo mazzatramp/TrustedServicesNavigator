@@ -1,9 +1,6 @@
 package com.trustedservices.navigator.filters;
 
 import com.trustedservices.TestTrustedList;
-import com.trustedservices.domain.Country;
-import com.trustedservices.domain.Provider;
-import com.trustedservices.domain.Service;
 import com.trustedservices.domain.TrustedList;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,7 +9,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -21,6 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("I create a ServiceTypeFilter")
 class ServiceTypeFilterTest {
     ServiceTypeFilter serviceTypeFilter;
+
+    @Test
+    @DisplayName("is instantiated thanks to new ServiceTypeFilter()")
+    void testingConstructor() {
+        new ServiceTypeFilter();
+    }
 
     @BeforeEach
     @DisplayName("is instantiated thanks to new ServiceTypeFilter()")
@@ -35,6 +37,7 @@ class ServiceTypeFilterTest {
     }
 
     @DisplayName("when I use the method ApplyTo")
+// In this nested class filters are empty because I will not use setWhitelist
     @Nested
     class ApplyTo {
         TrustedList argumentTrustedList;
@@ -42,7 +45,7 @@ class ServiceTypeFilterTest {
         @DisplayName("with a list as argument, should return the same list")
         @Test
         void withListAsArgument() {
-            argumentTrustedList = TestTrustedList.getActualApiTrustedList();
+            argumentTrustedList = TestTrustedList.getWholeLocalTrustedList();
             TrustedList expectedFilteredList = argumentTrustedList;
             serviceTypeFilter.applyTo(argumentTrustedList);
             assertEquals(expectedFilteredList, argumentTrustedList);
@@ -78,7 +81,7 @@ class ServiceTypeFilterTest {
                 serviceTypesSet2.add("QWAC");
                 Set<String> serviceTypesSet3 = new HashSet<>();
                 serviceTypesSet3.add("Timestamp");
-                Set<String> serviceTypesSet4 = new HashSet<>();
+                Set<String> serviceTypesSet4 = new HashSet<>();//will have all possible service types
                 serviceTypesSet4.add("QCertESeal");
                 serviceTypesSet4.add("QValQESig");
                 serviceTypesSet4.add("QeRDS");
@@ -95,7 +98,8 @@ class ServiceTypeFilterTest {
                 serviceTypesSet4.add("CertUndefined");
                 serviceTypesSet4.add("GenESig");
                 serviceTypesSet4.add("CertESig");
-                Set<String> serviceTypesSet5 = new HashSet<>();
+                Set<String> serviceTypesSet5 = new HashSet<>();//the presence of one or more of made up filters like "noSenseFilter"
+                // do not affect the behaviour of the filter if other meaningful filters are present
                 serviceTypesSet5.add("CertESig");
                 serviceTypesSet5.add("noSenseFilter");
                 return Stream.of(
@@ -112,15 +116,17 @@ class ServiceTypeFilterTest {
             @DisplayName("with a list with compatible elements with the filters as argument, should return a not empty list with only those elements")
             void withListAsArgument(Set<String> serviceTypes) {
                 setServiceTypes(serviceTypes);
-                argumentTrustedList = TestTrustedList.getActualApiTrustedList();
+                argumentTrustedList = TestTrustedList.getWholeLocalTrustedList();
                 Set<String> expectedServiceType = serviceTypes;
-                AtomicInteger numberOfServiceWithServiceTypeInWhitelist = new AtomicInteger();//necessario per controllare che il numero di servizi compatibili con i filtri
-                //nella lista iniziale sia uguale al numero di servizi della lista filtrata
+                AtomicInteger numberOfServicesCompatibleWithFiltersInArgumentTrustedList = new AtomicInteger();
+                AtomicInteger numberOfServiceInFilteredList = new AtomicInteger();
+                //these last two variables are needed to check that the number of services in the argument list compatible with the filters
+                //is equal to the number of services in the filtered list
                 argumentTrustedList.getCountries().forEach(country -> {
                     country.getProviders().forEach(provider -> {
                         provider.getServices().forEach(service -> {
                             if ((service.getServiceTypes().stream().anyMatch(currentService -> expectedServiceType.contains(currentService))) || (expectedServiceType.isEmpty())) {
-                                numberOfServiceWithServiceTypeInWhitelist.getAndIncrement();
+                                numberOfServicesCompatibleWithFiltersInArgumentTrustedList.getAndIncrement();
                             }
                         });
                     });
@@ -131,13 +137,16 @@ class ServiceTypeFilterTest {
                 argumentTrustedList.getCountries().forEach(country -> {
                     country.getProviders().forEach(provider -> {
                         provider.getServices().forEach(service -> {
-                            numberOfServiceWithServiceTypeInWhitelist.getAndDecrement();
+                            numberOfServiceInFilteredList.getAndIncrement();
                             assertTrue((service.getServiceTypes().stream().anyMatch(currentService -> expectedServiceType.contains(currentService)) || (expectedServiceType.isEmpty())));
 
                         });
                     });
                 });
-                assertEquals(numberOfServiceWithServiceTypeInWhitelist.get(), 0);
+                assertEquals(numberOfServiceInFilteredList.get(), numberOfServicesCompatibleWithFiltersInArgumentTrustedList.get());
+                //This assertion is done because if we would check only the other assertions we would not have really checked if the expected and
+                //actual output are the same. The filtered list could have missed some services compatible with the filters from the argument list and
+                //we would not have known. By counting the services we know.
 
 
             }
@@ -184,6 +193,7 @@ class ServiceTypeFilterTest {
             TrustedList argumentTrustedList;
 
             private static Stream<Arguments> getServiceTypes() {
+                //a list of filters with only made up elements link to no services
                 Set<String> serviceTypeSet1 = new HashSet<>();
                 serviceTypeSet1.add("noSenseFilter");
                 Set<String> serviceTypeSet2 = new HashSet<>();
@@ -200,7 +210,7 @@ class ServiceTypeFilterTest {
             @DisplayName("with a list, returns no element")
             void withListAsArgument(Set<String> serviceTypesSet) {
                 setServiceTypes(serviceTypesSet);
-                argumentTrustedList = TestTrustedList.getActualApiTrustedList();
+                argumentTrustedList = TestTrustedList.getWholeLocalTrustedList();
                 serviceTypeFilter.applyTo(argumentTrustedList);
                 assertTrue(argumentTrustedList.isEmpty());
             }
@@ -236,7 +246,7 @@ class ServiceTypeFilterTest {
             void withListAsArgument() {
                 Set<String> serviceTypes = null;
                 setServiceTypesInWhitelist(serviceTypes);
-                argumentTrustedList = TestTrustedList.getActualApiTrustedList();
+                argumentTrustedList = TestTrustedList.getWholeLocalTrustedList();
                 assertThrows(NullPointerException.class, () -> serviceTypeFilter.applyTo(argumentTrustedList));
 
             }

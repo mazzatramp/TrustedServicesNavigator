@@ -1,9 +1,6 @@
 package com.trustedservices.domain;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.List;
 import java.util.TreeSet;
@@ -14,8 +11,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class CountryTest {
     Country country;
 
-    @BeforeEach
+    @Test
     @DisplayName("thanks to new Country(String,String)")
+    void testingConstructor() {
+        new Country("Austria", "AT");
+    }
+
+
+    @BeforeEach
     void createACountry() {
         country = new Country("Austria", "AT");
     }
@@ -84,7 +87,6 @@ class CountryTest {
         void SameCountryAsArgument() {
 
             argumentCountry = new Country("Austria", "AT");
-            ;
 
             int comparison = country.compareTo(argumentCountry);
             int expectedReturn = 0;
@@ -171,7 +173,7 @@ class CountryTest {
 
     }
 
-    private void attachProviderToCountry(Country country) // two test providers are attached to the country
+    private void attachProviderToCountry(Country country) // two test providers are attached to the country in order to execute a better test of the methods clone() and getHumanInformation
     {
         TreeSet<String> providerServiceTypes = new TreeSet<>(
                 List.of("QCertESeal", "QCertESig", "QTimestamp")
