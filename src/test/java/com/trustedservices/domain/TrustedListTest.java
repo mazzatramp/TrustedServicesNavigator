@@ -56,7 +56,7 @@ class TrustedListTest {
             @DisplayName("with a not empty list as argument, it returns false")
             @Test
             void equalsWithNotEmptyListAsArgument() {
-                argumentList = getTestTrustedList1();
+                argumentList = TestTrustedList.getTrustedListWith("countryWithOneProvider");
                 boolean areTrustedListsEquals = trustedList.equals(argumentList);
 
                 assertFalse(areTrustedListsEquals);
@@ -101,7 +101,8 @@ class TrustedListTest {
         @BeforeEach
         void createATrustedListWithArgument() {
             TreeSet<Country> listOfCountries;
-            listOfCountries = getTestTrustedList1().getCountries();
+            listOfCountries = TestTrustedList.getTrustedListWith("RealCountryWithOneRealProviderWitAllServices1",
+                    "RealCountryWithOneRealProviderWitAllServices2").getCountries();
             trustedList = new TrustedList(listOfCountries);
         }
 
@@ -140,7 +141,8 @@ class TrustedListTest {
             @DisplayName("and the two lists are the same, it returns true")
             @Test
             void equalsSameListAsArgument() {
-                argumentList = getTestTrustedList1();
+                argumentList = TestTrustedList.getTrustedListWith("RealCountryWithOneRealProviderWitAllServices1",
+                        "RealCountryWithOneRealProviderWitAllServices2");
                 boolean areCountriesEqual = argumentList.getCountries().equals(trustedList.getCountries());
                 assertTrue(areCountriesEqual);
             }
@@ -171,16 +173,18 @@ class TrustedListTest {
         @Test
         void updateServiceTypesAndStatuses() {
             //ListOfServiceTypes and listOfStatuses are filled with all the service types and statuses of the services of testTrustedList1
-            Set<String> listOfServiceTypes = new HashSet<>();
-            Set<String> listOfStatuses = new HashSet<>();
-            listOfStatuses.add("granted");
+            TreeSet<String> listOfServiceTypes = new TreeSet<>();
+            TreeSet<String> listOfStatuses = new TreeSet<>();
             listOfStatuses.add("withdrawn");
-            listOfServiceTypes.add("QCertESeal");
+            listOfStatuses.add("granted");
+            listOfServiceTypes.add("QValQESig");
+            listOfServiceTypes.add("QValQESeal");
             listOfServiceTypes.add("QCertESig");
-            listOfServiceTypes.add("QWAC");
-            listOfServiceTypes.add("QTimestamp");
-            assertTrue(trustedList.getStatuses().equals(listOfStatuses));
-            assertTrue(trustedList.getServiceTypes().equals(listOfServiceTypes));
+            System.out.println(trustedList.getStatuses()); //da togliere
+            //assertTrue((trustedList.getStatuses()).equals(listOfStatuses));//da togliere
+            //assertTrue((trustedList.getServiceTypes()).equals(listOfServiceTypes));// da togliere
+            assertEquals(trustedList.getStatuses(),listOfStatuses);
+            assertEquals(trustedList.getServiceTypes(),listOfServiceTypes);
 
         }
     }
@@ -238,7 +242,8 @@ class TrustedListTest {
             @DisplayName("and the two lists are not the same, it returns false")
             @Test
             void equalsNotSameListAsArgument() {
-                argumentList = getTestTrustedList1();
+                argumentList = TestTrustedList.getTrustedListWith("CountryWithProviderWithServices_ButServiceTypesSetToTest1",
+                        "RealCountryWithOneRealProviderWitAllServices2");
 
                 boolean areTrustedListsEquals = trustedList.equals(argumentList);
 
@@ -289,55 +294,7 @@ class TrustedListTest {
         }
     }
 
-    private TrustedList getTestTrustedList1() {
-        TrustedList trustedList1;
 
-        Country country1 = new Country("Austria", "AT");
-        Country country2 = new Country("Italy", "IT");
-
-        Provider provider1 = getATestProvider1(country1);
-        Provider provider2 = getATestProvider2(country1);
-
-        country1.getProviders().add(provider1);
-        country1.getProviders().add(provider2);
-
-        Provider provider3 = getATestProvider1(country2);
-        country2.getProviders().add(provider3);
-
-        TreeSet<Country> countriesOfTrustedList1 = new TreeSet<>();
-        countriesOfTrustedList1.add(country1);
-        countriesOfTrustedList1.add(country2);
-
-        trustedList1 = new TrustedList(countriesOfTrustedList1);
-        trustedList1.updateServiceTypesAndStatuses();
-
-        return trustedList1;
-    }
-
-    private Provider getATestProvider1(Country country) {
-        TreeSet<String> providerServiceTypes1 = new TreeSet<>(List.of("QCertESeal", "QCertESig", "QTimestamp"));
-        TreeSet<Service> providerServices1 = new TreeSet<>();
-
-        Provider provider1 = new Provider(country, 0, "Azienda Zero", "TTT-000-X01", providerServiceTypes1, providerServices1);
-
-        providerServices1.add(new Service(provider1, 1, "Service 1", "QC", "granted", providerServiceTypes1));
-        providerServices1.forEach(service1 -> service1.setProvider(provider1));
-        return provider1;
-    }
-
-    private Provider getATestProvider2(Country country) {
-        TreeSet<String> providerServiceTypes2 = new TreeSet<>(
-                List.of("QWAC", "QCertESig", "QTimestamp")
-        );
-
-        TreeSet<Service> providerServices2 = new TreeSet<>();
-
-        Provider provider2 = new Provider(country, 0, "PrimeSign GmbH", "TTT-000-X02", providerServiceTypes2, providerServices2);
-
-        providerServices2.add(new Service(provider2, 1, "Service 1", "QC", "withdrawn", providerServiceTypes2));
-        providerServices2.forEach(service -> service.setProvider(provider2));
-        return provider2;
-    }
 
 }
 
