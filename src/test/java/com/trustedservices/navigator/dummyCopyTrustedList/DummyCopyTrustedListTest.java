@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class DummyCopyTrustedListTest {
     @Disabled
     @Test
-    @DisplayName("If the dummy trusted list is wanted to be up to date with the API, the trustedList built from APIBuilder should be the same as the one built with the JsonBuilder from countryListDummy and providerListDummy")
+    @DisplayName("If the complete dummy trusted list is wanted to be up to date with the API, the trustedList built from APIBuilder should be the same as the one built with the JsonBuilder from countryListDummy and providerListDummy")
     void equalListsFromDifferentBuilders() throws IOException {
         TrustedListApiBuilder trustedListApiBuilder = new TrustedListApiBuilder();
         final String COUNTRIES_API_ENDPOINT = "https://esignature.ec.europa.eu/efda/tl-browser/api/v1/search/countries_list_no_lotl_territory";
@@ -37,14 +37,15 @@ public class DummyCopyTrustedListTest {
         Path providers = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
         trustedJsonBuilder.setCountriesJson(Files.readString(countries));
         trustedJsonBuilder.setProvidersJson(Files.readString(providers));
+
         TrustedList trustedListAPI = trustedListApiBuilder.build();
-        TrustedList trustedListDummy= trustedJsonBuilder.build();
+        TrustedList trustedListDummy = trustedJsonBuilder.build();
+
         boolean areListsEqual = trustedListDummy.equals(trustedListAPI);
-        System.out.println(trustedListDummy.getCountries());
-        System.out.println(trustedListAPI.getCountries());
-        assertTrue(areListsEqual,"i file dummy non sono più aggiornati");
+        assertTrue(areListsEqual, "JSON dummy files with the complete list are not up to date with the API");
 
     }
+
     private String readJsonFromUrl(String endpoint) {
         try {
             return getResponse(endpoint);
