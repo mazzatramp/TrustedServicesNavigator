@@ -70,8 +70,8 @@ class TrustedListJsonBuilderTest {
         @DisplayName("the trusted list built should be equal to the trusted list with the values from the JSON")
         void builtRightTrustedList() {
             TrustedList trustedList = trustedJsonBuilder.build();
-            TreeSet<Country> listOfCountries = new TreeSet<>();
 
+            TreeSet<Country> listOfCountries = new TreeSet<>();
             Country country1 = new Country("Austria", "AT");
             TreeSet<String> serviceTypesDatakom = new TreeSet<>();
             serviceTypesDatakom.add("QCertESig");
