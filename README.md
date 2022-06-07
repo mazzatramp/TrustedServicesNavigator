@@ -9,6 +9,8 @@ A java desktop application to navigate and filter through the trusted services o
  - [Installation](#installation)
  - [Usage](#usage)
  - [Compile from source](#compile)
+ - [Packages](#packages)
+ - [Design patterns used](#designpatterns)
  - [Third Parties](#thirdparties)
 
 ---
@@ -51,14 +53,16 @@ $ mvn clean javafx:run
 ```
 ---
 
-# Packages
+<a name="packages"></a>
+### Packages
 - domain: contains POJOs about domain classes
 - navigator: contains graphic and business logic
     - filtes: contains the filtering logic of the domain classes
     - components: contains UI elements
     - web: contains the handling of Https requests and responses.
 
-# Design Pattern Used
+<a name="designpatterns"></a>
+### Design Pattern Used
 - Builder, for the complex construction of the Trusted List from the apis and from json strings.
 - Template Method, for the different types of filters, with the general same algorithm, but different implementations.
 - Observer, for the FilterTreeItem and FilterTreeCell. The Cell listens to the Item (set disabled from the ProviderFilterPane), and disable the graphic accordingly.
