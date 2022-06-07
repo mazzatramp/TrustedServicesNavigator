@@ -1,6 +1,5 @@
 package com.trustedservices.navigator;
 
-import com.trustedservices.DummyTrustedList;
 import com.trustedservices.domain.TrustedList;
 import com.trustedservices.navigator.filters.*;
 import com.trustedservices.navigator.web.TrustedListBuilder;

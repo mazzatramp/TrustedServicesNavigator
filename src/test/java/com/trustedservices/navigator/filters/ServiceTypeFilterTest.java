@@ -1,6 +1,6 @@
 package com.trustedservices.navigator.filters;
 
-import com.trustedservices.DummyTrustedList;
+import com.trustedservices.TestTrustedList;
 import com.trustedservices.domain.Country;
 import com.trustedservices.domain.Provider;
 import com.trustedservices.domain.Service;
@@ -42,8 +42,7 @@ class ServiceTypeFilterTest {
         @DisplayName("with a list as argument, should return the same list")
         @Test
         void withListAsArgument() {
-            DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-            argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+            argumentTrustedList = TestTrustedList.getActualApiTrustedList();
             TrustedList expectedFilteredList = argumentTrustedList;
             serviceTypeFilter.applyTo(argumentTrustedList);
             assertEquals(expectedFilteredList, argumentTrustedList);
@@ -113,8 +112,7 @@ class ServiceTypeFilterTest {
             @DisplayName("with a list with compatible elements with the filters as argument, should return a not empty list with only those elements")
             void withListAsArgument(Set<String> serviceTypes) {
                 setServiceTypes(serviceTypes);
-                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+                argumentTrustedList = TestTrustedList.getActualApiTrustedList();
                 Set<String> expectedServiceType = serviceTypes;
                 AtomicInteger numberOfServiceWithServiceTypeInWhitelist = new AtomicInteger();//necessario per controllare che il numero di servizi compatibili con i filtri
                 //nella lista iniziale sia uguale al numero di servizi della lista filtrata
@@ -200,8 +198,7 @@ class ServiceTypeFilterTest {
             @DisplayName("with a list, returns no element")
             void withListAsArgument(Set<String> serviceTypesSet) {
                 setServiceTypes(serviceTypesSet);
-                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+                argumentTrustedList = TestTrustedList.getActualApiTrustedList();
                 serviceTypeFilter.applyTo(argumentTrustedList);
                 assertTrue(argumentTrustedList.isEmpty());
             }
@@ -237,8 +234,7 @@ class ServiceTypeFilterTest {
             void withListAsArgument() {
                 Set<String> serviceTypes = null;
                 setServiceTypesInWhitelist(serviceTypes);
-                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+                argumentTrustedList = TestTrustedList.getActualApiTrustedList();
                 assertThrows(NullPointerException.class, () -> serviceTypeFilter.applyTo(argumentTrustedList));
 
             }

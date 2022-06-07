@@ -1,6 +1,6 @@
 package com.trustedservices.domain;
 
-import com.trustedservices.DummyTrustedList;
+import com.trustedservices.TestTrustedList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -190,8 +190,7 @@ class TrustedListTest {
     class constructorWithArgumentAllCountries {
         @BeforeEach
         void createATrustedListWithArgument() {
-            DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-            TreeSet<Country> listOfCountries = dummyTrustedList.getDummyTrustedList().getCountries();
+            TreeSet<Country> listOfCountries = TestTrustedList.getActualApiTrustedList().getCountries();
             trustedList = new TrustedList(listOfCountries);
         }
 
@@ -229,8 +228,7 @@ class TrustedListTest {
             @DisplayName("and the two lists are the same, it returns true")
             @Test
             void equalsSameListAsArgument() {
-                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-                argumentList = dummyTrustedList.getDummyTrustedList();
+                argumentList = TestTrustedList.getActualApiTrustedList();
 
                 boolean areTrustedListsEquals = trustedList.equals(argumentList);
 

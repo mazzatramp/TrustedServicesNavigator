@@ -1,6 +1,6 @@
 package com.trustedservices.navigator.filters;
 
-import com.trustedservices.DummyTrustedList;
+import com.trustedservices.TestTrustedList;
 import com.trustedservices.domain.Country;
 import com.trustedservices.domain.Provider;
 import com.trustedservices.domain.Service;
@@ -38,8 +38,7 @@ class StatusFilterTest {
         @DisplayName("with a list as argument, return the same list")
         @Test
         void withListAsArgument() {
-            DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-            argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+            argumentTrustedList = TestTrustedList.getActualApiTrustedList();
             TrustedList expectedFilteredList = argumentTrustedList;
             statusFilter.applyTo(argumentTrustedList);
             assertEquals(expectedFilteredList, argumentTrustedList);
@@ -104,8 +103,7 @@ class StatusFilterTest {
             void withListAsArgument(Set<String> statusSet) {
                 setStatusesInWhitelist(statusSet);
                 Set<String> expectedStatusSet = statusSet;
-                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+                argumentTrustedList = TestTrustedList.getActualApiTrustedList();
                 AtomicInteger numberOfServicesWithStatusInWhitelist = new AtomicInteger(); //necessario per controllare che il numero di servizi compatibili con i filtri
                 //nella lista iniziale sia uguale al numero di servizi della lista filtrata
 
@@ -189,8 +187,7 @@ class StatusFilterTest {
             @DisplayName("with a list returns no element")
             void withListAsArgument(Set<String> statusSet) {
                 setStatusesInWhitelist(statusSet);
-                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+                argumentTrustedList = TestTrustedList.getActualApiTrustedList();
                 statusFilter.applyTo(argumentTrustedList);
                 assertTrue(argumentTrustedList.isEmpty());
             }
@@ -227,8 +224,7 @@ class StatusFilterTest {
             void withListAsArgument() {
                 Set<String> statusSet = null;
                 setStatusesInWhitelist(statusSet);
-                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+                argumentTrustedList = TestTrustedList.getActualApiTrustedList();
                 assertThrows(NullPointerException.class, () -> statusFilter.applyTo(argumentTrustedList));
 
             }

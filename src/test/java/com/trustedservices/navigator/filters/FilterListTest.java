@@ -1,6 +1,6 @@
 package com.trustedservices.navigator.filters;
 
-import com.trustedservices.DummyTrustedList;
+import com.trustedservices.TestTrustedList;
 import com.trustedservices.domain.Country;
 import com.trustedservices.domain.Provider;
 import com.trustedservices.domain.Service;
@@ -136,8 +136,7 @@ public class FilterListTest {
                 void PossibleFiltersTrustedListAsArgument(List<Filter> filters) {
 
                     createFilterList(filters);
-                    DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-                    argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+                    argumentTrustedList = TestTrustedList.getActualApiTrustedList();
                     Set<String> providersExpected = filters.get(0).getWhitelist();
                     Set<String> expectedServiceTypes = filters.get(1).getWhitelist();
                     Set<String> expectedStatuses = filters.get(2).getWhitelist();
@@ -252,8 +251,7 @@ public class FilterListTest {
             @MethodSource("getFiltersThatCannotLinkToAService")
             void TrustedListAsArgument(List<Filter> filters) {
                 createFilterList(filters);
-                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+                argumentTrustedList = TestTrustedList.getActualApiTrustedList();
 
                 TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
                 assertTrue(filteredList.isEmpty());
@@ -309,8 +307,7 @@ public class FilterListTest {
             @MethodSource("getFiltersThatCannotLinkToAService")
             void TrustedListAsArgument(List<Filter> filters) {
                 createFilterList(filters);
-                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+                argumentTrustedList = TestTrustedList.getActualApiTrustedList();
 
                 assertThrows(NullPointerException.class, () -> filterList.getFilteredListFrom(argumentTrustedList));
 
@@ -338,8 +335,7 @@ public class FilterListTest {
             @DisplayName("with a TrustedList as argument should return the same trustedList")
             @Test
             void trustedListAsArgument() {
-                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+                argumentTrustedList = TestTrustedList.getActualApiTrustedList();
 
                 TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
                 assertEquals(filteredList, argumentTrustedList);
