@@ -1,0 +1,50 @@
+[
+  {
+    "tspId": 3,
+    "name": "Datakom Austria GmbH",
+    "countryCode": "AT",
+    "trustmark": "VATAT-U44837307",
+    "qServiceTypes": [
+      "QCertESig"
+    ],
+    "services": [
+      {
+        "tspId": 3,
+        "serviceId": 1,
+        "countryCode": "AT",
+        "serviceName": "a-sign Premium CA",
+        "type": "http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
+        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/withdrawn",
+        "tob": "Rundfunk und Telekom Regulierungs-GmbH",
+        "qServiceTypes": [
+          "QCertESig"
+        ]
+      }
+    ]
+  },
+  {
+    "tspId": 13,
+    "name": "CONNECTIVE",
+    "countryCode": "BE",
+    "trustmark": "VATBE-0467046486",
+    "qServiceTypes": [
+      "QValQESig",
+      "QValQESeal"
+    ],
+    "services": [
+      {
+        "tspId": 13,
+        "serviceId": 1,
+        "countryCode": "BE",
+        "serviceName": "Connective Validation Service",
+        "type": "http://uri.etsi.org/TrstSvc/Svctype/QESValidation/Q",
+        "currentStatus": "http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
+        "tob": null,
+        "qServiceTypes": [
+          "QValQESig",
+          "QValQESeal"
+        ]
+      }
+    ]
+  }
+]
