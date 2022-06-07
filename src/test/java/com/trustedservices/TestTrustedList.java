@@ -31,7 +31,7 @@ public class TestTrustedList {
                 building.getCountries().add(testToAdd);
         }
         building.updateServiceTypesAndStatuses();
-        return building;
+        return building.clone();
     }
 
 

@@ -103,10 +103,10 @@ class TrustedListTest {
     class constructorWithArgument {
         @BeforeEach
         void createATrustedListWithArgument() {
-            TreeSet<Country> listOfCountries;
-            listOfCountries = TestTrustedList.getTrustedListWith("RealCountryWithOneRealProviderWitAllServices1",
-                    "RealCountryWithOneRealProviderWitAllServices2").getCountries();
-            trustedList = new TrustedList(listOfCountries);
+            trustedList = TestTrustedList.getTrustedListWith(
+                    "RealCountryWithOneRealProviderWitAllServices1",
+                    "RealCountryWithOneRealProviderWitAllServices2"
+            );
         }
 
         @DisplayName("and I use the method isEmpty, returns false")
@@ -129,6 +129,14 @@ class TrustedListTest {
         @Nested
         class Equals {
             TrustedList argumentList;
+
+            @BeforeEach
+            void createATrustedListWithArgument() {
+                TreeSet<Country> listOfCountries;
+                listOfCountries = TestTrustedList.getTrustedListWith("RealCountryWithOneRealProviderWitAllServices1",
+                        "RealCountryWithOneRealProviderWitAllServices2").getCountries();
+                trustedList = new TrustedList(listOfCountries);
+            }
 
             @DisplayName("and the two lists are the same object, it returns true")
             @Test
@@ -178,17 +186,18 @@ class TrustedListTest {
             //ListOfServiceTypes and listOfStatuses are filled with all the service types and statuses of the services of testTrustedList1
             TreeSet<String> listOfServiceTypes = new TreeSet<>();
             TreeSet<String> listOfStatuses = new TreeSet<>();
+
             listOfStatuses.add("withdrawn");
             listOfStatuses.add("granted");
             listOfServiceTypes.add("QValQESig");
             listOfServiceTypes.add("QValQESeal");
             listOfServiceTypes.add("QCertESig");
-            System.out.println(trustedList.getStatuses()); //da togliere
-            //assertTrue((trustedList.getStatuses()).equals(listOfStatuses));//da togliere
-            //assertTrue((trustedList.getServiceTypes()).equals(listOfServiceTypes));// da togliere
+
+            System.out.println(trustedList.getServiceTypes());
+            System.out.println(trustedList.getStatuses());
+
             assertEquals(trustedList.getStatuses(), listOfStatuses);
             assertEquals(trustedList.getServiceTypes(), listOfServiceTypes);
-
         }
     }
 

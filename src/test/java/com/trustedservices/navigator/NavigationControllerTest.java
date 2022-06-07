@@ -247,7 +247,7 @@ class NavigationControllerTest {
                             });
                         });
                     });
-                    assertEquals(numberOfServiceInFilteredList, numberOfServicesCompatibleWithFiltersInArgumentTrustedList.get());
+                    assertEquals(numberOfServiceInFilteredList.get(), numberOfServicesCompatibleWithFiltersInArgumentTrustedList.get());
                 }
                 //This assertion is done because if we would check only the other assertions we would not have really checked if the expected and
                 //actual output are the same. The filtered list could have missed some services compatible with the filters from the argument list and
