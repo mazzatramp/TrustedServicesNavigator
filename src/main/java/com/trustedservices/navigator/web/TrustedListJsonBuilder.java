@@ -18,7 +18,7 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
     private List<JsonCountry> jsonCountries;
     private List<JsonProvider> jsonProviders;
 
-    private Set<Country> countries;
+    private TreeSet<Country> countries;
 
     private String countriesJsonString;
     private String providersJsonString;
@@ -57,7 +57,7 @@ public class TrustedListJsonBuilder implements TrustedListBuilder {
         return countriesJsonString != null && providersJsonString != null;
     }
 
-    private Set<Country> getCountriesFromReadData() {
+    private TreeSet<Country> getCountriesFromReadData() {
         jsonCountries.forEach(jsonCountry -> countries.add(jsonCountry.createCountry()));
         return countries;
     }

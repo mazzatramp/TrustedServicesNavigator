@@ -13,10 +13,10 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
     private final Set<String> serviceTypes;
 
     private Country country;
-    private Set<Service> services;
+    private TreeSet<Service> services;
 
     public Provider(Country country, int providerId, String name, String trustmark,
-                    Set<String> serviceTypes, Set<Service> services
+                    Set<String> serviceTypes, TreeSet<Service> services
     ){
         this.country = country;
         this.providerId = providerId;
@@ -69,6 +69,10 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
 
     public Country getCountry() {
         return country;
+    }
+
+    void setCountry(Country country) {
+        this.country = country;
     }
 
     @Override
@@ -125,9 +129,5 @@ public class Provider implements Cloneable, Comparable<Provider>, TrustedListEnt
     public int compareTo(Provider provider) {
         int nameComparison = this.name.compareTo(provider.name);
         return nameComparison != 0 ? nameComparison : this.trustmark.compareTo(provider.trustmark);
-    }
-
-    void setCountry(Country country) {
-        this.country = country;
     }
 }

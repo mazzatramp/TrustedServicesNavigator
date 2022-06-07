@@ -1,5 +1,6 @@
 package com.trustedservices.domain;
 
+import com.sun.source.tree.Tree;
 import com.trustedservices.DummyTrustedList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -7,6 +8,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BooleanSupplier;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -89,7 +92,7 @@ class TrustedListTest {
     class constructorWithArgument {
         @BeforeEach
         void createATrustedListWithArgument() {
-            Set<Country> listOfCountries;
+            TreeSet<Country> listOfCountries;
             listOfCountries = getTestTrustedList1().getCountries();
             trustedList = new TrustedList(listOfCountries);
         }
@@ -105,21 +108,9 @@ class TrustedListTest {
         void cloneAFullTrustedList() {
             TrustedList listToClone = trustedList;
             TrustedList clonedList = listToClone.clone();
-            System.out.println(clonedList.getCountries().equals(trustedList.getCountries()));
-            System.out.println(clonedList.getServiceTypes().equals(trustedList.getServiceTypes()));
-            System.out.println(clonedList.getStatuses().equals(trustedList.getStatuses()));
-            System.out.println(listToClone.getCountries());
-            System.out.println(clonedList.getCountries());
-            System.out.println(listToClone.getStatuses());
-            System.out.println(clonedList.getStatuses());
-            System.out.println(listToClone.getServiceTypes());
-            System.out.println(clonedList.getServiceTypes());
-            boolean areEquals = clonedList.equals(listToClone);
-            boolean areEqualsBefore = trustedList.equals(clonedList);
-            System.out.println(areEquals);
-            System.out.println(areEqualsBefore);
+
+            boolean areEquals = trustedList.equals(clonedList) && clonedList.equals(trustedList);
             assertTrue(areEquals);
-            assertTrue(areEqualsBefore);
         }
 
         @DisplayName("and I use the method equals()")
@@ -220,7 +211,7 @@ class TrustedListTest {
         @BeforeEach
         void createATrustedListWithArgument() {
             DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-            Set<Country>listOfCountries = dummyTrustedList.getDummyTrustedList().getCountries();
+            TreeSet<Country>listOfCountries = dummyTrustedList.getDummyTrustedList().getCountries();
             trustedList = new TrustedList(listOfCountries);
         }
 
@@ -348,7 +339,7 @@ class TrustedListTest {
         Provider provider3 = getATestProvider1(country2);
         country2.getProviders().add(provider3);
 
-        Set<Country> countriesOfTrustedList1 = new HashSet<>();
+        TreeSet<Country> countriesOfTrustedList1 = new TreeSet<>();
         countriesOfTrustedList1.add(country1);
         countriesOfTrustedList1.add(country2);
 

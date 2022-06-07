@@ -14,7 +14,7 @@ public class TrustedList implements Cloneable {
     private final Set<String> serviceTypes;
     private final Set<String> statuses;
 
-    private Set<Country> countries;
+    private TreeSet<Country> countries;
 
     public TrustedList() {
         this.countries = new TreeSet<>();
@@ -22,13 +22,13 @@ public class TrustedList implements Cloneable {
         this.statuses = new TreeSet<>();
     }
 
-    public TrustedList(Set<Country> countries) {
+    public TrustedList(TreeSet<Country> countries) {
         this();
         this.countries = countries;
         this.updateServiceTypesAndStatuses();
     }
 
-    public Set<Country> getCountries() {
+    public TreeSet<Country> getCountries() {
         return countries;
     }
 

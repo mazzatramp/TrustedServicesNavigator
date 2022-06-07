@@ -8,7 +8,7 @@ import java.util.*;
 public class Country implements Cloneable, Comparable<Country>, TrustedListEntity {
     private final String name;
     private final String code;
-    private Set<Provider> providers;
+    private TreeSet<Provider> providers;
 
     public Country(String name, String code) {
         this.name = name;
@@ -50,13 +50,13 @@ public class Country implements Cloneable, Comparable<Country>, TrustedListEntit
         if (o == null || getClass() != o.getClass()) return false;
         Country country = (Country) o;
         return Objects.equals(this.getCode(), country.getCode())
-               && Objects.equals(this.getName(), country.getName())
-               && Objects.equals(this.getProviders(), country.getProviders());
+               && Objects.equals(this.getName(), country.getName());
+               //&& Objects.equals(this.getProviders(), country.getProviders());
     }
 
     @Override
     public int compareTo(Country country) {
-        return this.code.compareTo(country.code);
+        return this.name.compareTo(country.name);
     }
 
     @Override

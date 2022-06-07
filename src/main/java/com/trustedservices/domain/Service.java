@@ -71,6 +71,10 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
         return provider;
     }
 
+    void setProvider(Provider provider) {
+        this.provider = provider;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -112,9 +116,5 @@ public class Service implements Cloneable, Comparable<Service>, TrustedListEntit
         if (idComparison == 0)
             return this.provider.compareTo(that.provider);
         return idComparison;
-    }
-
-    void setProvider(Provider provider) {
-        this.provider = provider;
     }
 }
