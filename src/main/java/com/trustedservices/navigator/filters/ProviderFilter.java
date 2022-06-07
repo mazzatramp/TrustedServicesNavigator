@@ -14,8 +14,8 @@ import java.util.Collections;
  */
 public class ProviderFilter extends Filter {
     @Override
-    protected void filterByWhitelist(TrustedList listToFilter) {
-        for (Country country : listToFilter.getCountries()) {
+    protected void doWhitelistFiltering(TrustedList toFilter) {
+        for (Country country : toFilter.getCountries()) {
             country.getProviders().removeIf(provider ->
                     !getWhitelist().contains(country.getName() + "/" + provider.getName()));
         }

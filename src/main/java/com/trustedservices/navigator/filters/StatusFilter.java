@@ -8,8 +8,8 @@ import com.trustedservices.domain.*;
  */
 public class StatusFilter extends Filter {
     @Override
-    public void filterByWhitelist (TrustedList listToFilter) {
-        for (Country country : listToFilter.getCountries()) {
+    public void doWhitelistFiltering(TrustedList toFilter) {
+        for (Country country : toFilter.getCountries()) {
             for (Provider provider : country.getProviders()) {
                 provider.getServices().removeIf(service -> !getWhitelist().contains(service.getStatus()));
             }
