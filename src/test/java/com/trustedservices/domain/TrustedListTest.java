@@ -1,6 +1,5 @@
 package com.trustedservices.domain;
 
-import com.sun.source.tree.Tree;
 import com.trustedservices.DummyTrustedList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -8,8 +7,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.BooleanSupplier;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -58,11 +55,11 @@ class TrustedListTest {
 
             @DisplayName("with a not empty list as argument, it returns false")
             @Test
-            void equalsWithWholeListAsArgument() {
+            void equalsWithNotEmptyListAsArgument() {
                 argumentList = getTestTrustedList1();
-                boolean haveTrustedListsTheSameValues = trustedList.equals(argumentList);
+                boolean areTrustedListsEquals = trustedList.equals(argumentList);
 
-                assertFalse(haveTrustedListsTheSameValues);
+                assertFalse(areTrustedListsEquals);
             }
 
             @DisplayName("with a empty list as argument, it returns true")
@@ -70,9 +67,9 @@ class TrustedListTest {
             void equalsWithEmptyListAsArgument() {
                 argumentList = new TrustedList();
 
-                boolean haveTrustedListTheSameValues = trustedList.equals(argumentList);
+                boolean areTrustedListsEquals = trustedList.equals(argumentList);
 
-                assertTrue(haveTrustedListTheSameValues);
+                assertTrue(areTrustedListsEquals);
             }
 
             @DisplayName("with a null list as argument, it returns false")
@@ -80,9 +77,20 @@ class TrustedListTest {
             void equalsWithNullListAsArgument() {
                 argumentList = null;
 
-                boolean haveTrustedListTheSameValues = trustedList.equals(argumentList);
+                boolean areTrustedListsEquals = trustedList.equals(argumentList);
 
-                assertFalse(haveTrustedListTheSameValues);
+                assertFalse(areTrustedListsEquals);
+            }
+
+            @DisplayName("and the two lists are the same object, it returns true")
+            @Test
+            void equalsSameListObjectAsArgument() {
+                argumentList = trustedList;
+
+
+                boolean areTrustedListsEquals = trustedList.equals(argumentList);
+
+                assertTrue(areTrustedListsEquals);
             }
         }
     }
@@ -124,9 +132,9 @@ class TrustedListTest {
                 argumentList = trustedList;
 
 
-                boolean haveTrustedListTheSameValues = trustedList.equals(argumentList);
+                boolean areTrustedListsEquals = trustedList.equals(argumentList);
 
-                assertTrue(haveTrustedListTheSameValues);
+                assertTrue(areTrustedListsEquals);
             }
 
             @DisplayName("and the two lists are the same, it returns true")
@@ -134,23 +142,7 @@ class TrustedListTest {
             void equalsSameListAsArgument() {
                 argumentList = getTestTrustedList1();
                 boolean areCountriesEqual = argumentList.getCountries().equals(trustedList.getCountries());
-                System.out.println((argumentList.getCountries()).equals(trustedList.getCountries()));
-                System.out.println(trustedList.getCountries().equals(argumentList.getCountries()));
-                System.out.println(argumentList.getServiceTypes().equals(trustedList.getServiceTypes()));
-                System.out.println(argumentList.getStatuses().equals(trustedList.getStatuses()));
-                System.out.println(argumentList.getCountries());
-                System.out.println(trustedList.getCountries());
-                System.out.println(argumentList.getStatuses());
-                System.out.println(trustedList.getStatuses());
-                System.out.println(argumentList.getServiceTypes());
-                System.out.println(trustedList.getServiceTypes());
-
-                boolean haveTrustedListTheSameValuesbefore = trustedList.equals(argumentList); //da togliere
-                boolean haveTrustedListTheSameValues = argumentList.equals(trustedList);//da togliere
-                System.out.println(argumentList.equals(trustedList));//da togliere
-                System.out.println(trustedList.equals(argumentList));//da togliere
-                assertTrue(haveTrustedListTheSameValues);
-                assertTrue(haveTrustedListTheSameValuesbefore);
+                assertTrue(areCountriesEqual);
             }
 
             @DisplayName("and the two lists are not the same, it returns false")
@@ -158,9 +150,9 @@ class TrustedListTest {
             void equalsNotSameListAsArgument() {
                 argumentList = new TrustedList();
 
-                boolean haveTrustedListTheSameValues = trustedList.equals(argumentList);
+                boolean areTrustedListsEquals = trustedList.equals(argumentList);
 
-                assertFalse(haveTrustedListTheSameValues);
+                assertFalse(areTrustedListsEquals);
             }
 
 
@@ -169,13 +161,13 @@ class TrustedListTest {
             void equalsWithNullListAsArgument() {
                 argumentList = null;
 
-                boolean haveTrustedListTheSameValues = trustedList.equals(argumentList);
+                boolean areTrustedListsEquals = trustedList.equals(argumentList);
 
-                assertFalse(haveTrustedListTheSameValues);
+                assertFalse(areTrustedListsEquals);
             }
         }
 
-        @DisplayName("and I use the method updateServiceTypesAndStatuses, statuses and serviceTypes should be full with all the possible elements")
+        @DisplayName("and I use the method updateServiceTypesAndStatuses, statuses and serviceTypes should be just the ones of the list")
         @Test
         void updateServiceTypesAndStatuses() {
             //ListOfServiceTypes and listOfStatuses are filled with all the service types and statuses of the services of testTrustedList1
@@ -187,31 +179,19 @@ class TrustedListTest {
             listOfServiceTypes.add("QCertESig");
             listOfServiceTypes.add("QWAC");
             listOfServiceTypes.add("QTimestamp");
-            System.out.println(trustedList.getStatuses().equals(listOfStatuses));
-            System.out.println(trustedList.getServiceTypes().equals(listOfServiceTypes));
             assertTrue(trustedList.getStatuses().equals(listOfStatuses));
             assertTrue(trustedList.getServiceTypes().equals(listOfServiceTypes));
 
-
-            /* penso sia errato e va corretto anche da altre parti
-            trustedList.updateServiceTypesAndStatuses();
-            trustedList.getCountries().forEach(country -> {
-                country.getProviders().forEach(provider -> {
-                    provider.getServices().forEach(service -> {
-                        assertTrue(listOfServiceTypes.containsAll(service.getServiceTypes()));
-                        assertTrue(listOfStatuses.contains(service.getStatus()));
-                    });
-                });
-            });*/
         }
     }
+
     @DisplayName("when created with arguments thanks to new TrustedList(List<Country>) with a full list of countries")
     @Nested
     class constructorWithArgumentAllCountries {
         @BeforeEach
         void createATrustedListWithArgument() {
             DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-            TreeSet<Country>listOfCountries = dummyTrustedList.getDummyTrustedList().getCountries();
+            TreeSet<Country> listOfCountries = dummyTrustedList.getDummyTrustedList().getCountries();
             trustedList = new TrustedList(listOfCountries);
         }
 
@@ -228,8 +208,6 @@ class TrustedListTest {
             TrustedList listToClone = trustedList;
 
             TrustedList clonedList = listToClone.clone();
-            assertTrue(listToClone.equals(clonedList));//da togliere
-            assertTrue(clonedList.equals(listToClone));//da togliere
             assertEquals(listToClone, clonedList);
         }
 
@@ -243,9 +221,9 @@ class TrustedListTest {
             void equalsSameListObjectAsArgument() {
                 argumentList = trustedList;
 
-                boolean haveTrustedListTheSameValues = trustedList.equals(argumentList);
+                boolean areTrustedListsEquals = trustedList.equals(argumentList);
 
-                assertTrue(haveTrustedListTheSameValues);
+                assertTrue(areTrustedListsEquals);
             }
 
             @DisplayName("and the two lists are the same, it returns true")
@@ -254,9 +232,9 @@ class TrustedListTest {
                 DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
                 argumentList = dummyTrustedList.getDummyTrustedList();
 
-                boolean haveTrustedListTheSameValues = trustedList.equals(argumentList);
+                boolean areTrustedListsEquals = trustedList.equals(argumentList);
 
-                assertTrue(haveTrustedListTheSameValues);
+                assertTrue(areTrustedListsEquals);
             }
 
             @DisplayName("and the two lists are not the same, it returns false")
@@ -264,9 +242,9 @@ class TrustedListTest {
             void equalsNotSameListAsArgument() {
                 argumentList = getTestTrustedList1();
 
-                boolean haveTrustedListTheSameValues = trustedList.equals(argumentList);
+                boolean areTrustedListsEquals = trustedList.equals(argumentList);
 
-                assertFalse(haveTrustedListTheSameValues);
+                assertFalse(areTrustedListsEquals);
             }
 
 
@@ -275,18 +253,15 @@ class TrustedListTest {
             void equalsWithNullListAsArgument() {
                 argumentList = null;
 
-                boolean haveTrustedListTheSameValues = trustedList.equals(argumentList);
+                boolean areTrustedListsEquals = trustedList.equals(argumentList);
 
-                assertFalse(haveTrustedListTheSameValues);
+                assertFalse(areTrustedListsEquals);
             }
         }
 
         @DisplayName("and I use the method updateServiceTypesAndStatuses, statuses and serviceTypes should be full with all the possible elements")
         @Test
         void updateServiceTypesAndStatuses() {
-            System.out.println(trustedList.getCountries());
-            System.out.println(trustedList.getStatuses());
-            System.out.println(trustedList.getServiceTypes());
             //ListOfAllServiceTypes and listOfAllStatuses are filled with all the possible service types and statuses
             Set<String> listOfAllServiceTypes = new HashSet<>();
             Set<String> listOfAllStatuses = new HashSet<>();
@@ -312,22 +287,14 @@ class TrustedListTest {
             listOfAllServiceTypes.add("CertESig");
             assertTrue(trustedList.getStatuses().equals(listOfAllStatuses));
             assertTrue(trustedList.getServiceTypes().equals(listOfAllServiceTypes));
-            /*
-            trustedList.updateServiceTypesAndStatuses();
-            trustedList.getCountries().forEach(country -> {
-                country.getProviders().forEach(provider -> {
-                    provider.getServices().forEach(service -> {
-                        assertTrue(listOfAllServiceTypes.containsAll(service.getServiceTypes()));
-                        assertTrue(listOfAllStatuses.contains(service.getStatus()));
-                    });
-                });
-            });*/
+
         }
     }
-    private TrustedList getTestTrustedList1(){
+
+    private TrustedList getTestTrustedList1() {
         TrustedList trustedList1;
 
-        Country country1 = new Country("Austria","AT");
+        Country country1 = new Country("Austria", "AT");
         Country country2 = new Country("Italy", "IT");
 
         Provider provider1 = getATestProvider1(country1);
@@ -343,7 +310,7 @@ class TrustedListTest {
         countriesOfTrustedList1.add(country1);
         countriesOfTrustedList1.add(country2);
 
-        trustedList1= new TrustedList(countriesOfTrustedList1);
+        trustedList1 = new TrustedList(countriesOfTrustedList1);
         trustedList1.updateServiceTypesAndStatuses();
 
         return trustedList1;
