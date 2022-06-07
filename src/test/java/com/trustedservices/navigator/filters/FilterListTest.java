@@ -146,10 +146,10 @@ public class FilterListTest {
 
                     argumentTrustedList.getCountries().forEach(country -> {
                         country.getProviders().forEach(provider -> {
-                            if ((providersExpected.contains(country.getName() + "/" + provider.getName()))||(providersExpected.isEmpty())) {
+                            if ((providersExpected.contains(country.getName() + "/" + provider.getName())) || (providersExpected.isEmpty())) {
                                 provider.getServices().forEach(service -> {
-                                    if (((expectedStatuses.contains(service.getStatus()))||(expectedStatuses.isEmpty()))
-                                            && ((service.getServiceTypes().stream().anyMatch(currentService -> expectedServiceTypes.contains(currentService)))||(expectedServiceTypes.isEmpty()))) {
+                                    if (((expectedStatuses.contains(service.getStatus())) || (expectedStatuses.isEmpty()))
+                                            && ((service.getServiceTypes().stream().anyMatch(currentService -> expectedServiceTypes.contains(currentService))) || (expectedServiceTypes.isEmpty()))) {
                                         numberOfServicesCompatibleWithFilters.getAndIncrement();
                                     }
                                 });
@@ -160,11 +160,11 @@ public class FilterListTest {
                     assertFalse(filteredList.isEmpty());
                     filteredList.getCountries().forEach(country -> {
                         country.getProviders().forEach(provider -> {
-                            assertTrue((providersExpected.contains(country.getName() + "/" + provider.getName()))||(providersExpected.isEmpty()));
+                            assertTrue((providersExpected.contains(country.getName() + "/" + provider.getName())) || (providersExpected.isEmpty()));
                             provider.getServices().forEach(service -> {
                                 numberOfServicesCompatibleWithFilters.getAndDecrement();
-                                assertTrue((service.getServiceTypes().stream().anyMatch(currentService -> expectedServiceTypes.contains(currentService)))||(expectedServiceTypes.isEmpty()));
-                                assertTrue((expectedStatuses.contains(service.getStatus()))||(expectedStatuses.isEmpty()));
+                                assertTrue((service.getServiceTypes().stream().anyMatch(currentService -> expectedServiceTypes.contains(currentService))) || (expectedServiceTypes.isEmpty()));
+                                assertTrue((expectedStatuses.contains(service.getStatus())) || (expectedStatuses.isEmpty()));
                             });
                         });
                     });
@@ -204,125 +204,119 @@ public class FilterListTest {
         @Nested
         class ImpossibleFilters //with impossible filters I mean filters that summed do not represent any service
         {
+            TrustedList argumentTrustedList;
 
-            @DisplayName("and I use the method getFilteredListFrom")
-            @Nested
-            class getFilteredListFrom {
-                TrustedList argumentTrustedList;
+            private static Stream<Arguments> getFiltersThatCannotLinkToAService() {
+                List<Filter> collectionOfFilters1 = new ArrayList<>();
+                Set<String> providerSet1 = new HashSet<>();
+                providerSet1.add("PrimeSign GmbH");
+                ProviderFilter filterProvider1 = new ProviderFilter();
+                filterProvider1.setWhitelist(providerSet1);
+                Set<String> serviceTypeSet1 = new HashSet<>();
+                serviceTypeSet1.add("QCertESeal");
+                ServiceTypeFilter filterServiceType1 = new ServiceTypeFilter();
+                filterServiceType1.setWhitelist(serviceTypeSet1);
+                Set<String> statusSet1 = new HashSet<>();
+                statusSet1.add("withdrawn");
+                StatusFilter filterStatus1 = new StatusFilter();
+                filterStatus1.setWhitelist(statusSet1);
+                collectionOfFilters1.add(filterProvider1);
+                collectionOfFilters1.add(filterServiceType1);
+                collectionOfFilters1.add(filterStatus1);
 
-                private static Stream<Arguments> getFiltersThatCannotLinkToAService() {
-                    List<Filter> collectionOfFilters1 = new ArrayList<>();
-                    Set<String> providerSet1 = new HashSet<>();
-                    providerSet1.add("PrimeSign GmbH");
-                    ProviderFilter filterProvider1 = new ProviderFilter();
-                    filterProvider1.setWhitelist(providerSet1);
-                    Set<String> serviceTypeSet1 = new HashSet<>();
-                    serviceTypeSet1.add("QCertESeal");
-                    ServiceTypeFilter filterServiceType1 = new ServiceTypeFilter();
-                    filterServiceType1.setWhitelist(serviceTypeSet1);
-                    Set<String> statusSet1 = new HashSet<>();
-                    statusSet1.add("withdrawn");
-                    StatusFilter filterStatus1 = new StatusFilter();
-                    filterStatus1.setWhitelist(statusSet1);
-                    collectionOfFilters1.add(filterProvider1);
-                    collectionOfFilters1.add(filterServiceType1);
-                    collectionOfFilters1.add(filterStatus1);
-
-                    List<Filter> collectionOfFilters2 = new ArrayList<>();
-                    Set<String> providerSet2 = new HashSet<>();
-                    providerSet2.add("PrimeSign GmbH");
-                    ProviderFilter filterProvider2 = new ProviderFilter();
-                    filterProvider2.setWhitelist(providerSet2);
-                    Set<String> serviceTypeSet2 = new HashSet<>();
-                    ServiceTypeFilter filterServiceType2 = new ServiceTypeFilter();
-                    filterServiceType2.setWhitelist(serviceTypeSet2);
-                    Set<String> statusSet2 = new HashSet<>();
-                    statusSet2.add("NoSenseFilter");
-                    statusSet2.add("AnotherNoSenseFilter");
-                    StatusFilter filterStatus2 = new StatusFilter();
-                    filterStatus2.setWhitelist(statusSet2);
-                    collectionOfFilters2.add(filterProvider2);
-                    collectionOfFilters2.add(filterServiceType2);
-                    collectionOfFilters2.add(filterStatus2);
-                    return Stream.of(
-                            Arguments.of(collectionOfFilters1),
-                            Arguments.of(collectionOfFilters2)
-                    );
-                }
-
-                @DisplayName("with impossible filters and a list as argument, filtered list is empty")
-                @ParameterizedTest
-                @MethodSource("getFiltersThatCannotLinkToAService")
-                void TrustedListAsArgument(List<Filter> filters) {
-                    createFilterList(filters);
-                    DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-                    argumentTrustedList = dummyTrustedList.getDummyTrustedList();
-
-                    TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
-                    assertTrue(filteredList.isEmpty());
-
-                }
+                List<Filter> collectionOfFilters2 = new ArrayList<>();
+                Set<String> providerSet2 = new HashSet<>();
+                providerSet2.add("PrimeSign GmbH");
+                ProviderFilter filterProvider2 = new ProviderFilter();
+                filterProvider2.setWhitelist(providerSet2);
+                Set<String> serviceTypeSet2 = new HashSet<>();
+                ServiceTypeFilter filterServiceType2 = new ServiceTypeFilter();
+                filterServiceType2.setWhitelist(serviceTypeSet2);
+                Set<String> statusSet2 = new HashSet<>();
+                statusSet2.add("NoSenseFilter");
+                statusSet2.add("AnotherNoSenseFilter");
+                StatusFilter filterStatus2 = new StatusFilter();
+                filterStatus2.setWhitelist(statusSet2);
+                collectionOfFilters2.add(filterProvider2);
+                collectionOfFilters2.add(filterServiceType2);
+                collectionOfFilters2.add(filterStatus2);
+                return Stream.of(
+                        Arguments.of(collectionOfFilters1),
+                        Arguments.of(collectionOfFilters2)
+                );
             }
+
+            @DisplayName("and I use the method getFilteredListFrom, filtered list is empty")
+
+            @ParameterizedTest
+            @MethodSource("getFiltersThatCannotLinkToAService")
+            void TrustedListAsArgument(List<Filter> filters) {
+                createFilterList(filters);
+                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+
+                TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
+                assertTrue(filteredList.isEmpty());
+
+            }
+
 
         }
+
         @DisplayName("and the filters are totally or partially null")
         @Nested
-        class NullFilters
-        {
+        class NullFilters {
+            TrustedList argumentTrustedList;
 
-            @DisplayName("and I use the method getFilteredListFrom")
-            @Nested
-            class getFilteredListFrom {
-                TrustedList argumentTrustedList;
+            private static Stream<Arguments> getFiltersThatCannotLinkToAService() {
+                List<Filter> collectionOfFilters1 = new ArrayList<>();
+                Set<String> providerSet1 = null;
+                ProviderFilter filterProvider1 = new ProviderFilter();
+                filterProvider1.setWhitelist(providerSet1);
+                Set<String> serviceTypeSet1 = null;
+                ServiceTypeFilter filterServiceType1 = new ServiceTypeFilter();
+                filterServiceType1.setWhitelist(serviceTypeSet1);
+                Set<String> statusSet1 = null;
+                StatusFilter filterStatus1 = new StatusFilter();
+                filterStatus1.setWhitelist(statusSet1);
+                collectionOfFilters1.add(filterProvider1);
+                collectionOfFilters1.add(filterServiceType1);
+                collectionOfFilters1.add(filterStatus1);
 
-                private static Stream<Arguments> getFiltersThatCannotLinkToAService() {
-                    List<Filter> collectionOfFilters1 = new ArrayList<>();
-                    Set<String> providerSet1 = null;
-                    ProviderFilter filterProvider1 = new ProviderFilter();
-                    filterProvider1.setWhitelist(providerSet1);
-                    Set<String> serviceTypeSet1 = null;
-                    ServiceTypeFilter filterServiceType1 = new ServiceTypeFilter();
-                    filterServiceType1.setWhitelist(serviceTypeSet1);
-                    Set<String> statusSet1 = null;
-                    StatusFilter filterStatus1 = new StatusFilter();
-                    filterStatus1.setWhitelist(statusSet1);
-                    collectionOfFilters1.add(filterProvider1);
-                    collectionOfFilters1.add(filterServiceType1);
-                    collectionOfFilters1.add(filterStatus1);
+                List<Filter> collectionOfFilters2 = new ArrayList<>();
+                Set<String> providerSet2 = null;
+                ProviderFilter filterProvider2 = new ProviderFilter();
+                filterProvider2.setWhitelist(providerSet2);
+                Set<String> serviceTypeSet2 = null;
+                ServiceTypeFilter filterServiceType2 = new ServiceTypeFilter();
+                filterServiceType2.setWhitelist(serviceTypeSet2);
+                Set<String> statusSet2 = new HashSet<>();
+                StatusFilter filterStatus2 = new StatusFilter();
+                filterStatus2.setWhitelist(statusSet2);
+                collectionOfFilters2.add(filterProvider2);
+                collectionOfFilters2.add(filterServiceType2);
+                collectionOfFilters2.add(filterStatus2);
 
-                    List<Filter> collectionOfFilters2 = new ArrayList<>();
-                    Set<String> providerSet2 = null;
-                    ProviderFilter filterProvider2 = new ProviderFilter();
-                    filterProvider2.setWhitelist(providerSet2);
-                    Set<String> serviceTypeSet2 = null;
-                    ServiceTypeFilter filterServiceType2 = new ServiceTypeFilter();
-                    filterServiceType2.setWhitelist(serviceTypeSet2);
-                    Set<String> statusSet2 = new HashSet<>();
-                    StatusFilter filterStatus2 = new StatusFilter();
-                    filterStatus2.setWhitelist(statusSet2);
-                    collectionOfFilters2.add(filterProvider2);
-                    collectionOfFilters2.add(filterServiceType2);
-                    collectionOfFilters2.add(filterStatus2);
-
-                    return Stream.of(
-                            Arguments.of(collectionOfFilters1),
-                            Arguments.of(collectionOfFilters2)
-                    );
-                }
-
-                @DisplayName("with null filters throw NullPointerException")
-                @ParameterizedTest
-                @MethodSource("getFiltersThatCannotLinkToAService")
-                void TrustedListAsArgument(List<Filter> filters) {
-                    createFilterList(filters);
-                    DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
-                    argumentTrustedList = dummyTrustedList.getDummyTrustedList();
-
-                    assertThrows(NullPointerException.class, ()-> filterList.getFilteredListFrom(argumentTrustedList));
-
-
-                }
+                return Stream.of(
+                        Arguments.of(collectionOfFilters1),
+                        Arguments.of(collectionOfFilters2)
+                );
             }
+
+            @DisplayName("and I use the method getFilteredListFrom, throw NullPointerException")
+
+            @ParameterizedTest
+            @MethodSource("getFiltersThatCannotLinkToAService")
+            void TrustedListAsArgument(List<Filter> filters) {
+                createFilterList(filters);
+                DummyTrustedList dummyTrustedList = DummyTrustedList.getInstance();
+                argumentTrustedList = dummyTrustedList.getDummyTrustedList();
+
+                assertThrows(NullPointerException.class, () -> filterList.getFilteredListFrom(argumentTrustedList));
+
+
+            }
+
 
         }
 
@@ -353,7 +347,7 @@ public class FilterListTest {
 
             @DisplayName("with a null TrustedList as argument should return error")
             @Test
-            void cloneNullTrustedList() {
+            void NullTrustedList() {
                 argumentTrustedList = null;
                 assertThrows(NullPointerException.class, () -> filterList.getFilteredListFrom(argumentTrustedList));
             }
