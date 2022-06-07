@@ -35,7 +35,7 @@ public class TestTrustedList {
     }
 
 
-    public static TrustedList getActualApiTrustedList() {
+    public static TrustedList getWholeLocalTrustedList() {
         if (actualApiTrustedList == null)
             actualApiTrustedList = setupFileBuilder().build();
         return actualApiTrustedList.clone();
