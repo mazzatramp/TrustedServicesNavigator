@@ -10,7 +10,7 @@ A java desktop application to navigate and filter through the trusted services o
  - [Usage](#usage)
  - [Compile from source](#compile)
  - [Third Parties](#thirdparties)
- - [Licence](#licence)
+
 ---
 
 <a name="wft"></a>
@@ -21,7 +21,7 @@ This application permits to easily navigate through the lists, and provides opti
 
 ---
 <a name="installation"></a>
-### Installation
+### Installation (Not ready yet)
 Make sure you have installed the latest java runtime. Download the latest version of Trusted Services Navigator from the [releases](https://github.com/mazzatramp/TrustedServicesNavigator/releases).
 Run it. If you want to compile the whole thing from source please see [Compile from source](#compile).
 
@@ -49,6 +49,19 @@ To run the program from maven use
 ```
 $ mvn clean javafx:run
 ```
+---
+
+# Packages
+- domain: contains POJOs about domain classes
+- navigator: contains graphic and business logic
+    - filtes: contains the filtering logic of the domain classes
+    - components: contains UI elements
+    - web: contains the handling of Https requests and responses.
+
+# Design Pattern Used
+- Builder, for the complex construction of the Trusted List from the apis and from json strings.
+- Template Method, for the different types of filters, with the general same algorithm, but different implementations.
+- Observer, for the FilterTreeItem and FilterTreeCell. The Cell listens to the Item (set disabled from the ProviderFilterPane), and disable the graphic accordingly.
 
 ---
 <a name="thirdparties"></a>
@@ -57,7 +70,3 @@ Third parties libraries used:
 - [jackson](https://github.com/FasterXML/jackson), to parse json strings
 - [JavaFX](https://openjfx.io/) for the GUI.
 - [Junit 5](https://junit.org/junit5/) for unit testing.
-
----
-<a name="licence"></a>
-### Licence
