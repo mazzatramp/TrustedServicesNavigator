@@ -19,7 +19,7 @@ class TrustedListApiBuilderTest {
 
     @Test
     @DisplayName("is created")
-    void isInstantiatedWithNewClass() {
+    void constructorTest() {
         new TrustedListApiBuilder();
     }
 
@@ -34,7 +34,7 @@ class TrustedListApiBuilderTest {
 
         @Test
         @DisplayName("using an empty builder should throw NullPointerException")
-        void useEmptyJsonBuilder() {
+        void useEmptyApiBuilder() {
             trustedListApiBuilder = null;
             assertThrows(NullPointerException.class, () -> trustedListApiBuilder.build());
         }
