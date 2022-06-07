@@ -44,8 +44,11 @@ Make sure to have java version 17 installed as well as maven version 3.8.5.
 ```
 $ mvn clean install
 ```
-Inside the target folder you'll find the jar executable.
-
+Inside the target folder you'll find the jar executable.  
+To run the program from maven use
+```
+$ mvn clean javafx:run
+```
 
 ---
 <a name="thirdparties"></a>
