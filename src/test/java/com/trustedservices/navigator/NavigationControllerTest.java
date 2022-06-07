@@ -29,7 +29,7 @@ class NavigationControllerTest {
 
     @Test
     @DisplayName("is instantiated with new NavigationController()")
-    void isInstantiatedWithNewClass() {
+    void testingConstructor() {
         new NavigationController();
     }
 
@@ -74,6 +74,7 @@ class NavigationControllerTest {
             @DisplayName("when filters are filled")
             class FilledFilters {
                 private static Stream<Arguments> getFiltersThatCannotLinkToAService() {
+
                     List<Filter> collectionOfFilters1 = new ArrayList<>();
                     Set<String> providerSet1 = new HashSet<>();
                     providerSet1.add("PrimeSign GmbH");
@@ -91,7 +92,8 @@ class NavigationControllerTest {
                     collectionOfFilters1.add(filterServiceType1);
                     collectionOfFilters1.add(filterStatus1);
 
-                    List<Filter> collectionOfFilters2 = new ArrayList<>();
+                    List<Filter> collectionOfFilters2 = new ArrayList<>();//the presence of one or more of made up filters like "noSenseFilter"
+                    // do affect the behaviour of the filter if other meaningful filters are not present in the same filter category
                     Set<String> providerSet2 = new HashSet<>();
                     providerSet2.add("PrimeSign GmbH");
                     ProviderFilter filterProvider2 = new ProviderFilter();
@@ -174,7 +176,7 @@ class NavigationControllerTest {
                     Set<String> serviceTypeSet4 = new HashSet<>();
                     ServiceTypeFilter filterServiceType4 = new ServiceTypeFilter();
                     filterServiceType4.setWhitelist(serviceTypeSet4);
-                    Set<String> statusSet4 = new HashSet<>();
+                    Set<String> statusSet4 = new HashSet<>(); // empty filters
                     StatusFilter filterStatus4 = new StatusFilter();
                     filterStatus4.setWhitelist(statusSet4);
                     collectionOfFilters4.add(filterProvider4);
@@ -189,7 +191,8 @@ class NavigationControllerTest {
                     Set<String> serviceTypeSet5 = new HashSet<>();
                     ServiceTypeFilter filterServiceType5 = new ServiceTypeFilter();
                     filterServiceType5.setWhitelist(serviceTypeSet5);
-                    Set<String> statusSet5 = new HashSet<>();
+                    Set<String> statusSet5 = new HashSet<>();//the presence of one or more of made up filters like "noSenseFilter"
+                    // do not affect the behaviour of the filter if other meaningful filters are present in the same filter category
                     statusSet5.add("noSenseFilter");
                     statusSet5.add("granted");
                     StatusFilter filterStatus5 = new StatusFilter();
@@ -215,8 +218,10 @@ class NavigationControllerTest {
                     Set<String> providersExpected = filters.get(0).getWhitelist();
                     Set<String> expectedServiceTypes = filters.get(1).getWhitelist();
                     Set<String> expectedStatuses = filters.get(2).getWhitelist();
-                    AtomicInteger numberOfServicesCompatibleWithFilters = new AtomicInteger(); //necessario per controllare che il numero di servizi compatibili con i filtri
-                    //nella lista iniziale sia uguale al numero di servizi della lista filtrata
+                    AtomicInteger numberOfServicesCompatibleWithFiltersInArgumentTrustedList = new AtomicInteger();
+                    AtomicInteger numberOfServiceInFilteredList = new AtomicInteger();
+                    //these last two variables are needed to check that the number of services in the argument list compatible with the filters
+                    //is equal to the number of services in the filtered list
 
                     navigationController.getCompleteList().getCountries().forEach(country -> {
                         country.getProviders().forEach(provider -> {
@@ -224,7 +229,7 @@ class NavigationControllerTest {
                                 provider.getServices().forEach(service -> {
                                     if (((expectedStatuses.contains(service.getStatus())) || (expectedStatuses.isEmpty()))
                                             && ((service.getServiceTypes().stream().anyMatch(currentService -> expectedServiceTypes.contains(currentService))) || (expectedServiceTypes.isEmpty()))) {
-                                        numberOfServicesCompatibleWithFilters.getAndIncrement();
+                                        numberOfServicesCompatibleWithFiltersInArgumentTrustedList.getAndIncrement();
                                     }
                                 });
                             }
@@ -236,14 +241,17 @@ class NavigationControllerTest {
                         country.getProviders().forEach(provider -> {
                             assertTrue((providersExpected.contains(country.getName() + "/" + provider.getName())) || (providersExpected.isEmpty()));
                             provider.getServices().forEach(service -> {
-                                numberOfServicesCompatibleWithFilters.getAndDecrement();
+                                numberOfServiceInFilteredList.getAndIncrement();
                                 assertTrue((service.getServiceTypes().stream().anyMatch(currentService -> expectedServiceTypes.contains(currentService))) || (expectedServiceTypes.isEmpty()));
                                 assertTrue((expectedStatuses.contains(service.getStatus())) || (expectedStatuses.isEmpty()));
                             });
                         });
                     });
-                    assertEquals(0, numberOfServicesCompatibleWithFilters.get());
+                    assertEquals(numberOfServiceInFilteredList, numberOfServicesCompatibleWithFiltersInArgumentTrustedList.get());
                 }
+                //This assertion is done because if we would check only the other assertions we would not have really checked if the expected and
+                //actual output are the same. The filtered list could have missed some services compatible with the filters from the argument list and
+                //we would not have known. By counting the services we know.
 
                 @DisplayName("and the filters do not link to any service, the filtered list is empty")
                 @ParameterizedTest

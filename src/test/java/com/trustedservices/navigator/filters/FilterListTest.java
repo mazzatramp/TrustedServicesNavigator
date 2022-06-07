@@ -1,9 +1,6 @@
 package com.trustedservices.navigator.filters;
 
 import com.trustedservices.TestTrustedList;
-import com.trustedservices.domain.Country;
-import com.trustedservices.domain.Provider;
-import com.trustedservices.domain.Service;
 import com.trustedservices.domain.TrustedList;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -110,7 +107,8 @@ public class FilterListTest {
                     ProviderFilter filterProvider5 = new ProviderFilter();
                     providerSet5.add("Austria/PrimeSign GmbH");
                     filterProvider5.setWhitelist(providerSet5);
-                    Set<String> serviceTypeSet5 = new HashSet<>();
+                    Set<String> serviceTypeSet5 = new HashSet<>();//the presence of one or more of made up filters like "noSenseFilter"
+                    // do not affect the behaviour of the filter if other meaningful filters are present in the same filter category
                     ServiceTypeFilter filterServiceType5 = new ServiceTypeFilter();
                     filterServiceType5.setWhitelist(serviceTypeSet5);
                     Set<String> statusSet5 = new HashSet<>();
@@ -136,12 +134,14 @@ public class FilterListTest {
                 void PossibleFiltersTrustedListAsArgument(List<Filter> filters) {
 
                     createFilterList(filters);
-                    argumentTrustedList = TestTrustedList.getActualApiTrustedList();
+                    argumentTrustedList = TestTrustedList.getWholeLocalTrustedList();
                     Set<String> providersExpected = filters.get(0).getWhitelist();
                     Set<String> expectedServiceTypes = filters.get(1).getWhitelist();
                     Set<String> expectedStatuses = filters.get(2).getWhitelist();
-                    AtomicInteger numberOfServicesCompatibleWithFilters = new AtomicInteger(); //necessario per controllare che il numero di servizi compatibili con i filtri
-                    //nella lista iniziale sia uguale al numero di servizi della lista filtrata
+                    AtomicInteger numberOfServicesCompatibleWithFiltersInArgumentTrustedList = new AtomicInteger();
+                    AtomicInteger numberOfServiceInFilteredList = new AtomicInteger();
+                    //these last two variables are needed to check that the number of services in the argument list compatible with the filters
+                    //is equal to the number of services in the filtered list
 
                     argumentTrustedList.getCountries().forEach(country -> {
                         country.getProviders().forEach(provider -> {
@@ -149,7 +149,7 @@ public class FilterListTest {
                                 provider.getServices().forEach(service -> {
                                     if (((expectedStatuses.contains(service.getStatus())) || (expectedStatuses.isEmpty()))
                                             && ((service.getServiceTypes().stream().anyMatch(currentService -> expectedServiceTypes.contains(currentService))) || (expectedServiceTypes.isEmpty()))) {
-                                        numberOfServicesCompatibleWithFilters.getAndIncrement();
+                                        numberOfServicesCompatibleWithFiltersInArgumentTrustedList.getAndIncrement();
                                     }
                                 });
                             }
@@ -161,13 +161,17 @@ public class FilterListTest {
                         country.getProviders().forEach(provider -> {
                             assertTrue((providersExpected.contains(country.getName() + "/" + provider.getName())) || (providersExpected.isEmpty()));
                             provider.getServices().forEach(service -> {
-                                numberOfServicesCompatibleWithFilters.getAndDecrement();
+                                numberOfServiceInFilteredList.getAndIncrement();
                                 assertTrue((service.getServiceTypes().stream().anyMatch(currentService -> expectedServiceTypes.contains(currentService))) || (expectedServiceTypes.isEmpty()));
                                 assertTrue((expectedStatuses.contains(service.getStatus())) || (expectedStatuses.isEmpty()));
                             });
                         });
                     });
-                    assertEquals(0, numberOfServicesCompatibleWithFilters.get());
+                    assertEquals(numberOfServiceInFilteredList, numberOfServicesCompatibleWithFiltersInArgumentTrustedList.get());
+                    //This assertion is done because if we would check only the other assertions we would not have really checked if the expected and
+                    //actual output are the same. The filtered list could have missed some services compatible with the filters from the argument list and
+                    //we would not have known. By counting the services we know.
+
                 }
 
                 @DisplayName("a list as argument that do not contain services possible, should return just no services")
@@ -176,7 +180,7 @@ public class FilterListTest {
                 void PossibleFiltersButNotPossibleTrustedListAsArgument(List<Filter> filters) {
                     createFilterList(filters);
                     argumentTrustedList = TestTrustedList.getTrustedListWith(
-                            "RealCountryWithOneRealProviderWitAllServices1","RealCountryWithOneRealProviderWitAllServices2");
+                            "RealCountryWithOneRealProviderWitAllServices1", "RealCountryWithOneRealProviderWitAllServices2");
                     TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
                     assertTrue(filteredList.getCountries().isEmpty());
 
@@ -202,7 +206,7 @@ public class FilterListTest {
 
         @DisplayName("and the filters do not link to any service")
         @Nested
-        class ImpossibleFilters //with impossible filters I mean filters that summed do not represent any service
+        class ImpossibleFilters //with impossible filters I mean filters that summed are not compatible with any service
         {
             TrustedList argumentTrustedList;
 
@@ -224,7 +228,8 @@ public class FilterListTest {
                 collectionOfFilters1.add(filterServiceType1);
                 collectionOfFilters1.add(filterStatus1);
 
-                List<Filter> collectionOfFilters2 = new ArrayList<>();
+                List<Filter> collectionOfFilters2 = new ArrayList<>();//the presence of one or more of made up filters like "noSenseFilter"
+                // do affect the behaviour of the filter if other meaningful filters are not present in the same filter category
                 Set<String> providerSet2 = new HashSet<>();
                 providerSet2.add("PrimeSign GmbH");
                 ProviderFilter filterProvider2 = new ProviderFilter();
@@ -252,7 +257,7 @@ public class FilterListTest {
             @MethodSource("getFiltersThatCannotLinkToAService")
             void TrustedListAsArgument(List<Filter> filters) {
                 createFilterList(filters);
-                argumentTrustedList = TestTrustedList.getActualApiTrustedList();
+                argumentTrustedList = TestTrustedList.getWholeLocalTrustedList();
 
                 TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
                 assertTrue(filteredList.isEmpty());
@@ -308,7 +313,7 @@ public class FilterListTest {
             @MethodSource("getFiltersThatCannotLinkToAService")
             void TrustedListAsArgument(List<Filter> filters) {
                 createFilterList(filters);
-                argumentTrustedList = TestTrustedList.getActualApiTrustedList();
+                argumentTrustedList = TestTrustedList.getWholeLocalTrustedList();
 
                 assertThrows(NullPointerException.class, () -> filterList.getFilteredListFrom(argumentTrustedList));
 
@@ -321,7 +326,7 @@ public class FilterListTest {
     }
 
     @Nested
-    @DisplayName("when new")
+    @DisplayName("when new") // here the filters will be empty
     class WhenNew {
         @BeforeEach
         void createACountry() {
@@ -336,7 +341,7 @@ public class FilterListTest {
             @DisplayName("with a TrustedList as argument should return the same trustedList")
             @Test
             void trustedListAsArgument() {
-                argumentTrustedList = TestTrustedList.getActualApiTrustedList();
+                argumentTrustedList = TestTrustedList.getWholeLocalTrustedList();
 
                 TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
                 assertEquals(filteredList, argumentTrustedList);

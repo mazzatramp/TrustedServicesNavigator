@@ -14,8 +14,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class TrustedListTest {
     TrustedList trustedList;
 
+    //Three scenarios are possible: trustedList is created thanks to new TrustedList(),
+    // thanks to new TrustedList(List<Country>) with a partial list of countries,
+    //thanks to new TrustedList(List<Country>) with a full list of countries.
+    // All three are tested to check for different outputs and show TrustedList behaviour
     @Nested
-    @DisplayName("when created without arguments thanks to new TrustedList()")
+    @DisplayName("when created without arguments thanks to new TrustedList()") // the trustedList will then be empty
     class WhenNew {
         @BeforeEach
         void createATrustedList() {
@@ -86,7 +90,6 @@ class TrustedListTest {
             @Test
             void equalsSameListObjectAsArgument() {
                 argumentList = trustedList;
-
 
                 boolean areTrustedListsEquals = trustedList.equals(argumentList);
 
@@ -183,8 +186,8 @@ class TrustedListTest {
             System.out.println(trustedList.getStatuses()); //da togliere
             //assertTrue((trustedList.getStatuses()).equals(listOfStatuses));//da togliere
             //assertTrue((trustedList.getServiceTypes()).equals(listOfServiceTypes));// da togliere
-            assertEquals(trustedList.getStatuses(),listOfStatuses);
-            assertEquals(trustedList.getServiceTypes(),listOfServiceTypes);
+            assertEquals(trustedList.getStatuses(), listOfStatuses);
+            assertEquals(trustedList.getServiceTypes(), listOfServiceTypes);
 
         }
     }
@@ -194,7 +197,7 @@ class TrustedListTest {
     class constructorWithArgumentAllCountries {
         @BeforeEach
         void createATrustedListWithArgument() {
-            TreeSet<Country> listOfCountries = TestTrustedList.getActualApiTrustedList().getCountries();
+            TreeSet<Country> listOfCountries = TestTrustedList.getWholeLocalTrustedList().getCountries();
             trustedList = new TrustedList(listOfCountries);
         }
 
@@ -232,7 +235,7 @@ class TrustedListTest {
             @DisplayName("and the two lists are the same, it returns true")
             @Test
             void equalsSameListAsArgument() {
-                argumentList = TestTrustedList.getActualApiTrustedList();
+                argumentList = TestTrustedList.getWholeLocalTrustedList();
 
                 boolean areTrustedListsEquals = trustedList.equals(argumentList);
 
@@ -293,8 +296,6 @@ class TrustedListTest {
 
         }
     }
-
-
 
 }
 
