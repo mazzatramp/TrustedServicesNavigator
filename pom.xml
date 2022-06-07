@@ -81,7 +81,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.trustedservices.navigator.Main</mainClass>
+                            <mainClass>com.trustedservices.navigator.TrustedServicesNavigatorApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -96,7 +96,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.trustedservices.navigator.Main
+                                com.trustedservices.navigator.TrustedServicesNavigatorApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
