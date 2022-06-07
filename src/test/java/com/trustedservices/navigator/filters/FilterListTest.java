@@ -130,7 +130,7 @@ public class FilterListTest {
                     );
                 }
 
-                @DisplayName("a list as argument that contain services possible, should return just the filtered services")
+                @DisplayName("a list as argument that contain services possible, should return a not empty list with just the filtered services")
                 @ParameterizedTest
                 @MethodSource("getFiltersThatCanLinkToAService")
                 void PossibleFiltersTrustedListAsArgument(List<Filter> filters) {
@@ -250,7 +250,7 @@ public class FilterListTest {
                     );
                 }
 
-                @DisplayName("with impossible filters and a list as argument, should return no providers")
+                @DisplayName("with impossible filters and a list as argument, filtered list is empty")
                 @ParameterizedTest
                 @MethodSource("getFiltersThatCannotLinkToAService")
                 void TrustedListAsArgument(List<Filter> filters) {
@@ -259,13 +259,13 @@ public class FilterListTest {
                     argumentTrustedList = dummyTrustedList.getDummyTrustedList();
 
                     TrustedList filteredList = filterList.getFilteredListFrom(argumentTrustedList);
-                    assertTrue(filteredList.getCountries().isEmpty());
+                    assertTrue(filteredList.isEmpty());
 
                 }
             }
 
         }
-        @DisplayName("and the filters are null")
+        @DisplayName("and the filters are totally or partially null")
         @Nested
         class NullFilters
         {
