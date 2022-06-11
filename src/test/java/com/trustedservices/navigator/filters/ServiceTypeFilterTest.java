@@ -74,7 +74,7 @@ class ServiceTypeFilterTest {
         class ApplyTo {
             TrustedList argumentTrustedList;
 
-            private static Stream<Arguments> getServiceTypes() {
+            private Stream<Arguments> getServiceTypes() {
                 Set<String> serviceTypesSet1 = new HashSet<>();
                 serviceTypesSet1.add("QCertESeal");
                 Set<String> serviceTypesSet2 = new HashSet<>();
@@ -192,7 +192,7 @@ class ServiceTypeFilterTest {
         class ApplyTo {
             TrustedList argumentTrustedList;
 
-            private static Stream<Arguments> getServiceTypes() {
+            private Stream<Arguments> getServiceTypes() {
                 //a list of filters with only made up elements link to no services
                 Set<String> serviceTypeSet1 = new HashSet<>();
                 serviceTypeSet1.add("noSenseFilter");

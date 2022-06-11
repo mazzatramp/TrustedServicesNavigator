@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -48,10 +49,15 @@ class NavigationControllerTest {
             @BeforeEach
             void buildList() throws IOException {
                 TrustedListJsonBuilder builder = new TrustedListJsonBuilder();
-                Path countries = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
-                Path providers = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
-                builder.setCountriesJson(Files.readString(countries));
-                builder.setProvidersJson(Files.readString(providers));
+                Path countries = Paths.get("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
+                Path providers = Paths.get("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
+
+                StringBuilder content = new StringBuilder();
+                Files.lines(countries).forEach(line -> content.append(line).append("\n"));
+                builder.setCountriesJson(content.toString());
+
+                Files.lines(providers).forEach(line -> content.append(line).append("\n"));
+                builder.setProvidersJson(content.toString());
                 navigationController.buildCompleteList(builder);
             }
 
@@ -73,7 +79,7 @@ class NavigationControllerTest {
             @Nested
             @DisplayName("when filters are filled")
             class FilledFilters {
-                private static Stream<Arguments> getFiltersThatCannotLinkToAService() {
+                private Stream<Arguments> getFiltersThatCannotLinkToAService() {
 
                     List<Filter> collectionOfFilters1 = new ArrayList<>();
                     Set<String> providerSet1 = new HashSet<>();
@@ -115,7 +121,7 @@ class NavigationControllerTest {
                     );
                 }
 
-                private static Stream<Arguments> getFiltersThatCanLinkToAService() {
+                private Stream<Arguments> getFiltersThatCanLinkToAService() {
                     List<Filter> collectionOfFilters1 = new ArrayList<>();
                     Set<String> providerSet1 = new HashSet<>();
                     providerSet1.add("Austria/PrimeSign GmbH");
@@ -264,7 +270,7 @@ class NavigationControllerTest {
 
             }
 
-            private static Stream<Arguments> getFiltersNull() {
+            private Stream<Arguments> getFiltersNull() {
                 List<Filter> collectionOfFilters1 = new ArrayList<>();
                 Set<String> providerSet1 = null;
                 ProviderFilter filterProvider1 = new ProviderFilter();
@@ -319,10 +325,16 @@ class NavigationControllerTest {
             @DisplayName("with as argument a TrustedListBuilder, should build a complete list")
             void trustedListBuilderAsArgument() throws IOException {
                 TrustedListJsonBuilder builder = new TrustedListJsonBuilder();
-                Path countries = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
-                Path providers = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
-                builder.setCountriesJson(Files.readString(countries));
-                builder.setProvidersJson(Files.readString(providers));
+                Path countries = Paths.get("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
+                Path providers = Paths.get("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
+
+                StringBuilder content = new StringBuilder();
+                Files.lines(countries).forEach(line -> content.append(line).append("\n"));
+                builder.setCountriesJson(content.toString());
+
+                Files.lines(providers).forEach(line -> content.append(line).append("\n"));
+                builder.setProvidersJson(content.toString());
+
                 navigationController.buildCompleteList(builder);
                 boolean areListsEquals = navigationController.getCompleteList().equals(builder.build());
                 assertTrue(areListsEquals);

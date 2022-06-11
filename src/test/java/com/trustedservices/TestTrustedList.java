@@ -9,6 +9,7 @@ import com.trustedservices.navigator.web.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,11 +45,16 @@ public class TestTrustedList {
     private static TrustedListJsonBuilder setupFileBuilder() {
         TrustedListJsonBuilder builder = new TrustedListJsonBuilder();
 
-        Path countries = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
-        Path providers = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
+        Path countries = Paths.get("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
+        Path providers = Paths.get("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
         try {
-            builder.setCountriesJson(Files.readString(countries));
-            builder.setProvidersJson(Files.readString(providers));
+            StringBuilder content = new StringBuilder();
+            Files.lines(countries).forEach(line -> content.append(line).append("\n"));
+            builder.setCountriesJson(content.toString());
+
+            Files.lines(providers).forEach(line -> content.append(line).append("\n"));
+            System.out.println(content.toString());
+            builder.setProvidersJson(content.toString());
         } catch (IOException e) {
             System.err.println("Error reading json test files: \n" + e.getMessage());
             throw new RuntimeException(e);
@@ -72,8 +78,14 @@ public class TestTrustedList {
         Country country = new Country("OneProviderCountry", "1P");
         Provider provider = new Provider(country, 0, "Provider0", "ddd");
         Service service = new Service(provider, 0, "Service0", "T1", "status1");
-        provider.getServiceTypes().addAll(List.of("ST1", "ST2"));
-        service.getServiceTypes().addAll(List.of("ST1", "ST2"));
+        List<String> serviceTypes = new java.util.ArrayList<>();
+        serviceTypes.add("ST1");
+        serviceTypes.add("ST2");
+        provider.getServiceTypes().addAll(serviceTypes);
+        List<String> serviceTypes1 = new java.util.ArrayList<>();
+        serviceTypes1.add("ST1");
+        serviceTypes1.add("ST2");
+        service.getServiceTypes().addAll(serviceTypes1);
         provider.getServices().add(service);
         country.getProviders().add(provider);
         return country;

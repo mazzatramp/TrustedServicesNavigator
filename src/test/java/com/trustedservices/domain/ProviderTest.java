@@ -12,9 +12,10 @@ class ProviderTest {
 
     @BeforeEach
     void createAProvider() {
-        TreeSet<String> providerServiceTypes = new TreeSet<>(
-                List.of("QCertESeal", "QCertESig", "QTimestamp")
-        );
+        TreeSet<String> providerServiceTypes = new TreeSet<>();
+        providerServiceTypes.add("QCertESeal");
+        providerServiceTypes.add("QCertESig");
+        providerServiceTypes.add("QTimestamp");
 
         TreeSet<Service> providerServices = new TreeSet<>();
 
@@ -27,9 +28,10 @@ class ProviderTest {
     @Test
     @DisplayName("thanks to new Provider(String,Int, String,String,List<ServiceType>,List<providerServices>)")
     void testingConstructor1() {
-        TreeSet<String> providerServiceTypes = new TreeSet<>(
-                List.of("QCertESeal", "QCertESig", "QTimestamp")
-        );
+        TreeSet<String> providerServiceTypes = new TreeSet<>();
+        providerServiceTypes.add("QCertESeal");
+        providerServiceTypes.add("QCertESig");
+        providerServiceTypes.add("QTimestamp");
 
         TreeSet<Service> providerServices = new TreeSet<>();
 
@@ -155,9 +157,11 @@ class ProviderTest {
     void toStringMethod() {
         //Another service is attached to provider in order to better test toString() method
         attachAServiceTo(provider);
-        TreeSet<String> providerServiceTypes = new TreeSet<>(
-                List.of("QCertESeal", "QCertESig", "QTimestamp")
-        );
+        TreeSet<String> providerServiceTypes = new TreeSet<>();
+        providerServiceTypes.add("QCertESeal");
+        providerServiceTypes.add("QCertESig");
+        providerServiceTypes.add("QTimestamp");
+
         String expectedString = "Provider{" +
                 "providerId=" + "0" +
                 ", name='" + "TestProvider" + '\'' +
@@ -183,9 +187,11 @@ class ProviderTest {
 
     private Provider getATestProvider0() {
 
-        TreeSet<String> providerServiceTypes0 = new TreeSet<>(
-                List.of("QCertESeal", "QCertESig", "QTimestamp")
-        );
+
+        TreeSet<String> providerServiceTypes0 = new TreeSet<>();
+        providerServiceTypes0.add("QCertESeal");
+        providerServiceTypes0.add("QCertESig");
+        providerServiceTypes0.add("QTimestamp");
 
         TreeSet<Service> providerServices0 = new TreeSet<>();
 
@@ -197,9 +203,11 @@ class ProviderTest {
     }
 
     private Provider getATestProvider1() {
-        TreeSet<String> providerServiceTypes1 = new TreeSet<>(
-                List.of("QCertESeal", "QCertESig", "QTimestamp")
-        );
+
+        TreeSet<String> providerServiceTypes1 = new TreeSet<>();
+        providerServiceTypes1.add("QCertESeal");
+        providerServiceTypes1.add("QCertESig");
+        providerServiceTypes1.add("QTimestamp");
 
         TreeSet<Service> providerServices1 = new TreeSet<>();
 
@@ -211,9 +219,11 @@ class ProviderTest {
     }
 
     private Provider getATestProvider2() {
-        TreeSet<String> providerServiceTypes2 = new TreeSet<>(
-                List.of("QCertESeal", "QCertESig", "QTimestamp")
-        );
+
+        TreeSet<String> providerServiceTypes2 = new TreeSet<>();
+        providerServiceTypes2.add("QCertESeal");
+        providerServiceTypes2.add("QCertESig");
+        providerServiceTypes2.add("QTimestamp");
 
         TreeSet<Service> providerServices2 = new TreeSet<>();
 

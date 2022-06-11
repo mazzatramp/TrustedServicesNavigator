@@ -158,7 +158,8 @@ public class DisplayPane extends AnchorPane {
     private void handleMouseClick(MouseEvent event) {
         Node node = event.getPickResult().getIntersectedNode();
         if (node instanceof Text || (node instanceof TreeCell && ((TreeCell) node).getText() != null)) {
-            if (displayed.getSelectionModel().getSelectedItem().getValue() instanceof TrustedEntityLabel selected) {
+            if (displayed.getSelectionModel().getSelectedItem().getValue() instanceof TrustedEntityLabel) {
+                TrustedEntityLabel selected = (TrustedEntityLabel) displayed.getSelectionModel().getSelectedItem().getValue();
                 windowController.openInfoPaneWithInfo(selected.getRefereed().getDescription());
             }
         }

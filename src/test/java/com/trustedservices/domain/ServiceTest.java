@@ -2,6 +2,7 @@ package com.trustedservices.domain;
 
 import org.junit.jupiter.api.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,25 +15,31 @@ public class ServiceTest {
     @DisplayName("is instantiated thanks to new Service(int,String, String,String,Set<ServiceType>)")
     void createAService() {
         Provider provider = new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X00");
+        Set<String> serviceTypes = new java.util.HashSet<>();
+        serviceTypes.add("ServiceType1");
+        serviceTypes.add("ServiceType2");
         service1 = new Service(provider,
                 0,
                 "TestService",
                 "type",
                 "status",
-                Set.of("ServiceType1", "ServiceType2")
+                serviceTypes
         );
     }
 
     @Test
     @DisplayName("is instantiated thanks to new Service(int,String, String,String,Set<ServiceType>)")
     void testingConstructor1() {
+        Set<String> serviceTypes = new java.util.HashSet<>();
+        serviceTypes.add("ServiceType1");
+        serviceTypes.add("ServiceType2");
         service1 = new Service(new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X00")
                 ,
                 0,
                 "TestService",
                 "type",
                 "status",
-                Set.of("ServiceType1", "ServiceType2")
+                serviceTypes
         );
     }
 
@@ -158,11 +165,14 @@ public class ServiceTest {
     @DisplayName("when I use the method getHumanInformation, it should return a string with information")
     @Test
     void getHumanInformationMethod() {
+        Set<String> serviceTypes = new HashSet<>();
+        serviceTypes.add("ServiceType1");
+        serviceTypes.add("ServiceType2");
         String expectedString = "TestService" + "\n" +
                 "Of " + "TestProvider" + " (" + "IT" + ")\n" +
                 "\n" +
                 "Status: " + "status" + "\n" +
-                "Service Types: " + Set.of("ServiceType1", "ServiceType2");
+                "Service Types: " + serviceTypes;
         assertEquals(expectedString, service1.getDescription());
 
     }
@@ -170,26 +180,32 @@ public class ServiceTest {
     @DisplayName("when I use the method toString, it should return tspId,serviceId, name,type,status, serviceTypes")
     @Test
     void toStringMethod() {
+        Set<String> serviceTypes = new HashSet<>();
+        serviceTypes.add("ServiceType1");
+        serviceTypes.add("ServiceType2");
         String expectedString = "Service{" +
                 "tspId=" + "0" +
                 ", serviceId=" + 0 +
                 ", name='" + "TestService" + '\'' +
                 ", type='" + "type" + '\'' +
                 ", status='" + "status" + '\'' +
-                ", serviceTypes=" + Set.of("ServiceType1", "ServiceType2") +
+                ", serviceTypes=" + serviceTypes +
                 '}';
         assertEquals(expectedString, service1.toString());
 
     }
 
     private Service getService1() {
+        Set<String> serviceTypes = new HashSet<>();
+        serviceTypes.add("ServiceType1");
+        serviceTypes.add("ServiceType2");
         Provider provider = new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X00");
         Service service = new Service(provider,
                 0,
                 "TestService",
                 "type",
                 "status",
-                Set.of("ServiceType1", "ServiceType2")
+                serviceTypes
         );
         return service;
 
@@ -198,12 +214,15 @@ public class ServiceTest {
     private Service getService2() {
         Provider provider = new Provider(new Country("Italia", "IT"), 0, "TestProvider", "TTT-000-X00");
 
+        Set<String> serviceTypes = new HashSet<>();
+        serviceTypes.add("ServiceType1");
+
         Service service = new Service(provider,
                 1,
                 "TestService2",
                 "type2",
                 "status2",
-                Set.of("ServiceType1")
+                serviceTypes
         );
         return service;
     }
