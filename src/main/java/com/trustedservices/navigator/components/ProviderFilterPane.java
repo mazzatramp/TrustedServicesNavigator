@@ -49,7 +49,6 @@ public class ProviderFilterPane extends FilterPane {
             }
         }
 
-        System.out.println(selectedProviders);
         return selectedProviders;
     }
 
