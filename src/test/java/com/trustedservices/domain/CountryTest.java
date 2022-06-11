@@ -175,20 +175,16 @@ class CountryTest {
 
     private void attachProviderToCountry(Country country) // two test providers are attached to the country in order to execute a better test of the methods clone() and getHumanInformation
     {
-        TreeSet<String> providerServiceTypes = new TreeSet<>();
-        providerServiceTypes.add("QCertESeal");
-        providerServiceTypes.add("QCertESig");
-        providerServiceTypes.add("QTimestamp");
-
+        TreeSet<String> providerServiceTypes = new TreeSet<>(
+                List.of("QCertESeal", "QCertESig", "QTimestamp")
+        );
         TreeSet<Service> providerServices = new TreeSet<>();
         Provider provider1 = new Provider(country, 0, "TestProvider", "TTT-000-X00", providerServiceTypes, providerServices);
         providerServices.add(new Service(provider1, 1, "Service 1", "QC", "granted", providerServiceTypes));
         providerServices.forEach(service -> service.setProvider(provider1));
-        TreeSet<String> providerServiceTypes2 = new TreeSet<>();
-        providerServiceTypes2.add("QCertESeal");
-        providerServiceTypes2.add("QCertESig");
-        providerServiceTypes2.add("QTimestamp");
-
+        TreeSet<String> providerServiceTypes2 = new TreeSet<>(
+                List.of("QCertESeal", "QCertESig", "QTimestamp")
+        );
         TreeSet<Service> providerServices2 = new TreeSet<>();
         Provider provider2 = new Provider(country, 0, "TestProvider", "TTT-000-X01", providerServiceTypes2, providerServices2);
         providerServices2.add(new Service(provider2, 1, "Service 1", "QC", "granted", providerServiceTypes2));

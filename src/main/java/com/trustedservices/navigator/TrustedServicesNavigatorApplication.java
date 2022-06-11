@@ -48,7 +48,7 @@ public class TrustedServicesNavigatorApplication extends Application {
     }
 
     private Task<Void> getDownloadAndDisplayDataTask() {
-        return new Task<Void>() {
+        return new Task<>() {
             @Override
             protected Void call() {
                 TrustedListBuilder apiBuilder = new TrustedListApiBuilder();
