@@ -68,7 +68,7 @@ public class FilterTreeCell<T> extends CheckBoxTreeCell<T> implements ChangeList
     private boolean hasFilterTreeItemProperty() {
         return (this.treeItemProperty() != null)
                 && (this.treeItemProperty().getValue() != null)
-                && (this.treeItemProperty().getValue() instanceof FilterTreeItem);
+                && (this.treeItemProperty().getValue() instanceof FilterTreeItem<T>);
     }
 
     /**

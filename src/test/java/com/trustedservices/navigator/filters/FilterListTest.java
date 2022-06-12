@@ -34,7 +34,7 @@ public class FilterListTest {
             @DisplayName("and I use the method getFilteredListFrom")
             @Nested
             class getFilteredListFrom {
-                private Stream<Arguments> getFiltersThatCanLinkToAService() {
+                private static Stream<Arguments> getFiltersThatCanLinkToAService() {
                     List<Filter> collectionOfFilters1 = new ArrayList<>();
                     Set<String> providerSet1 = new HashSet<>();
                     providerSet1.add("Austria/PrimeSign GmbH");
@@ -211,7 +211,7 @@ public class FilterListTest {
         {
             TrustedList argumentTrustedList;
 
-            private Stream<Arguments> getFiltersThatCannotLinkToAService() {
+            private static Stream<Arguments> getFiltersThatCannotLinkToAService() {
                 List<Filter> collectionOfFilters1 = new ArrayList<>();
                 Set<String> providerSet1 = new HashSet<>();
                 providerSet1.add("PrimeSign GmbH");
@@ -273,7 +273,7 @@ public class FilterListTest {
         class NullFilters {
             TrustedList argumentTrustedList;
 
-            private Set<Arguments> getFiltersThatCannotLinkToAService() {
+            private static Stream<Arguments> getFiltersThatCannotLinkToAService() {
                 List<Filter> collectionOfFilters1 = new ArrayList<>();
                 Set<String> providerSet1 = null;
                 ProviderFilter filterProvider1 = new ProviderFilter();

@@ -8,7 +8,6 @@ import org.junit.jupiter.api.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,15 +45,10 @@ class TrustedListJsonBuilderTest {
         void createAndSetupJsonBuilder() throws IOException {
             trustedJsonBuilder = new TrustedListJsonBuilder();
 
-            Path countries = Paths.get("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/partialCountryListDummy.json");
-            Path providers = Paths.get("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/partialProviderListDummy.json");
-
-            StringBuilder content = new StringBuilder();
-            Files.lines(countries).forEach(line -> content.append(line).append("\n"));
-            trustedJsonBuilder.setCountriesJson(content.toString());
-
-            Files.lines(providers).forEach(line -> content.append(line).append("\n"));
-            trustedJsonBuilder.setProvidersJson(content.toString());
+            Path countries = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/partialCountryListDummy.json");
+            Path providers = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/partialProviderListDummy.json");
+            trustedJsonBuilder.setCountriesJson(Files.readString(countries));
+            trustedJsonBuilder.setProvidersJson(Files.readString(providers));
         }
 
         @Test

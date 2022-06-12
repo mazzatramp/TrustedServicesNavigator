@@ -70,7 +70,7 @@ class StatusFilterTest {
         class ApplyTo {
             TrustedList argumentTrustedList;
 
-            private Stream<Arguments> getStatuses() {
+            private static Stream<Arguments> getStatuses() {
                 Set<String> statusSet1 = new HashSet<>();
                 statusSet1.add("granted");
                 Set<String> statusSet2 = new HashSet<>();
@@ -179,7 +179,7 @@ class StatusFilterTest {
         class ApplyTo {
             TrustedList argumentTrustedList;
 
-            private Stream<Arguments> getStatuses() {
+            private static Stream<Arguments> getStatuses() {
                 //a list of filters with only made up elements link to no services
                 Set<String> statusSet1 = new HashSet<>();
                 statusSet1.add("noSenseFilter");

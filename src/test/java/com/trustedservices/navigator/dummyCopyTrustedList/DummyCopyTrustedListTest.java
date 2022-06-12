@@ -14,10 +14,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -41,15 +39,10 @@ public class DummyCopyTrustedListTest {
         TrustedList trustedListAPI = trustedListApiBuilder.build();
 
         TrustedListJsonBuilder trustedJsonBuilder = new TrustedListJsonBuilder();
-        Path countries = Paths.get("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
-        Path providers = Paths.get("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
-
-        StringBuilder content = new StringBuilder();
-        Files.lines(countries).forEach(line -> content.append(line).append("\n"));
-        trustedJsonBuilder.setCountriesJson(content.toString());
-
-        Files.lines(providers).forEach(line -> content.append(line).append("\n"));
-        trustedJsonBuilder.setProvidersJson(content.toString());
+        Path countries = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/countryListDummy.json");
+        Path providers = Path.of("src/test/java/com/trustedservices/navigator/dummyCopyTrustedList/providerListDummy.json");
+        trustedJsonBuilder.setCountriesJson(Files.readString(countries));
+        trustedJsonBuilder.setProvidersJson(Files.readString(providers));
         TrustedList trustedListDummy = trustedJsonBuilder.build();
 
         boolean areListsEqual = trustedListDummy.equals(trustedListAPI);

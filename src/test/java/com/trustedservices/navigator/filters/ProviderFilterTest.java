@@ -69,7 +69,7 @@ class ProviderFilterTest {
         class ApplyTo {
             TrustedList argumentTrustedList;
 
-            private Stream<Arguments> getProviders() {
+            private static Stream<Arguments> getProviders() {
                 Set<String> providersSet1 = new HashSet<>();
                 providersSet1.add("Austria/Datakom Austria GmbH");
                 Set<String> providersSet2 = new HashSet<>();
@@ -160,7 +160,7 @@ class ProviderFilterTest {
         class ApplyTo {
             TrustedList argumentTrustedList;
 
-            private Stream<Arguments> getProviders() {
+            private static Stream<Arguments> getProviders() {
                 //a list of filters with only made up elements link to no services
                 Set<String> providersSet1 = new HashSet<>();
                 providersSet1.add("noSenseFilter");

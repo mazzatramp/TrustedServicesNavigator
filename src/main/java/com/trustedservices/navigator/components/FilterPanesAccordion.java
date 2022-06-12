@@ -93,9 +93,8 @@ public class FilterPanesAccordion extends Accordion {
      */
     private boolean wouldGetResults(Filter filter, String filterItem) {
         Set<String> savedWhitelist = filter.getWhitelist();
-        Set<String> singleItem = new HashSet<>();
-        singleItem.add(filterItem);
-        filter.setWhitelist(singleItem);
+
+        filter.setWhitelist(Set.of(filterItem));
 
         FilterList filters = new FilterList(getAssociatedFilters());
         boolean hasResults = !filters.getFilteredListFrom(windowController.getCompleteTrustedList()).isEmpty();
@@ -111,10 +110,10 @@ public class FilterPanesAccordion extends Accordion {
     }
 
     public List<Filter> getAssociatedFilters() {
-        List<Filter> filters = new java.util.ArrayList<>();
-        filters.add(providers.getAssociatedFilter());
-        filters.add(statuses.getAssociatedFilter());
-        filters.add(serviceTypes.getAssociatedFilter());
-        return filters;
+        return List.of(
+            providers.getAssociatedFilter(),
+            statuses.getAssociatedFilter(),
+            serviceTypes.getAssociatedFilter()
+        );
     }
 }
