@@ -57,7 +57,7 @@ $ mvn clean javafx:run
 ### Packages
 - domain: contains POJOs about domain classes
 - navigator: contains graphic and business logic
-    - filtes: contains the filtering logic of the domain classes
+    - filters: contains the filtering logic of the domain classes
     - components: contains UI elements
     - web: contains the handling of Https requests and responses.
 
