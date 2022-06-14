@@ -23,7 +23,7 @@ This application permits to easily navigate through the lists, and provides opti
 
 ---
 <a name="installation"></a>
-### Installation (Not ready yet)
+### Installation
 Make sure you have installed the latest java runtime. Download the latest version of Trusted Services Navigator from the [releases](https://github.com/mazzatramp/TrustedServicesNavigator/releases).
 Run it. If you want to compile the whole thing from source please see [Compile from source](#compile).
 
